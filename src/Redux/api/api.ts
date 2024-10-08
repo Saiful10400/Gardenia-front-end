@@ -75,8 +75,16 @@ export const baseApi = createApi({
         },
       }),
 
+      getAUser: builder.query({
+        query: (payload) => {
+          console.log(payload,"user payload")
+          return {
+            url: `/auth/${payload}`,
+            method: "GET",
+          };
+        },
+      }),
 
-     
 
       getPaymentUrl: builder.query({
         query: (payload) => {
@@ -96,5 +104,6 @@ export const {
   useGetLoggedInUserQuery,
   useGetPaymentUrlQuery,
   useChangePasswordMutation,
-  useCheckCredentialsMutation
+  useCheckCredentialsMutation,
+  useGetAUserQuery
 } = baseApi;

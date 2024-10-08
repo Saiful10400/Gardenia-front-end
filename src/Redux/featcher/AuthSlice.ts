@@ -10,7 +10,7 @@ const AuthSlice=createSlice({
     initialState,
     reducers:{
         setUser:(state,action)=>{
-            console.log("user is setting",action.payload,"from auth slice.")
+          
             state.loggedInUser=action.payload
             state.isLoading=false
         },

@@ -22,7 +22,7 @@ const Authentication = ({children}) => {
           authorization: getToken() ,
         }
       }).then(res=>{
-        console.log(res.data,"from root.")
+        
         dispatch(setUser(res.data.data))
     
       }).catch(err=>{

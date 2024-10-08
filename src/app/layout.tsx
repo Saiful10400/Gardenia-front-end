@@ -39,7 +39,7 @@ export default function RootLayout({
       <Authentication>
       <html data-theme="light" lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100`}
         >
           {children}
           <ToastContainer />
