@@ -43,6 +43,29 @@ export const baseApi = createApi({
         },
       }),
 
+
+
+      checkCredentials: builder.mutation({
+        query: (payload) => {
+          
+          return {
+            url: "/auth/checkCredentials",
+            method: "POST",
+            body: payload,
+          };
+        },
+      }),
+      changePassword: builder.mutation({
+        query: (payload) => {
+          
+          return {
+            url: "/auth/changePassword",
+            method: "POST",
+            body: payload,
+          };
+        },
+      }),
+
       getLoggedInUser: builder.query({
         query: () => {
           return {
@@ -72,4 +95,6 @@ export const {
   useSignupMutation,
   useGetLoggedInUserQuery,
   useGetPaymentUrlQuery,
+  useChangePasswordMutation,
+  useCheckCredentialsMutation
 } = baseApi;

@@ -11,8 +11,8 @@ interface ButtonProps {
 
 const Button: FC<ButtonProps> = ({text,onClick,disable,className,loading,type='submit'}) => {
     return (
-        <button type={type} disabled={disable?true:false} onClick={onClick} className={`font-bold btn hover:bg-[#26ad2d] bg-[#19f123] border-none text-white p-2 rounded-xl ${className}`}>
-           {loading?<div className='to-center gap-3'>{text}<span className="loading loading-spinner loading-sm"></span></div>:text}
+        <button type={type} disabled={disable?true:false} onClick={onClick} className={`font-bold  btn hover:bg-[#26ad2d] bg-[#19f123] border-none text-white p-2 rounded-xl ${className}`}>
+           {loading?<div className='flex justify-center items-center gap-3'>{text}<span className="loading loading-spinner loading-sm"></span></div>:text}
         </button>
     );
 };
