@@ -103,7 +103,21 @@ export const baseApi = createApi({
             body: payload,
           };
         },
+        invalidatesTags:["aUserFollowing","aUserData"]
       }),
+
+      unfollowOne: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/follow/${payload}`,
+            method: "DELETE",
+           
+          };
+        },
+        invalidatesTags:["aUserFollowing","aUserData"]
+      }),
+
+      
 
       getPaymentUrl: builder.query({
         query: (payload) => {
@@ -127,5 +141,6 @@ export const {
   useGetAUserQuery,
   useUpdateAUserMutation,
   useGetFollowerAndFollowingQuery,
-  useCreateFollowingMutation
+  useCreateFollowingMutation,
+  useUnfollowOneMutation
 } = baseApi;
