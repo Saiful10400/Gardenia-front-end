@@ -9,7 +9,7 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: ["aUserData","aUserFollowing"],
+  tagTypes: ["aUserData","aUserFollowing","post"],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
@@ -117,6 +117,53 @@ export const baseApi = createApi({
         invalidatesTags:["aUserFollowing","aUserData"]
       }),
 
+
+      getPost: builder.query({
+        query: () => {
+          return {
+            url: `/post`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post"],
+      }),
+
+      createPost: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/post`,
+            method: "POST",
+            body:payload
+           
+          }; 
+
+        },
+        invalidatesTags:["post"]
+      }),
+
+      updatePost: builder.mutation({
+        query: (payload) => {
+          const{id,...rest}=payload
+          return {
+            url: `/follow/${id}`,
+            method: "PUT",
+            body:rest
+           
+          };
+        },
+        invalidatesTags:["post"]
+      }),
+
+      deletePost: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/follow/${payload}`,
+            method: "DELETE",
+           
+          };
+        },
+        invalidatesTags:["post"]
+      }),
       
 
       getPaymentUrl: builder.query({
@@ -132,6 +179,10 @@ export const baseApi = createApi({
 });
 
 export const {
+  useGetPostQuery,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useCreatePostMutation,
   useLoginMutation,
   useSignupMutation,
   useGetLoggedInUserQuery,

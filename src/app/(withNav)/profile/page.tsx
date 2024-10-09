@@ -27,7 +27,7 @@ import Button from "@/components/Shared/Button/Button";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
-
+import PostCreate from "@/components/Shared/PostCreate/PostCreate";
 const Profile = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -447,11 +447,9 @@ const Profile = () => {
               )}
             </section>
 
+            {/* Following */}
 
-
- {/* Following */}
-
- <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
+            <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Following</h1>
                 {followerData?.data?.following.length > 0 && (
@@ -491,16 +489,22 @@ const Profile = () => {
                 <p className="text-center">No following</p>
               )}
             </section>
-
-
-
-
           </div>
 
           {/* posts. */}
-          <div className="lg:w-[60%] w-full rounded-xl shadow-md p-3 min-h-28 border bg-white">
-            <h1>posts</h1>
+          <div className="lg:w-[60%] w-full ">
+            
+{/* create a post section */}
+
+{isYou&&<PostCreate userData={userData}/>}
+
+
+
           </div>
+
+
+
+
         </div>
       </div>
 
@@ -539,7 +543,6 @@ const Profile = () => {
         </div>
       </dialog>
 
-
       <dialog id="Following_modal" className="modal">
         <div className="modal-box">
           <form method="dialog">
@@ -561,7 +564,7 @@ const Profile = () => {
                       className="w-[50px] h-[50px] object-cover rounded-lg"
                       src={item?.following?.img}
                       alt="follwerImage"
-                      height={300}    
+                      height={300}
                       width={300}
                     ></Image>
                     <h1 className="font-semibold">{item?.following?.name}</h1>
@@ -608,6 +611,18 @@ const Profile = () => {
           </form>
         </div>
       </dialog>
+
+
+{/*  */}
+
+
+
+
+
+
+
+
+
     </Tocenter>
   );
 };
