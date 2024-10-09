@@ -2,10 +2,10 @@
 
 import Tocenter from "@/components/Helper/Tocenter";
 import Loading from "@/components/Shared/Loading/Loading";
-import { useGetAUserQuery } from "@/Redux/api/api";
+import { useGetAUserQuery, useUpdateAUserMutation } from "@/Redux/api/api";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import dummycover from "../../../assets/pages/profile/plainCover.jpeg";
 import { FaCamera } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -14,41 +14,165 @@ import { IoHomeSharp } from "react-icons/io5";
 import { PiStudentBold } from "react-icons/pi";
 import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
-
+import imageUpload from "@/utils/imageUpload";
+import { toast } from "react-toastify";
+import InputField from "@/components/Shared/InputField/InputField";
+import Button from "@/components/Shared/Button/Button";
+import { useAppSelector } from "@/Redux/hoocks/Convaying";
 
 const Profile = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { data, isLoading } = useGetAUserQuery(id);
 
+  const userData = data?.data;
 
-  const userData=data?.data
+  // checking is this me or not.
 
+  const { loggedInUser, isLoading: currentLoading } = useAppSelector(
+    (e) => e.authStore
+  );
+  console.log(loggedInUser, currentLoading);
 
-  return isLoading ? (
+  const isYou = loggedInUser?._id === userData?._id;
+
+  //
+
+  // update handle.
+
+  const [isCoverImgUploading, setIsCoverImageUploading] = useState(false);
+
+  const [updateProfile] = useUpdateAUserMutation();
+  // cover photo adding handle.
+  const addCoverPhoto = (e) => {
+    const files = e.target.files;
+    setIsCoverImageUploading(true);
+    imageUpload(files)
+      .then((res) => {
+        updateProfile({ id, coverImg: res[0] }).then((res) => {
+          if (res?.data?.statusCode === 200) {
+            setIsCoverImageUploading(false);
+          }
+        });
+      })
+      .catch(() => {
+        toast.error("Unsupported Profile image file formate!", {
+          position: "top-center",
+        });
+        setIsCoverImageUploading(false);
+      });
+  };
+
+  //profile photo upload hanlde.
+  const [isProfileImgUploading, setIsProfileImageUploading] = useState(false);
+  const addProfilePhoto = (e) => {
+    const files = e.target.files;
+    setIsProfileImageUploading(true);
+    imageUpload(files)
+      .then((res) => {
+        updateProfile({ id, img: res[0] }).then((res) => {
+          if (res?.data?.statusCode === 200) {
+            setIsProfileImageUploading(false);
+          }
+        });
+      })
+      .catch(() => {
+        toast.error("Unsupported Profile image file formate!", {
+          position: "top-center",
+        });
+        setIsProfileImageUploading(false);
+      });
+  };
+
+  // bio update handle.
+
+  const [updateBio, setUpdateBio] = useState(false);
+  const [bioLoading, setBioLoading] = useState(false);
+
+  const bioHandle = (e) => {
+    e.preventDefault();
+    const bio = e.target.bio.value;
+    setBioLoading(true);
+    updateProfile({ id, bio })
+      .then((res) => {
+        if (res?.data?.statusCode === 200) {
+          setUpdateBio(false);
+          setBioLoading(false);
+        }
+      })
+      .catch((err) => {
+        setBioLoading(false);
+      });
+  };
+
+  // update details.
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const detailsHandle = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    setDetailsLoading(true);
+    updateProfile({
+      id,
+      phone: form.phone.value,
+      educationInstitute: form.education.value,
+      address: form.address.value,
+    })
+      .then((res) => {
+        if (res?.data?.statusCode === 200) {
+          setDetailsLoading(false);
+          document.getElementById("Update_modal")?.close();
+          toast.success("Bio updated.", {
+            position: "top-center",
+          });
+        }
+      })
+      .catch((err) => {
+        setDetailsLoading(false);
+      });
+  };
+
+  // all update handle end here.
+
+  return isLoading || currentLoading ? (
     <Loading />
   ) : (
     <Tocenter>
       <div className="bg-gray-100">
         {/* top cover photo and profile photo. */}
 
-        <div className="relative">
+        <div className="relative h-[40vh]">
           <Image
-            src={dummycover}
+            src={userData?.coverImg || dummycover}
             alt="coverPhoto"
-            className="w-full rounded-lg h-[40vh]"
+            className="w-full object-cover rounded-lg h-full"
             height={300}
             width={1900}
           ></Image>
+
+          {/* loader. */}
+          {isCoverImgUploading && (
+            <div className="w-full absolute top-0 left-0 h-full flex items-center justify-center">
+              <span className="loading loading-dots loading-lg"></span>
+            </div>
+          )}
+
           <div className="absolute bottom-[20px] right-[10px]">
             <label
               htmlFor="coverUpdate"
               className="text-xl bg-gray-200 cursor-pointer  p-2 rounded-lg flex gap-3 items-center"
             >
               <FaCamera />
-              <span className="text-base font-semibold">Add cover Photo</span>
+              <span className="text-base font-semibold">
+                {userData.coverImg ? "Update cover Photo" : "Add cover Photo"}
+              </span>
             </label>
-            <input id="coverUpdate" hidden type="file" />
+            <input
+              disabled={isCoverImgUploading}
+              onInput={addCoverPhoto}
+              id="coverUpdate"
+              hidden
+              type="file"
+            />
           </div>
         </div>
 
@@ -64,6 +188,12 @@ const Profile = () => {
                 height={170}
                 width={170}
               ></Image>
+              {/* loader. */}
+              {isProfileImgUploading && (
+                <div className="w-full absolute top-0 left-0 h-full flex items-center justify-center">
+                  <span className="loading loading-dots text-gray-200 loading-lg"></span>
+                </div>
+              )}
               <div className="absolute bottom-[20px] right-[4px]">
                 <label
                   htmlFor="ImgUpdate"
@@ -71,7 +201,13 @@ const Profile = () => {
                 >
                   <FaCamera />
                 </label>
-                <input id="ImgUpdate" hidden type="file" />
+                <input
+                  disabled={isProfileImgUploading}
+                  onInput={addProfilePhoto}
+                  id="ImgUpdate"
+                  hidden
+                  type="file"
+                />
               </div>
             </div>
             <div className=" ">
@@ -82,14 +218,15 @@ const Profile = () => {
             </div>
           </div>
           {/* right button */}
-          <div className="pr-5">
-            <button className="flex bg-green-500 text-white rounded-lg p-1 items-center gap-2">
-              <FaPlus className="text-xl" />{" "}
-              <span className="text-lg font-semibold">Follow</span>
-            </button>
-          </div>
+          {!isYou && (
+            <div className="pr-5">
+              <button className="flex bg-green-500 text-white rounded-lg p-1 items-center gap-2">
+                <FaPlus className="text-xl" />{" "}
+                <span className="text-lg font-semibold">Follow</span>
+              </button>
+            </div>
+          )}
         </div>
-
 
         <hr />
 
@@ -99,82 +236,97 @@ const Profile = () => {
           {/* bio section */}
           <div className="lg:w-[40%] w-full rounded-xl shadow-md p-3 bg-white min-h-4 border">
             <h1 className="text-xl font-bold">Intro</h1>
-            <p className="text-center mt-4">my blood group is A+</p>
 
-            <button className="flex w-full mt-5 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center">
-              <MdModeEditOutline className="text-xl" />{" "}
-              <span className="text-lg font-semibold">Edit Bio</span>
-            </button>
+            {updateBio ? (
+              <form onSubmit={bioHandle}>
+                <textarea
+                  style={{ resize: "none" }}
+                  className="w-full min-h-[200px] border p-1"
+                  name="bio"
+                  defaultValue={userData?.bio}
+                ></textarea>
+
+                <button
+                  disabled={bioLoading}
+                  className="flex w-full mt-5 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                >
+                  <MdModeEditOutline className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Update Bio</span>
+                </button>
+              </form>
+            ) : (
+              <div className="mb-4">
+                <p className="mt-4 text-center text-xl font-semibold">Bio</p>
+                <p className="text-center mt-4">{userData?.bio}</p>
+                {isYou && (
+                  <button
+                    onClick={() => setUpdateBio(true)}
+                    className="flex w-full mt-5 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                  >
+                    <MdModeEditOutline className="text-xl" />{" "}
+                    <span className="text-lg font-semibold">
+                      {userData?.bio ? "Edit Bio" : "Add Bio"}
+                    </span>
+                  </button>
+                )}
+              </div>
+            )}
+
             {/* home and designation. */}
-
-
-
+<hr />
             <section className="mt-6 flex flex-col gap-3">
-
-
-              <div className="flex gap-3">
-                <PiStudentBold className="text-3xl text-gray-500" />
-                <div className="text-base font-semibold">
-                  <span>Study at</span>{" "}
-                  <input
-                    className="focus:outline-none"
-                    defaultValue={"Chandpur GVT. Clg"}
-                    type="text"
-                  />
+              {userData?.educationInstitute && (
+                <div className="flex gap-3">
+                  <PiStudentBold className="text-3xl text-gray-500" />
+                  <div className="text-base font-semibold">
+                    <span>Study at {userData?.educationInstitute}</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex gap-3">
-                <IoHomeSharp className="text-2xl text-gray-500" />
-                <div className="text-base font-semibold">
-                  <span>Live in</span>{" "}
-                  <input
-                    className="focus:outline-none"
-                    defaultValue={"Shahrasti,Chandpur"}
-                    type="text"
-                  />
+              {userData?.address && (
+                <div className="flex gap-3">
+                  <IoHomeSharp className="text-2xl text-gray-500" />
+                  <div className="text-base font-semibold">
+                    <span>Live in {userData?.address}</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex gap-3">
                 <MdEmail className="text-2xl text-gray-500" />
                 <div className="text-base font-semibold">
-                  
                   <input
                     className="focus:outline-none"
-                    defaultValue={userData?.email} 
+                    defaultValue={userData?.email}
                     type="text"
                     disabled
                   />
                 </div>
               </div>
 
-
-              <div className="flex gap-3">
-                <FaPhoneAlt className="text-xl text-gray-500" />
-                <div className="text-base font-semibold">
-                 
-                  <input
-                    className="focus:outline-none"
-                    defaultValue={userData?.phone}
-                    type="number"
-                    disabled
-                  />
+              {userData?.phone && (
+                <div className="flex gap-3">
+                  <FaPhoneAlt className="text-2xl text-gray-500" />
+                  <div className="text-base font-semibold">
+                    <span>{userData?.phone}</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
- <button className="flex w-full mt-4 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center">
- <MdModeEditOutline className="text-xl" />{" "}
- <span className="text-lg font-semibold">Edit Details</span>
-</button>
-
+              {isYou && (
+                <button
+                  onClick={() =>
+                    document.getElementById("Update_modal")?.showModal()
+                  }
+                  className="flex w-full mt-4 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                >
+                  <MdModeEditOutline className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Edit Details</span>
+                </button>
+              )}
             </section>
-
-
-
           </div>
-
-
 
           {/* posts. */}
           <div className="lg:w-[60%] w-full rounded-xl shadow-md p-3 min-h-28 border bg-white">
@@ -182,6 +334,44 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* daisy ui. */}
+
+      <dialog id="Update_modal" className="modal">
+        <div className="modal-box">
+          <form method="dialog">
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+          </form>
+
+          <form onSubmit={detailsHandle} className="flex flex-col gap-3">
+            <InputField
+              dValue={userData?.educationInstitute}
+              name="education"
+              className="border-2"
+              placeholder="Education Institute"
+              type="text"
+            />
+            <InputField
+              dValue={userData?.address}
+              name="address"
+              className="border-2"
+              placeholder="Address"
+              type="text"
+            />
+            <InputField
+              dValue={userData?.phone}
+              name="phone"
+              className="border-2"
+              placeholder="Phone Number"
+              type="number"
+            />
+            <Button disable={detailsLoading} text="Update" />
+          </form>
+        </div>
+      </dialog>
     </Tocenter>
   );
 };

@@ -7,6 +7,7 @@ interface InputFieldProps {
   className?: string;
   disabled?: boolean;
   name?: string;
+  dValue?: string;
   valueUpdate?: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void; // Handles both input and textarea
@@ -18,7 +19,8 @@ const InputField: FC<InputFieldProps> = ({
   disabled,
   valueUpdate,
   className,
-  name
+  name,
+  dValue
 }) => {
   const propsConfigure = () => {
     if (altimeValue) return { value: altimeValue };
@@ -44,6 +46,7 @@ const InputField: FC<InputFieldProps> = ({
         name={name}
           required
           disabled={disabled}
+          defaultValue={dValue}
           {...propsConfigure()}
           onChange={valueUpdate}
           id={placeholder}

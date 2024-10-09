@@ -1,6 +1,3 @@
-
-
-
 import { getToken } from "@/utils/getToken";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -12,19 +9,12 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: [
-    "Products",
-    "authentication",
-    "rooms",
-    "slots",
-    "booking",
-    "allBookingForAdmin",
-  ],
+  tagTypes: ["aUserData","aUserFollowing"],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
         query: (payload) => {
-          console.log(payload)
+          console.log(payload);
           return {
             url: "/auth/signup",
             method: "POST",
@@ -34,7 +24,7 @@ export const baseApi = createApi({
       }),
       login: builder.mutation({
         query: (payload) => {
-          console.log(payload)
+          console.log(payload);
           return {
             url: "/auth/login",
             method: "POST",
@@ -43,11 +33,8 @@ export const baseApi = createApi({
         },
       }),
 
-
-
       checkCredentials: builder.mutation({
         query: (payload) => {
-          
           return {
             url: "/auth/checkCredentials",
             method: "POST",
@@ -57,13 +44,24 @@ export const baseApi = createApi({
       }),
       changePassword: builder.mutation({
         query: (payload) => {
-          
           return {
             url: "/auth/changePassword",
             method: "POST",
             body: payload,
           };
         },
+      }),
+
+      UpdateAUser: builder.mutation({
+        query: (payload) => {
+          const { id, ...rest } = payload;
+          return {
+            url: `/auth/${id}`,
+            method: "PUT",
+            body: rest,
+          };
+        },
+        invalidatesTags: ["aUserData"],
       }),
 
       getLoggedInUser: builder.query({
@@ -73,18 +71,39 @@ export const baseApi = createApi({
             method: "GET",
           };
         },
+        providesTags: ["aUserData"],
       }),
 
       getAUser: builder.query({
         query: (payload) => {
-          console.log(payload,"user payload")
+          console.log(payload, "user payload");
           return {
             url: `/auth/${payload}`,
             method: "GET",
           };
         },
+        providesTags: ["aUserData"],
       }),
 
+      getFollowerAndFollowing: builder.query({
+        query: (payload) => {
+          return {
+            url: `/follow/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["aUserFollowing"],
+      }),
+
+      createFollowing: builder.mutation({
+        query: (payload) => {
+          return {
+            url: "/follow",
+            method: "POST",
+            body: payload,
+          };
+        },
+      }),
 
       getPaymentUrl: builder.query({
         query: (payload) => {
@@ -105,5 +124,8 @@ export const {
   useGetPaymentUrlQuery,
   useChangePasswordMutation,
   useCheckCredentialsMutation,
-  useGetAUserQuery
+  useGetAUserQuery,
+  useUpdateAUserMutation,
+  useGetFollowerAndFollowingQuery,
+  useCreateFollowingMutation
 } = baseApi;
