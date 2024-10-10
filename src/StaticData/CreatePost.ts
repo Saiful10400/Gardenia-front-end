@@ -16,4 +16,4 @@ export const postCategories = [
   "Hydroponics & Aquaponics",
 ];
 
-export const PostCosting = ["Premium", "Freemium"];
+export const PostCosting = ["Paid", "Free"];

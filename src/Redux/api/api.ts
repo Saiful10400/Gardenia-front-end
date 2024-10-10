@@ -164,7 +164,43 @@ export const baseApi = createApi({
         },
         invalidatesTags:["post"]
       }),
+
+      getApost: builder.query({
+        query: (payload) => {
+          return {
+            url: `/post/post/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post"],
+      }),
       
+
+
+
+      getAuserAllPost: builder.query({
+        query: (payload) => {
+          if(!payload) return ""
+          return {
+            url: `/post/user/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post"],
+      }),
+
+
+      Reaction: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/reaction`,
+            method: "POST",
+           body:payload
+          };
+        },
+        invalidatesTags:["post"]
+      }),
+
 
       getPaymentUrl: builder.query({
         query: (payload) => {
@@ -179,6 +215,9 @@ export const baseApi = createApi({
 });
 
 export const {
+  useReactionMutation,
+  useGetAuserAllPostQuery,
+  useGetApostQuery,
   useGetPostQuery,
   useUpdatePostMutation,
   useDeletePostMutation,

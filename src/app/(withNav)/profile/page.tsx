@@ -4,6 +4,7 @@ import Tocenter from "@/components/Helper/Tocenter";
 import Loading from "@/components/Shared/Loading/Loading";
 import {
   useCreateFollowingMutation,
+  useGetAuserAllPostQuery,
   useGetAUserQuery,
   useGetFollowerAndFollowingQuery,
   useUnfollowOneMutation,
@@ -28,6 +29,7 @@ import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
 import PostCreate from "@/components/Shared/PostCreate/PostCreate";
+import PostCard from "@/components/Shared/PostCard/PostCard";
 const Profile = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
@@ -161,7 +163,7 @@ const Profile = () => {
     }
   }, [loggedInUser, followerData]);
 
-  console.log(isFollowIng, "isFollowing::");
+
 
   // following handle
   const [makeFollow] = useCreateFollowingMutation();
@@ -190,7 +192,13 @@ const Profile = () => {
     }
   };
 
-  return isLoading || currentLoading || followerLoading ? (
+
+  // get current user data from the db
+const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
+
+
+
+  return isLoading || postLoading || currentLoading || followerLoading ? (
     <Loading />
   ) : (
     <Tocenter>
@@ -309,7 +317,7 @@ const Profile = () => {
 
         <div className="flex lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
           {/* bio section */}
-          <div className="lg:w-[40%]  ">
+          <div className="lg:w-[40%] sticky top-12 ">
             <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
               <h1 className="text-xl font-bold">Intro</h1>
 
@@ -498,7 +506,16 @@ const Profile = () => {
 
 {isYou&&<PostCreate userData={userData}/>}
 
+{/* post cards. */}
 
+<section>
+
+  <div className="grid grid-cols-1 mt-4 gap-5">
+{
+  postData?.data?.map((item,idx)=><PostCard key={idx} data={item}/>)
+}
+  </div>
+</section>
 
           </div>
 
