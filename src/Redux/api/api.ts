@@ -153,7 +153,7 @@ export const baseApi = createApi({
         query: (payload) => {
           const { id, ...rest } = payload;
           return {
-            url: `/follow/${id}`,
+            url: `/post/${id}`,
             method: "PUT",
             body: rest,
           };
