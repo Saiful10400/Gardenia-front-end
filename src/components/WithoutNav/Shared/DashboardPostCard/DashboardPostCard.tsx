@@ -1,3 +1,5 @@
+"use client"
+
 import { useBlockAPostMutation, useDeletePostMutation } from "@/Redux/api/api";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
@@ -6,6 +8,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 const DashboardPostCard = ({ data }) => {
+
+
+
+
   const { post } = data;
   const { creator } = post;
 
@@ -35,7 +41,7 @@ const DashboardPostCard = ({ data }) => {
   };
 
   return (
-    <div className="bg-white relative p-2 rounded-lg shadow-sm shadow-gray-300">
+    <div data-aos="zoom-in" className="bg-white relative p-2 rounded-lg shadow-sm shadow-gray-300">
       <div
         style={{ display: showDropDown ? "flex" : "none" }}
         className="absolute top-[35px] flex-col px-4 text-xs gap-3  rounded-lg py-2 right-[10px] bg-gray-300 "

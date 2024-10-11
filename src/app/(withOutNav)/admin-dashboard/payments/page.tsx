@@ -10,7 +10,7 @@ console.log(transectionData)
         <div>
             
 
-<div className="grid grid-cols-4 gap-4">
+<div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
 {transectionData?.data?.map((item,idx)=><DashboardPaymentCard key={idx} data={item}/>)}
 </div>
 

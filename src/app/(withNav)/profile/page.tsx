@@ -37,7 +37,14 @@ import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvail
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
 
+
+
+
 const ProfileComponent = () => {
+
+
+
+
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { data, isLoading } = useGetAUserQuery(id);
@@ -385,9 +392,9 @@ const ProfileComponent = () => {
 
         {/* bio and other post. */}
 
-        <div className="flex lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
+        <div className="flex  lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
           {/* bio section */}
-          <div className="lg:w-[40%] lg:sticky top-12 ">
+          <div data-aos="fade-right" className="lg:w-[40%] lg:sticky top-[-100px] ">
             <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
               <h1 className="text-xl font-bold">Intro</h1>
 
@@ -484,7 +491,7 @@ const ProfileComponent = () => {
 
             {/* followers */}
 
-            <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
+            <section  className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Follower</h1>
                 {followerData?.data?.followers.length > 0 && (
@@ -570,7 +577,7 @@ const ProfileComponent = () => {
           </div>
 
           {/* posts. */}
-          <div className="lg:w-[60%] w-full ">
+          <div data-aos="fade-left" className="lg:w-[60%] w-full ">
             {/* create a post section */}
 
             {isYou && <PostCreate userData={userData} />}
@@ -580,7 +587,7 @@ const ProfileComponent = () => {
             <section>
               <div className="grid grid-cols-1 mt-4 gap-5">
                 {postData?.data?.map((item, idx) => (
-                  <PostCard key={idx} data={item} />
+                  <PostCard data-aos="fade-up" key={idx} data={item} />
                 ))}
               </div>
             </section>

@@ -20,7 +20,7 @@ userUpdate({id:data._id,isBlocked:data.isBlocked?false:true})
 
 
     return (
-        <div className='bg-white pb-5 rounded-lg overflow-hidden'>
+        <div data-aos="zoom-in" className='bg-white pb-5 rounded-lg overflow-hidden'>
             <Image height={300} width={400} className='w-full h-[100px] object-cover' alt='cover' src={data.coverImg}/>
 
             <section className='flex flex-col h-[140px] items-center justify-center relative bottom-8'>

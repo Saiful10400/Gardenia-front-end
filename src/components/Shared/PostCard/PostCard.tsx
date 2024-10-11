@@ -41,7 +41,7 @@ const reacted=loggedInUser?data?.reaction?.find(item=>item.reactor===loggedInUse
 
 
   return (
-    <div>
+    <div data-aos="fade-up">
       {/* top image section. */}
 
       <section className="bg-white pt-6 pb-4  rounded-xl ">

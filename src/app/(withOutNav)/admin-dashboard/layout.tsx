@@ -4,18 +4,18 @@ import React from 'react';
 
 const layout = ({children}) => {
     return (
-       <div className='bg-gray-300'>
+       <div className='bg-gray-300 min-h-screen'>
         <nav className=' w-full bg-white h-[80px] shadow-lg '>
             <DashboardNav/>
         </nav>
 
         <section className='flex'>
-            <aside className='w-[13%] bg-white sticky top-[80px] h-[calc(100vh-80px)] flex items-start'>
+            <aside className='lg:w-[13%] w-full hidden bg-white sticky top-[80px] h-[calc(100vh-80px)] lg:flex items-start'>
                 <AdminAside/>
             </aside>
 
 
-            <div className='w-[87%] px-16 pt-11'>
+            <div className='lg:w-[87%] w-full lg:px-16 px-3 min-h-screen pt-11'>
                 {children}
             </div>
 
