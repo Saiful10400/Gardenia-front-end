@@ -55,7 +55,7 @@ const reacted=loggedInUser?data?.reaction?.find(item=>item.reactor===loggedInUse
               className="w-[40px] h-[40px] rounded-full"
             />
             <div>
-              <h1 className="font-bold text-base flex items-end gap-1 ">
+              <div className="font-bold text-base flex items-end gap-1 ">
                <span> {data?.post?.creator?.name}</span> {data?.post?.creator?.verifyed&&<Image
                   className="w-[20px]  h-[20px] box-content"
                   src={blueTick}
@@ -63,7 +63,8 @@ const reacted=loggedInUser?data?.reaction?.find(item=>item.reactor===loggedInUse
                   height={200}
                   alt="blueTick"
                 />}
-              </h1>
+                {data?.post?.isBlock&&<span className="font-bold text-red-500">Blocked</span>}
+              </div>
               <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
                 <span>10h</span>{" "}
                 <span className="font-normal">{data?.post?.costing}</span>

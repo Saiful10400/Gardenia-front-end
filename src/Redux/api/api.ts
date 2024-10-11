@@ -9,7 +9,7 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: ["aUserData","aUserFollowing","post","totalVote"],
+  tagTypes: ["aUserData","aUserFollowing","post","totalVote","allUser"],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
@@ -73,6 +73,18 @@ export const baseApi = createApi({
         },
         providesTags: ["aUserData"],
       }),
+
+      getAllUser: builder.query({
+        query: () => {
+          return {
+            url: `/auth/all-user`,
+            method: "GET",
+          };
+        },
+        providesTags: ["allUser"],
+      }),
+
+
 
       getAUser: builder.query({
         query: (payload) => {
@@ -157,8 +169,18 @@ export const baseApi = createApi({
       deletePost: builder.mutation({
         query: (payload) => {
           return {
-            url: `/follow/${payload}`,
+            url: `/post/${payload}`,
             method: "DELETE",
+           
+          };
+        },
+        invalidatesTags:["post"]
+      }),
+      blockAPost: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/post/block/${payload}`,
+            method: "PUT",
            
           };
         },
@@ -214,6 +236,16 @@ export const baseApi = createApi({
       }),
 
 
+      allPaymentHistory: builder.query({
+        query: () => {
+          return {
+            url: `/payment-history`,
+            method: "GET",
+          };
+        },
+      }),
+
+
       getPaymentUrl: builder.query({
         query: (payload) => {
           return {
@@ -227,6 +259,9 @@ export const baseApi = createApi({
 });
 
 export const {
+  useGetAllUserQuery,
+  useAllPaymentHistoryQuery,
+  useBlockAPostMutation,
   useGetTotalVoteQuery,
   useReactionMutation,
   useGetAuserAllPostQuery,
