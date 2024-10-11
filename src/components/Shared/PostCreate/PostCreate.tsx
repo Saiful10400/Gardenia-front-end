@@ -1,3 +1,6 @@
+"use client"
+
+
 import Heading from "@tiptap/extension-heading";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -13,9 +16,8 @@ import {
   ImagePlus,
   Italic as ItalicIcon,
   List,
-  Redo,
   UnderlineIcon,
-  Undo,
+
 } from "lucide-react";
 import { Bold as BoldicIcon } from "lucide-react";
 import { Heading1 as Headingxl } from "lucide-react";
@@ -33,7 +35,6 @@ import { postCategories, PostCosting } from "@/StaticData/CreatePost";
 import Button from "../Button/Button";
 import { toast } from "react-toastify";
 import imageUpload from "@/utils/imageUpload";
-import History from '@tiptap/extension-history'
 import { useCreatePostMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 
@@ -82,8 +83,8 @@ const PostCreate = ({ userData }) => {
 
 
   // submit form.
-const[createPost,{isLoading}]=useCreatePostMutation()
-const { loggedInUser, isLoading: currentLoading } = useAppSelector(
+const[createPost]=useCreatePostMutation()
+const { loggedInUser, } = useAppSelector(
   (e) => e.authStore
 );
   const submitPost=(e)=>{

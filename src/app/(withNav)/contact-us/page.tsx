@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import Tocenter from "@/components/Helper/Tocenter";
 import Button from "@/components/Shared/Button/Button";
 import InputField from "@/components/Shared/InputField/InputField";
@@ -10,10 +9,10 @@ import { BsTwitterX } from "react-icons/bs";
 import { IoIosSend } from "react-icons/io";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import AOS from "aos";
+
 
 const ContactUs = () => {
-  AOS.init();
+
 
   const messageSendHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,20 +28,20 @@ const ContactUs = () => {
     <div className="min-h-[70vh]">
       <Tocenter>
         <div>
-          <div data-aos="fade-up" className="py-14 px-4 lg:px-0">
+          <div  className="py-14 px-4 lg:px-0">
             <h1 className="text-center text-4xl lg:text-5xl">
               Contact our team
             </h1>
             <p className="lg:w-[70%] text-center mx-auto mt-5 font-normal ">
               Got any questions about our keyboards or customizing your setup?
-              We're here to help! Chat with our friendly team 24/7, and we'll
+              We re here to help! Chat with our friendly team 24/7, and we ll
               assist you in finding the perfect keyboard or accessory, all in
               under 5 minutes.
             </p>
           </div>
           <div className="flex items-start gap-12 justify-center mt-7 px-4 lg:px-0 flex-col-reverse lg:flex-row">
             <form
-              data-aos="fade-right"
+              
               onSubmit={messageSendHandle}
               className="lg:w-[40%]"
             >
@@ -55,7 +54,7 @@ const ContactUs = () => {
               <InputField type="textarea" placeholder="Your Message" />
               <Button text="Send Message" className="w-full text-lg" />
             </form>
-            <div data-aos="fade-left" className="lg:w-[30%]">
+            <div  className="lg:w-[30%]">
               <h1 className="text-3xl">Chat with us</h1>
               <h1 className="text-base mt-2">
                 Speak to our friendly team via live chat.

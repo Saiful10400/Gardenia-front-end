@@ -1,3 +1,6 @@
+"use client"
+
+
 import Image from "next/image";
 import React, { useState } from "react";
 import "./style.css";
@@ -7,10 +10,12 @@ import { PiShareFat } from "react-icons/pi";
 import { useReactionMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { toast } from "react-toastify";
+import blueTick from "../../../assets/profile/blueTick.png"
+
 const PostCard = ({ data }) => {
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
 
-  const { loggedInUser, isLoading: currentLoading } = useAppSelector(
+  const { loggedInUser } = useAppSelector(
     (e) => e.authStore
   );
 
@@ -32,7 +37,7 @@ const PostCard = ({ data }) => {
 
 /// are your id exixt on the reactor array?.
 const reacted=loggedInUser?data?.reaction?.find(item=>item.reactor===loggedInUser?._id):null
-console.log(reacted,"are he liked or not. check.")
+
 
 
   return (
@@ -50,8 +55,14 @@ console.log(reacted,"are he liked or not. check.")
               className="w-[40px] h-[40px] rounded-full"
             />
             <div>
-              <h1 className="font-bold text-base ">
-                {data?.post?.creator?.name}
+              <h1 className="font-bold text-base flex items-end gap-1 ">
+               <span> {data?.post?.creator?.name}</span> {data?.post?.creator?.verifyed&&<Image
+                  className="w-[20px]  h-[20px] box-content"
+                  src={blueTick}
+                  width={200}
+                  height={200}
+                  alt="blueTick"
+                />}
               </h1>
               <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
                 <span>10h</span>{" "}
@@ -79,6 +90,7 @@ console.log(reacted,"are he liked or not. check.")
 
         {/* image sction. */}
 
+      
         <Image
           src={data?.post?.img}
           alt="postImage"
@@ -86,6 +98,7 @@ console.log(reacted,"are he liked or not. check.")
           width={1920}
           className="w-full mb-3 object-cover h-full mt-4"
         />
+      
 
         {/* reaction section */}
 
@@ -104,7 +117,7 @@ console.log(reacted,"are he liked or not. check.")
           </div>
 
           <div className="flex items-center gap-2">
-            <button>
+            <button onClick={()=>document.getElementById(data?.post?._id?.toString())?.showModal()}>
               <MessageCircle className="text-gray-500" size={35} />
             </button>
 
@@ -116,6 +129,25 @@ console.log(reacted,"are he liked or not. check.")
           </button>
         </div>
       </section>
+
+
+
+{/* modal. */}
+
+<dialog id={data?.post?._id?.toString()} className="modal">
+  <div className="modal-box">
+    <form method="dialog">
+      {/* if there is a button in form, it will close the modal */}
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 className="font-bold text-lg">{data?.post?._id}</h3>
+   
+  </div>
+</dialog>
+
+
+
+
     </div>
   );
 };

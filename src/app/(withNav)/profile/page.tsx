@@ -1,12 +1,15 @@
 "use client";
+import dynamic from "next/dynamic";
 
 import Tocenter from "@/components/Helper/Tocenter";
 import Loading from "@/components/Shared/Loading/Loading";
+import swal from "sweetalert";
 import {
   useCreateFollowingMutation,
   useGetAuserAllPostQuery,
   useGetAUserQuery,
   useGetFollowerAndFollowingQuery,
+  useGetTotalVoteQuery,
   useUnfollowOneMutation,
   useUpdateAUserMutation,
 } from "@/Redux/api/api";
@@ -30,7 +33,11 @@ import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
 import PostCreate from "@/components/Shared/PostCreate/PostCreate";
 import PostCard from "@/components/Shared/PostCard/PostCard";
-const Profile = () => {
+import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvailableContent";
+import axios from "axios";
+import blueTick from "../../../assets/profile/blueTick.png";
+
+const ProfileComponent = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { data, isLoading } = useGetAUserQuery(id);
@@ -147,10 +154,13 @@ const Profile = () => {
   const { data: followerData, isLoading: followerLoading } =
     useGetFollowerAndFollowingQuery(id);
 
+  //retrieved follower data.
+
+  const { data: totalVote, isLoading: voteLoading } = useGetTotalVoteQuery(id);
+
   const [isFollowIng, setIsFollowing] = useState(false);
 
   useEffect(() => {
-    console.log("fireing");
     if (loggedInUser && followerData) {
       const data = followerData?.data?.followers?.find(
         (item) => item?.follower?._id === loggedInUser._id
@@ -162,8 +172,6 @@ const Profile = () => {
       }
     }
   }, [loggedInUser, followerData]);
-
-
 
   // following handle
   const [makeFollow] = useCreateFollowingMutation();
@@ -192,14 +200,56 @@ const Profile = () => {
     }
   };
 
-
   // get current user data from the db
-const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
+  const { data: postData, isLoading: postLoading } =
+    useGetAuserAllPostQuery(id);
 
+  // inetiate payment
+  const inetiatePayment = () => {
+    if (loggedInUser) {
+      axios
+        .get(`${process.env.NEXT_PUBLIC_BACK_END_URL}/pay/${loggedInUser._id}`)
+        .then((res) => {
+          if (res.data?.data) {
+            window.location.href = res.data.data;
+          }
+        });
+    } else {
+      toast.error("Please Login!", {
+        position: "top-center",
+      });
+    }
+  };
 
+  // shwoing modal of payment.
 
-  return isLoading || postLoading || currentLoading || followerLoading ? (
+  const tnxId = searchParams.get("tnxId");
+  const paymentStatus = searchParams.get("paymentStatus");
+  console.log({ paymentStatus });
+
+  useEffect(() => {
+    if (tnxId) {
+      //check status and show modal.
+      axios
+        .get(`${process.env.NEXT_PUBLIC_BACK_END_URL}/payment-history/${tnxId}`)
+        .then((res) => {
+          if (res.data.data) {
+            swal("Success", "Profile varified", "success");
+          } else {
+            swal("Failed", "Profile varificatin failed", "error");
+          }
+        });
+    }
+  }, [tnxId]);
+
+  return isLoading ||
+    postLoading ||
+    voteLoading ||
+    currentLoading ||
+    followerLoading ? (
     <Loading />
+  ) : !data ? (
+    <NotAvailableContent />
   ) : (
     <Tocenter>
       <div className="bg-gray-100">
@@ -282,9 +332,19 @@ const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
               )}
             </div>
             <div className=" ">
-              <h1 className="text-4xl font-bold">{userData?.name}</h1>
-              <h1 className="text-base text-gray-500 mt-2 font-semibold">
-                {followerData?.data?.followers.length} follower
+              <h1 className="text-4xl font-bold flex gap-3 items-end">
+                <span>{userData?.name}</span>
+                {userData?.verifyed&&<Image
+                  className="w-[30px] h-[30px] box-content"
+                  src={blueTick}
+                  width={200}
+                  height={200}
+                  alt="blueTick"
+                />}
+              </h1>
+              <h1 className="text-base flex items-center gap-4 text-gray-500 mt-2 font-semibold">
+                <span>{followerData?.data?.followers.length} follower</span>
+                {totalVote && <span>{totalVote?.data} votes</span>}
               </h1>
             </div>
           </div>
@@ -309,6 +369,16 @@ const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
               </button>
             </div>
           )}
+          {isYou && totalVote?.data >= 5 && !userData?.verifyed && (
+            <div className="pr-5">
+              <button
+                onClick={inetiatePayment}
+                className="flex bg-green-500  text-white rounded-lg p-1 px-2 items-center gap-2"
+              >
+                <span className="text-lg font-semibold">Verify Now</span>
+              </button>
+            </div>
+          )}
         </div>
 
         <hr />
@@ -317,7 +387,7 @@ const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
 
         <div className="flex lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
           {/* bio section */}
-          <div className="lg:w-[40%] sticky top-12 ">
+          <div className="lg:w-[40%] lg:sticky top-12 ">
             <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
               <h1 className="text-xl font-bold">Intro</h1>
 
@@ -501,27 +571,20 @@ const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
 
           {/* posts. */}
           <div className="lg:w-[60%] w-full ">
-            
-{/* create a post section */}
+            {/* create a post section */}
 
-{isYou&&<PostCreate userData={userData}/>}
+            {isYou && <PostCreate userData={userData} />}
 
-{/* post cards. */}
+            {/* post cards. */}
 
-<section>
-
-  <div className="grid grid-cols-1 mt-4 gap-5">
-{
-  postData?.data?.map((item,idx)=><PostCard key={idx} data={item}/>)
-}
-  </div>
-</section>
-
+            <section>
+              <div className="grid grid-cols-1 mt-4 gap-5">
+                {postData?.data?.map((item, idx) => (
+                  <PostCard key={idx} data={item} />
+                ))}
+              </div>
+            </section>
           </div>
-
-
-
-
         </div>
       </div>
 
@@ -629,19 +692,14 @@ const {data:postData,isLoading:postLoading}=useGetAuserAllPostQuery(id)
         </div>
       </dialog>
 
-
-{/*  */}
-
-
-
-
-
-
-
-
-
+      {/*  */}
     </Tocenter>
   );
 };
+
+// Use dynamic import with SSR disabled
+const Profile = dynamic(() => Promise.resolve(ProfileComponent), {
+  ssr: false,
+});
 
 export default Profile;

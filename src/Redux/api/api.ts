@@ -9,7 +9,7 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: ["aUserData","aUserFollowing","post"],
+  tagTypes: ["aUserData","aUserFollowing","post","totalVote"],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
@@ -190,6 +190,18 @@ export const baseApi = createApi({
       }),
 
 
+      getTotalVote: builder.query({
+        query: (payload) => {
+          if(!payload) return ""
+          return {
+            url: `/post/totalvote/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["totalVote"],
+      }),
+
+
       Reaction: builder.mutation({
         query: (payload) => {
           return {
@@ -198,7 +210,7 @@ export const baseApi = createApi({
            body:payload
           };
         },
-        invalidatesTags:["post"]
+        invalidatesTags:["post","totalVote"]
       }),
 
 
@@ -215,6 +227,7 @@ export const baseApi = createApi({
 });
 
 export const {
+  useGetTotalVoteQuery,
   useReactionMutation,
   useGetAuserAllPostQuery,
   useGetApostQuery,

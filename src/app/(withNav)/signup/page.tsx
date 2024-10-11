@@ -34,7 +34,7 @@ const Signup = () => {
   };
 
   // form submit handle.
-  const [signup,{isLoading,error,data}]=useSignupMutation()
+  const [signup,{error,data}]=useSignupMutation()
 
   const formSubmitHandle = (e) => {
     e.preventDefault();
