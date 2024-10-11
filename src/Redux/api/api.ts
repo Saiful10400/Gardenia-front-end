@@ -61,7 +61,7 @@ export const baseApi = createApi({
             body: rest,
           };
         },
-        invalidatesTags: ["aUserData"],
+        invalidatesTags: ["aUserData","allUser"],
       }),
 
       getLoggedInUser: builder.query({
