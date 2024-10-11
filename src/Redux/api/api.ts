@@ -9,7 +9,7 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: ["aUserData","aUserFollowing","post","totalVote","allUser"],
+  tagTypes: ["aUserData", "aUserFollowing", "post", "totalVote", "allUser"],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
@@ -61,7 +61,7 @@ export const baseApi = createApi({
             body: rest,
           };
         },
-        invalidatesTags: ["aUserData","allUser"],
+        invalidatesTags: ["aUserData", "allUser"],
       }),
 
       getLoggedInUser: builder.query({
@@ -83,8 +83,6 @@ export const baseApi = createApi({
         },
         providesTags: ["allUser"],
       }),
-
-
 
       getAUser: builder.query({
         query: (payload) => {
@@ -115,7 +113,7 @@ export const baseApi = createApi({
             body: payload,
           };
         },
-        invalidatesTags:["aUserFollowing","aUserData"]
+        invalidatesTags: ["aUserFollowing", "aUserData"],
       }),
 
       unfollowOne: builder.mutation({
@@ -123,12 +121,10 @@ export const baseApi = createApi({
           return {
             url: `/follow/${payload}`,
             method: "DELETE",
-           
           };
         },
-        invalidatesTags:["aUserFollowing","aUserData"]
+        invalidatesTags: ["aUserFollowing", "aUserData"],
       }),
-
 
       getPost: builder.query({
         query: () => {
@@ -145,25 +141,22 @@ export const baseApi = createApi({
           return {
             url: `/post`,
             method: "POST",
-            body:payload
-           
-          }; 
-
+            body: payload,
+          };
         },
-        invalidatesTags:["post"]
+        invalidatesTags: ["post"],
       }),
 
       updatePost: builder.mutation({
         query: (payload) => {
-          const{id,...rest}=payload
+          const { id, ...rest } = payload;
           return {
             url: `/follow/${id}`,
             method: "PUT",
-            body:rest
-           
+            body: rest,
           };
         },
-        invalidatesTags:["post"]
+        invalidatesTags: ["post"],
       }),
 
       deletePost: builder.mutation({
@@ -171,20 +164,18 @@ export const baseApi = createApi({
           return {
             url: `/post/${payload}`,
             method: "DELETE",
-           
           };
         },
-        invalidatesTags:["post"]
+        invalidatesTags: ["post"],
       }),
       blockAPost: builder.mutation({
         query: (payload) => {
           return {
             url: `/post/block/${payload}`,
             method: "PUT",
-           
           };
         },
-        invalidatesTags:["post"]
+        invalidatesTags: ["post"],
       }),
 
       getApost: builder.query({
@@ -196,13 +187,10 @@ export const baseApi = createApi({
         },
         providesTags: ["post"],
       }),
-      
-
-
 
       getAuserAllPost: builder.query({
         query: (payload) => {
-          if(!payload) return ""
+          if (!payload) return "";
           return {
             url: `/post/user/${payload}`,
             method: "GET",
@@ -211,10 +199,9 @@ export const baseApi = createApi({
         providesTags: ["post"],
       }),
 
-
       getTotalVote: builder.query({
         query: (payload) => {
-          if(!payload) return ""
+          if (!payload) return "";
           return {
             url: `/post/totalvote/${payload}`,
             method: "GET",
@@ -223,18 +210,16 @@ export const baseApi = createApi({
         providesTags: ["totalVote"],
       }),
 
-
       Reaction: builder.mutation({
         query: (payload) => {
           return {
             url: `/reaction`,
             method: "POST",
-           body:payload
+            body: payload,
           };
         },
-        invalidatesTags:["post","totalVote"]
+        invalidatesTags: ["post", "totalVote"],
       }),
-
 
       allPaymentHistory: builder.query({
         query: () => {
@@ -244,7 +229,6 @@ export const baseApi = createApi({
           };
         },
       }),
-
 
       getPaymentUrl: builder.query({
         query: (payload) => {
@@ -280,5 +264,5 @@ export const {
   useUpdateAUserMutation,
   useGetFollowerAndFollowingQuery,
   useCreateFollowingMutation,
-  useUnfollowOneMutation
+  useUnfollowOneMutation,
 } = baseApi;

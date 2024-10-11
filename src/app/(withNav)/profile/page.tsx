@@ -376,7 +376,7 @@ const ProfileComponent = () => {
               </button>
             </div>
           )}
-          {isYou && totalVote?.data >= 5 && !userData?.verifyed && (
+          {isYou && totalVote?.data >= 1 && !userData?.verifyed && (
             <div className="pr-5">
               <button
                 onClick={inetiatePayment}
