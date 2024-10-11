@@ -97,6 +97,7 @@ export const baseApi = createApi({
 
       getFollowerAndFollowing: builder.query({
         query: (payload) => {
+          if(!payload)return ""
           return {
             url: `/follow/${payload}`,
             method: "GET",
@@ -119,8 +120,9 @@ export const baseApi = createApi({
       unfollowOne: builder.mutation({
         query: (payload) => {
           return {
-            url: `/follow/${payload}`,
+            url: `/follow`,
             method: "DELETE",
+            body:payload
           };
         },
         invalidatesTags: ["aUserFollowing", "aUserData"],

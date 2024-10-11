@@ -196,7 +196,10 @@ const ProfileComponent = () => {
           console.log(res);
         });
       } else {
-        makeUnfollow(loggedInUser?._id).then((res) => {
+        makeUnfollow({
+          follower: loggedInUser?._id,
+          following: userData?._id,
+        }).then((res) => {
           console.log(res);
         });
       }
@@ -607,7 +610,7 @@ const ProfileComponent = () => {
           </form>
 
           <div className="flex flex-col gap-3 mt-5">
-            {followerData?.data?.followers.map((item) => {
+            {followerData?.data?.followers?.slice(-3)?.map((item) => {
               return (
                 <Link
                   key={item?._id}
@@ -640,7 +643,7 @@ const ProfileComponent = () => {
           </form>
 
           <div className="flex flex-col gap-3 mt-5">
-            {followerData?.data?.following.map((item) => {
+            {followerData?.data?.following?.slice(-3)?.map((item) => {
               return (
                 <Link
                   key={item?._id}
