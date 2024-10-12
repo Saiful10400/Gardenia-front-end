@@ -1,17 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import parse from "html-react-parser";
-import { CircleArrowDown, CircleArrowUp, Ellipsis, MessageCircle, SendHorizonal } from "lucide-react";
+import {
+  CircleArrowDown,
+  CircleArrowUp,
+  MessageCircle,
+  SendHorizonal,
+} from "lucide-react";
 import { PiShareFat } from "react-icons/pi";
-import { useCreateCommentMutation, useReactionMutation } from "@/Redux/api/api";
+import {
+  useCreateCommentMutation,
+  useReactionMutation,
+  useToggleFavouriteMutation,
+} from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { toast } from "react-toastify";
 import blueTick from "../../../assets/profile/blueTick.png";
 import CommentCard from "./sub/CommentCard";
-
+import { FaHeart } from "react-icons/fa";
 
 const PostCard = ({ data }) => {
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
@@ -39,35 +48,68 @@ const PostCard = ({ data }) => {
     ? data?.reaction?.find((item) => item.reactor === loggedInUser?._id)
     : null;
 
+  // handle comment.
 
-// handle comment.
+  const [createComment] = useCreateCommentMutation();
+  const commentHandle = (e) => {
+    e.preventDefault();
 
-const[createComment]=useCreateCommentMutation()
-const commentHandle=(e)=>{
-  e.preventDefault()
+    if (!loggedInUser) {
+      toast.error("Please login,before comment!", {
+        position: "top-center",
+      });
+      return;
+    }
+    const comment = e.target.comment.value;
 
-if(!loggedInUser){
-  toast.error("Please login,before comment!", {
-    position: "top-center",
-  });
-  return
-}
-  const comment=e.target.comment.value
-
-  createComment({commentor:loggedInUser._id,comment:comment,post:data?.post?._id}).then(res=>{
-   if(res?.data?.statusCode===200){
-    toast.success("Commented!", {
-      position: "top-center",
+    createComment({
+      commentor: loggedInUser._id,
+      comment: comment,
+      post: data?.post?._id,
+    }).then((res) => {
+      if (res?.data?.statusCode === 200) {
+        toast.success("Commented!", {
+          position: "top-center",
+        });
+        e.target.reset();
+      }
     });
-    e.target.reset()
-   }
-  })
-  
-}
+  };
 
+  // copy button handle.
 
+  const copyPostUrl = () => {
+    navigator.clipboard
+      .writeText(
+        `${process.env.NEXT_PUBLIC_FRONT_END_URL}/post?id=${data?.post?._id}`
+      )
+      .then(() => {
+        toast.success("Link Copyed.");
+      });
+  };
 
+  // toggle favourite handle.
+  const [toggleFav] = useToggleFavouriteMutation();
+  const toggleFavourite = () => {
+    if (!loggedInUser) {
+      toast.error("Please login frist!", {
+        position: "top-center",
+      });
+      return;
+    }
 
+    toggleFav({ postId: data?.post?._id, userId: loggedInUser?._id }).then(
+      (res) => {
+        console.log(res.data);
+      }
+    );
+  };
+
+  const favouriteArray = data?.favourite;
+  console.log(favouriteArray);
+  const isThisFavourite = !loggedInUser
+    ? false
+    : favouriteArray?.find((item) => item?.userId === loggedInUser?._id);
 
   return (
     <div data-aos="fade-up">
@@ -168,6 +210,16 @@ if(!loggedInUser){
             </button>
           </div>
 
+          {/* toggle fav andle. */}
+          <div className="flex items-center gap-2">
+            <button disabled={reactionLoadin} onClick={toggleFavourite}>
+              <FaHeart
+                className={isThisFavourite ? "text-red-500 " : "text-gray-500"}
+                size={30}
+              />
+            </button>
+            <h1 className="text-lg font-medium">{favouriteArray?.length}</h1>
+          </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() =>
@@ -182,7 +234,7 @@ if(!loggedInUser){
             <h1 className="text-lg font-medium">{data?.comments?.length}</h1>
           </div>
 
-          <button>
+          <button onClick={copyPostUrl}>
             <PiShareFat className="text-3xl text-gray-500" />
           </button>
         </div>
@@ -191,8 +243,8 @@ if(!loggedInUser){
       {/* modal. */}
 
       <dialog id={data?.post?._id?.toString()} className="modal ">
-        <div  className="modal-box lg:min-w-[600px] ">
-          <form method="dialog" >
+        <div className="modal-box lg:min-w-[600px] ">
+          <form method="dialog">
             {/* if there is a button in form, it will close the modal */}
             <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
               ✕
@@ -307,7 +359,9 @@ if(!loggedInUser){
                   <MessageCircle className="text-gray-500" size={35} />
                 </button>
 
-                <h1 className="text-lg font-medium">{data?.comments?.length}</h1>
+                <h1 className="text-lg font-medium">
+                  {data?.comments?.length}
+                </h1>
               </div>
 
               <button>
@@ -318,29 +372,25 @@ if(!loggedInUser){
 
           {/* comment section. */}
 
+          <section className="min-h-[100px] grid grid-cols-1 gap-5">
+            {data?.comments?.map((item, idx) => (
+              <CommentCard key={idx} item={item} />
+            ))}
+          </section>
 
-
-<section  className="min-h-[100px] grid grid-cols-1 gap-5">
-  {data?.comments?.map((item,idx)=>(
-    <CommentCard key={idx} item={item}/>
-  ))}
-</section>
-
-
-
-
-
-          <form onSubmit={commentHandle} className="border mt-5  flex items-end sticky bottom-[-25px] pr-2 pb-3 w-full bg-gray-200 rounded-lg left-0">
+          <form
+            onSubmit={commentHandle}
+            className="border mt-5  flex items-end sticky bottom-[-25px] pr-2 pb-3 w-full bg-gray-200 rounded-lg left-0"
+          >
             <textarea
               className="w-full min-h-[40px] bg-transparent p-1 pt-2 focus:outline-none resize-none"
               name="comment"
               placeholder="Write your comment here"
             ></textarea>
-            <button className="text-gray-600"><SendHorizonal/></button>
+            <button className="text-gray-600">
+              <SendHorizonal />
+            </button>
           </form>
-
-
-
         </div>
       </dialog>
     </div>

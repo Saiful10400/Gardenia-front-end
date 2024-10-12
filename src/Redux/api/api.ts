@@ -201,6 +201,17 @@ export const baseApi = createApi({
         providesTags: ["post"],
       }),
 
+      allPostImage: builder.query({
+        query: () => {
+          
+          return {
+            url: `/post/image`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post"],
+      }),
+
       getTotalVote: builder.query({
         query: (payload) => {
           if (!payload) return "";
@@ -258,6 +269,19 @@ export const baseApi = createApi({
         invalidatesTags: ["post"],
       }),
 
+      toggleFavourite: builder.mutation({
+        query: (payload) => {
+          
+          return {
+            url: `/favourite`,
+            method: "POST",
+            body:payload
+            
+          };
+        },
+        invalidatesTags: ["post"],
+      }),
+
       allPaymentHistory: builder.query({
         query: () => {
           return {
@@ -280,6 +304,8 @@ export const baseApi = createApi({
 });
 
 export const {
+  useAllPostImageQuery,
+  useToggleFavouriteMutation,
   useUpdateCommentMutation,
   useCreateCommentMutation,
   useDeleteCommentMutation,

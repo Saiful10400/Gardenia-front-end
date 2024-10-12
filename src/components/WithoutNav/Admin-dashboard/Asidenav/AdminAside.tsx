@@ -23,7 +23,7 @@ const AdminAside = () => {
     </>
 
     const userlist=<>
-    <Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard" && "active"}`} href={"/user-dashboard"}><LayoutDashboard/>Dashboard</Link>
+    {/* <Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard" && "active"}`} href={"/user-dashboard"}><LayoutDashboard/>Dashboard</Link> */}
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/posts" && "active"}`} href={"/user-dashboard/posts"}><StickyNoteIcon/>Posts</Link>
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followers" && "active"}`} href={"/user-dashboard/followers"}><Users/>Followers</Link>
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followings" && "active"}`} href={"/user-dashboard/followings"}><User/>Followings</Link>

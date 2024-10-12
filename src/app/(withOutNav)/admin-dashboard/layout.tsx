@@ -1,5 +1,7 @@
 import AdminAside from '@/components/WithoutNav/Admin-dashboard/Asidenav/AdminAside';
 import DashboardNav from '@/components/WithoutNav/Shared/DashboardNav/DashboardNav';
+import { Home } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 
 const layout = ({children}) => {
@@ -12,6 +14,7 @@ const layout = ({children}) => {
         <section className='flex'>
             <aside className='lg:w-[13%] w-full hidden bg-white sticky top-[80px] h-[calc(100vh-80px)] lg:flex items-start'>
                 <AdminAside/>
+                <Link href={"/"}><button className='absolute bottom-5 left-6'><Home/></button></Link>
             </aside>
 
 

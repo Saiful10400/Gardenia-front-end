@@ -3,13 +3,13 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { getToken } from "@/utils/getToken";
-import { useAppDispatch } from "@/Redux/hoocks/Convaying";
+import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import { setUser } from "@/Redux/featcher/AuthSlice";
 
 
 const Authentication = ({children}) => {
 
- 
+  const { loggedInUser } = useAppSelector((e) => e.authStore);
 
     const dispatch=useAppDispatch()
     // get logged in user credentials and update state.
@@ -33,7 +33,7 @@ const Authentication = ({children}) => {
             dispatch(setUser(null))
         }
       })
-    }, []);
+    }, [loggedInUser]);
 
 
     return (

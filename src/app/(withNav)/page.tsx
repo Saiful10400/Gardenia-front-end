@@ -1,10 +1,12 @@
+import Tocenter from '@/components/Helper/Tocenter';
+import Banner from '@/components/Page/Home/Banner';
 import React from 'react';
 
 const Home = () => {
     return (
-        <div>
-            Home
-        </div>
+        <Tocenter>
+            <Banner/>
+        </Tocenter>
     );
 };
 

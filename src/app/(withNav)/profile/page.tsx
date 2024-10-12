@@ -193,7 +193,7 @@ const ProfileComponent = () => {
           follower: loggedInUser?._id,
           following: userData?._id,
         }).then((res) => {
-          console.log(res);
+          console.log(res);F
         });
       } else {
         makeUnfollow({
