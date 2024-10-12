@@ -223,6 +223,28 @@ export const baseApi = createApi({
         invalidatesTags: ["post", "totalVote"],
       }),
 
+      createComment: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/comment`,
+            method: "POST",
+            body: payload,
+          };
+        },
+        invalidatesTags: ["post"],
+      }),
+
+      deleteComment: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/comment/${payload}`,
+            method: "DELETE",
+            
+          };
+        },
+        invalidatesTags: ["post"],
+      }),
+
       allPaymentHistory: builder.query({
         query: () => {
           return {
@@ -245,6 +267,8 @@ export const baseApi = createApi({
 });
 
 export const {
+  useCreateCommentMutation,
+  useDeleteCommentMutation,
   useGetAllUserQuery,
   useAllPaymentHistoryQuery,
   useBlockAPostMutation,
