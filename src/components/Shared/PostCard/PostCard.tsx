@@ -59,6 +59,7 @@ if(!loggedInUser){
     toast.success("Commented!", {
       position: "top-center",
     });
+    e.target.reset()
    }
   })
   
@@ -319,7 +320,7 @@ if(!loggedInUser){
 
 
 
-<section  className="min-h-[100px] ">
+<section  className="min-h-[100px] grid grid-cols-1 gap-5">
   {data?.comments?.map((item,idx)=>(
     <CommentCard key={idx} item={item}/>
   ))}
@@ -333,7 +334,7 @@ if(!loggedInUser){
             <textarea
               className="w-full min-h-[40px] bg-transparent p-1 pt-2 focus:outline-none resize-none"
               name="comment"
-              placeholder="Your commet is from here"
+              placeholder="Write your comment here"
             ></textarea>
             <button className="text-gray-600"><SendHorizonal/></button>
           </form>

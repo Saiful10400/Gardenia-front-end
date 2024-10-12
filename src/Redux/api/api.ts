@@ -245,6 +245,19 @@ export const baseApi = createApi({
         invalidatesTags: ["post"],
       }),
 
+      updateComment: builder.mutation({
+        query: (payload) => {
+          const{id,...rest}=payload
+          return {
+            url: `/comment/${id}`,
+            method: "PUT",
+            body:rest
+            
+          };
+        },
+        invalidatesTags: ["post"],
+      }),
+
       allPaymentHistory: builder.query({
         query: () => {
           return {
@@ -267,6 +280,7 @@ export const baseApi = createApi({
 });
 
 export const {
+  useUpdateCommentMutation,
   useCreateCommentMutation,
   useDeleteCommentMutation,
   useGetAllUserQuery,
