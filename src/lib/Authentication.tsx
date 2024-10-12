@@ -33,7 +33,7 @@ const Authentication = ({children}) => {
             dispatch(setUser(null))
         }
       })
-    }, [loggedInUser]);
+    }, [loggedInUser?.role]);
 
 
     return (

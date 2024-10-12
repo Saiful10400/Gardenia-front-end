@@ -36,15 +36,9 @@ import PostCard from "@/components/Shared/PostCard/PostCard";
 import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvailableContent";
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
-
-
-
+import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
 
 const ProfileComponent = () => {
-
-
-
-
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const { data, isLoading } = useGetAUserQuery(id);
@@ -193,7 +187,8 @@ const ProfileComponent = () => {
           follower: loggedInUser?._id,
           following: userData?._id,
         }).then((res) => {
-          console.log(res);F
+          console.log(res);
+          F;
         });
       } else {
         makeUnfollow({
@@ -213,6 +208,8 @@ const ProfileComponent = () => {
   // get current user data from the db
   const { data: postData, isLoading: postLoading } =
     useGetAuserAllPostQuery(id);
+
+
 
   // inetiate payment
   const inetiatePayment = () => {
@@ -344,13 +341,15 @@ const ProfileComponent = () => {
             <div className=" ">
               <h1 className="text-4xl font-bold flex gap-3 items-end">
                 <span>{userData?.name}</span>
-                {userData?.verifyed&&<Image
-                  className="w-[30px] h-[30px] box-content"
-                  src={blueTick}
-                  width={200}
-                  height={200}
-                  alt="blueTick"
-                />}
+                {userData?.verifyed && (
+                  <Image
+                    className="w-[30px] h-[30px] box-content"
+                    src={blueTick}
+                    width={200}
+                    height={200}
+                    alt="blueTick"
+                  />
+                )}
               </h1>
               <h1 className="text-base flex items-center gap-4 text-gray-500 mt-2 font-semibold">
                 <span>{followerData?.data?.followers.length} follower</span>
@@ -397,7 +396,10 @@ const ProfileComponent = () => {
 
         <div className="flex  lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
           {/* bio section */}
-          <div data-aos="fade-right" className="lg:w-[40%] lg:sticky top-[-100px] ">
+          <div
+            data-aos="fade-right"
+            className="lg:w-[40%] lg:sticky top-[-100px] "
+          >
             <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
               <h1 className="text-xl font-bold">Intro</h1>
 
@@ -494,7 +496,7 @@ const ProfileComponent = () => {
 
             {/* followers */}
 
-            <section  className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
+            <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
               <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold">Follower</h1>
                 {followerData?.data?.followers.length > 0 && (
@@ -585,11 +587,27 @@ const ProfileComponent = () => {
 
             {isYou && <PostCreate userData={userData} />}
 
+            {/* favourite posts. */}
+            {isYou && (
+              <section className="bg-white mt-4 rounded-xl shadow-lg p-4">
+                <h1 className="text-xl font-bold">Favourite Posts</h1>
+                <div className="grid grid-cols-2 lg:grid-cols-3 mt-4 gap-5">
+                  {postData?.data?.favourite?.map((item, idx) => (
+                    <FavouritePostCard
+                      data-aos="fade-up"
+                      key={idx}
+                      data={item}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
+
             {/* post cards. */}
 
             <section>
               <div className="grid grid-cols-1 mt-4 gap-5">
-                {postData?.data?.map((item, idx) => (
+                {postData?.data?.all?.map((item, idx) => (
                   <PostCard data-aos="fade-up" key={idx} data={item} />
                 ))}
               </div>
