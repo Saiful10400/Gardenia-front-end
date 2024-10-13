@@ -27,12 +27,12 @@ const gardeningQuotes = [
 
 
   return (
-    <div className="flex items-center">
+    <div className="flex flex-col-reverse lg:flex-row items-center">
       <div className="lg:w-[50%] pt-12">
         
 
-        <h1 className="text-6xl font-bold">Grow Life, Inspire Beauty!</h1>
-        <h1 className="text-3xl mt-6 font-normal">
+        <h1 className="lg:text-6xl text-4xl font-bold">Grow Life, Inspire Beauty!</h1>
+        <h1 className="lg:text-3xl text-base mt-6 font-normal">
           <Typewriter
             words={gardeningQuotes}
             loop={5}
@@ -45,10 +45,10 @@ const gardeningQuotes = [
         </h1>
       </div>
 
-      <div className="lg:w-[50%]">
+      <div className="lg:w-[50%] ">
         <Image
           height={600}
-          className="w-full object-contain h-[500px]"
+          className="w-full object-contain h-[300px] lg:h-[500px]"
           width={600}
           alt="coverImage"
           src={tree}

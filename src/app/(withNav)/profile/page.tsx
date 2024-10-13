@@ -188,7 +188,6 @@ const ProfileComponent = () => {
           following: userData?._id,
         }).then((res) => {
           console.log(res);
-          F;
         });
       } else {
         makeUnfollow({

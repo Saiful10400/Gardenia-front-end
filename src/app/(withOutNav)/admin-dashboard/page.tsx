@@ -17,7 +17,7 @@ const page = () => {
 
           <div>
             <h1 className="text-4xl ">Total Pyment</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{50}$</h1>
+            <h1 className="text-3xl mt-3 font-semibold">{860}$</h1>
           </div>
         </div>
 
@@ -26,7 +26,7 @@ const page = () => {
 
           <div>
             <h1 className="text-4xl ">Total Post</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{50}$</h1>
+            <h1 className="text-3xl mt-3 font-semibold">{50}</h1>
           </div>
         </div>
 
@@ -34,8 +34,8 @@ const page = () => {
           <User size={50} />
 
           <div>
-            <h1 className="text-4xl ">Total Pyment</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{50}$</h1>
+            <h1 className="text-4xl ">Total user</h1>
+            <h1 className="text-3xl mt-3 font-semibold">{24}</h1>
           </div>
         </div>
       </section>

@@ -22,6 +22,16 @@ export const baseApi = createApi({
           };
         },
       }),
+      getNotification: builder.query({
+        query: (payload) => {
+          if(!payload)return ""
+          return {
+            url: `/notification/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["aUserData", "aUserFollowing", "post", "totalVote", "allUser"],
+      }),
       login: builder.mutation({
         query: (payload) => {
           console.log(payload);
@@ -144,6 +154,16 @@ export const baseApi = createApi({
         query: () => {
           return {
             url: `/post`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post"],
+      }),
+
+      NewsfeedPost: builder.query({
+        query: () => {
+          return {
+            url: `/post/newsfeed`,
             method: "GET",
           };
         },
@@ -316,6 +336,8 @@ export const baseApi = createApi({
 });
 
 export const {
+  useGetNotificationQuery,
+  useNewsfeedPostQuery,
   useAllPostImageQuery,
   useToggleFavouriteMutation,
   useUpdateCommentMutation,

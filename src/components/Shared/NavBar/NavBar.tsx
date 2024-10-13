@@ -5,10 +5,11 @@ import logo from "../../../assets/nav/logo.png";
 import Link from "next/link";
 import Tocenter from "@/components/Helper/Tocenter";
 import { usePathname } from "next/navigation";
-import { Bell, CircleUser } from "lucide-react";
+import { Bell, CircleUser, Menu } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import "./style.css";
 import { setUser } from "@/Redux/featcher/AuthSlice";
+import { useGetNotificationQuery } from "@/Redux/api/api";
 const NavBar = () => {
   const path = usePathname();
 
@@ -17,7 +18,7 @@ const NavBar = () => {
   const routes = (
     <>
       <Link
-        className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${
+        className={`flex py-2 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
           path === "/" && "active"
         }`}
         href={"/"}
@@ -27,7 +28,7 @@ const NavBar = () => {
 
       {loggedInUser?._id && (
         <Link
-          className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${
+          className={`flex py-2 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
             path === "/profile" && "active"
           }`}
           href={`/profile?id=${loggedInUser?._id}`}
@@ -37,7 +38,7 @@ const NavBar = () => {
       )}
 
       <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${
+        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
           path === "/galary" && "active"
         }`}
         href={"/galary"}
@@ -45,9 +46,8 @@ const NavBar = () => {
         Galary
       </Link>
 
-
       <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${
+        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
           path === "/about-us" && "active"
         }`}
         href={"/about-us"}
@@ -56,7 +56,7 @@ const NavBar = () => {
       </Link>
 
       <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${
+        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
           path === "/contact-us" && "active"
         }`}
         href={"/contact-us"}
@@ -66,7 +66,7 @@ const NavBar = () => {
     </>
   );
 
-  console.log(loggedInUser);
+
 
   const dispatch = useAppDispatch();
   const logoutHandle = () => {
@@ -91,17 +91,40 @@ const NavBar = () => {
       </li>
     </>
   );
+   
+  const{data}=useGetNotificationQuery(loggedInUser?._id)
+  console.log(data,"notificationData.")
 
   return (
     <>
       {/* fro desktop view. */}
-      <div className="bg-transparent text-black py-4">
+      <div className="bg-transparent sticky top-0 bg-white z-30 text-black py-4">
         <Tocenter>
           <div className="flex justify-between items-center">
-            <Link href={"/"}>
-              <Image alt="Logo" width={50} height={400} src={logo}></Image>
-            </Link>
-            <ul className="flex gap-4 text-lg font-semibold">{routes}</ul>
+
+
+            <div className="flex items-center gap-2">
+
+            <details className="dropdown block lg:hidden">
+                <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
+                <Menu />
+                </summary>
+                <ul className="menu  dropdown-content left-[10px] bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
+                  {routes}
+                </ul>
+              </details>
+
+
+            
+              <Link href={"/"}>
+                <Image alt="Logo" width={50} height={400} src={logo}></Image>
+              </Link>
+            </div>
+
+
+            <ul className="lg:flex hidden  gap-4 text-lg font-semibold">
+              {routes}
+            </ul>
 
             <div className=" flex items-center gap-3">
               <button>
@@ -121,7 +144,7 @@ const NavBar = () => {
                     <CircleUser size={35} />
                   )}
                 </summary>
-                <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
+                <ul className="menu  dropdown-content right-[10px] bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
                   {dropDeownLinks}
                 </ul>
               </details>

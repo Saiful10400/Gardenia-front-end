@@ -22,7 +22,16 @@ import blueTick from "../../../assets/profile/blueTick.png";
 import CommentCard from "./sub/CommentCard";
 import { FaHeart } from "react-icons/fa";
 
+
+
 const PostCard = ({ data }) => {
+
+
+
+
+
+
+
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
 
   const { loggedInUser } = useAppSelector((e) => e.authStore);
@@ -111,8 +120,12 @@ const PostCard = ({ data }) => {
     ? false
     : favouriteArray?.find((item) => item?.userId === loggedInUser?._id);
 
+
+
+  const canYousee=loggedInUser?.verifyed||data?.post?.creator?._id===loggedInUser?._id
+
   return (
-    <div data-aos="fade-up">
+    <div className={data?.post?.costing==="Paid"?canYousee?"block":"hidden":"block"} data-aos="fade-up">
       {/* top image section. */}
 
       <section className="bg-white pt-6 pb-4  rounded-xl ">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useAppSelector } from '@/Redux/hoocks/Convaying';
-import { Bell, DollarSign, LayoutDashboard, Menu, RssIcon, StickyNoteIcon, User, Users } from 'lucide-react';
+import { DollarSign, LayoutDashboard, Menu, RectangleEllipsis, RssIcon, StickyNoteIcon, User, Users } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,10 +23,11 @@ const DashboardNav = () => {
       </>
 
 const userlist=<>
-<Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard" && "active"}`} href={"/user-dashboard"}><LayoutDashboard/>Dashboard</Link>
+{/* <Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard" && "active"}`} href={"/user-dashboard"}><LayoutDashboard/>Dashboard</Link> */}
 <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/posts" && "active"}`} href={"/user-dashboard/posts"}><StickyNoteIcon/>Posts</Link>
 <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followers" && "active"}`} href={"/user-dashboard/followers"}><Users/>Followers</Link>
 <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followings" && "active"}`} href={"/user-dashboard/followings"}><User/>Followings</Link>
+<Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/change-password" && "active"}`} href={"/user-dashboard/change-password"}><RectangleEllipsis/>Change Password</Link>
 </>
 
 
@@ -46,7 +47,7 @@ const userlist=<>
 
            <h1 className='font-bold text-lg lg:text-3xl text-green-700'>{isuser?"User Dashboard":"Admin Dashboard"}</h1>
            <div className='flex items-center gap-4'>
-            <button><Bell/></button>
+            
             <button disabled>
                 <Image height={100} width={100} alt='userProfile' src={loggedInUser?.img} className='w-[40px] h-[40px] rounded-full object-cover'/>
             </button>

@@ -11,8 +11,8 @@ const Pycomponent = () => {
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   return (
-    <div className="bg-white pb-6 px-5 rounded-xl w-full lg:overflow-hidden overflow-auto">
-      <h1 className="text-center text-lg font-semibold">Payment status</h1>
+    <div className="bg-white pb-6 px-5  rounded-xl w-full lg:overflow-hidden overflow-auto">
+      <h1 className="text-center text-lg  font-semibold">User Type status</h1>
       <PieChart width={400} height={300}>
         <Pie
           data={data}
