@@ -127,9 +127,22 @@ const NavBar = () => {
             </ul>
 
             <div className=" flex items-center gap-3">
-              <button>
+              
+
+            <details className="dropdown">
+                <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
                 <Bell size={30} />
-              </button>
+                </summary>
+                <ul className="menu  dropdown-content right-[40px] bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
+               {
+                data?.data?.map((item,idx)=><li className="mt-3 " key={idx}>{idx+1}. {item.message}</li>)
+               }
+                </ul>
+              </details>
+
+
+                
+              
               <details className="dropdown">
                 <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
                   {loggedInUser ? (

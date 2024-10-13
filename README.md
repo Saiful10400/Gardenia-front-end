@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gardenia Frontend
 
-## Getting Started
+The frontend of Gardenia is a Next.js-based blogging platform for farmers and farming enthusiasts. It allows users to interact with the platform by posting, upvoting, following users, and accessing premium content.
 
-First, run the development server:
+## 🌐 Live Site
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend URL:** [Gardenia Frontend](https://apollow-assignment-6-front-end.vercel.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **User Authentication:**
+   - Sign up, log in, and secure sessions with JWT-based authentication.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. **Profile Verification:**
+   - Users can verify their profiles to unlock premium content after making a payment.
 
-## Learn More
+3. **Post Management:**
+   - Users can create, update, and delete posts.
+   - Posts can be downloaded as PDFs.
 
-To learn more about Next.js, take a look at the following resources:
+4. **User Interaction:**
+   - Upvote/downvote posts similar to Reddit.
+   - Add posts to favorites and follow other users.
+   - Comment on posts to engage with the community.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. **Server-Side Rendering (SSR):**
+   - Built with Next.js for optimized performance using SSR.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. **Responsive Design:**
+   - Mobile-friendly design with a smooth user experience.
 
-## Deploy on Vercel
+## ⚙️ Technologies Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Next.js** - For server-side rendering and static site generation.
+- **React.js** - For building dynamic user interfaces.
+- **Redux & RTK Query** - For state management and data fetching.
+- **Tailwind CSS** - For styling and responsive design.
+- **Vite** - For development speed and build optimizations.
+- **PDF Generation** - For enabling post downloads as PDF files.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Setup and Installation
+
+### Prerequisites
+
+- **Node.js** and **npm** installed.
+- Backend API set up and running (see [Backend Repository](https://github.com/Saiful10400/Apollow-Assignment-6-back-end)).
+
+## How to Run the Project Locally
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/Saiful10400/Apollow-Assignment-6-front-end
+    ```
+
+2. Navigate to the project directory:
+
+    ```bash
+    cd your-repo-name
+    ```
+
+3. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+4. Start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+5. Open your browser and visit:
+
+    ```bash
+    http://localhost:3000
+    ```
+
+## How to Contribute
+
+1. Fork the repository.
+2. Create a new feature branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Create a pull request.

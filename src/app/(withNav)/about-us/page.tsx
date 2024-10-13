@@ -22,7 +22,7 @@ const page = () => {
             <div data-aos="fade-left">
               <h1 className="text-3xl lg:text-5xl mb-5">Our Mission</h1>
               <p className="text-lg font-medium">
-                At <span className="font-bold">Acowork</span>, we are committed
+                At <span className="font-bold">Gardenia</span>, we are committed
                 to creating an inspiring and flexible work environment where
                 professionals, entrepreneurs, and creatives can thrive. Our
                 mission is to foster collaboration, innovation, and community by
