@@ -42,6 +42,18 @@ export const baseApi = createApi({
           };
         },
       }),
+
+      lastPassVal: builder.mutation({
+        query: (payload) => {
+          return {
+            url: "/auth/lastPassVal",
+            method: "POST",
+            body: payload,
+          };
+        },
+      }),
+
+
       changePassword: builder.mutation({
         query: (payload) => {
           return {
@@ -331,4 +343,5 @@ export const {
   useGetFollowerAndFollowingQuery,
   useCreateFollowingMutation,
   useUnfollowOneMutation,
+  useLastPassValMutation
 } = baseApi;

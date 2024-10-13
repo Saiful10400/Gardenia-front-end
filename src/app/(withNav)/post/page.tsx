@@ -7,25 +7,62 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import parse from "html-react-parser";
 import Loading from "@/components/Shared/Loading/Loading";
-import blueTick from "../../../assets/profile/blueTick.png"
-import "./style.css"
+import blueTick from "../../../assets/profile/blueTick.png";
+import "./style.css";
+import { Download } from "lucide-react";
+import { useRef } from "react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
+
 const PostComponent = () => {
   // get the id .
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
   const { data, isLoading } = useGetApostQuery(id);
-  console.log(data);
+
 
   const post = data?.data?.post;
-  console.log(post);
+
+
+  // triggard pdf to be downloaded.
+const printRef=useRef(null)
+  const handlePdfDownLoad = async () => {
+   
+
+    try {
+      
+      const canvas = await html2canvas();
+      console.log(canvas)
+      const ImageData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "px",
+        format: "a4",
+      });
+      const width = pdf.internal.pageSize.getWidth();
+      const height = (canvas.height * width) / canvas.width;
+
+      pdf.addImage(ImageData, "PNG", 0, 0, width, height);
+      pdf.save("Post.pdf");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return isLoading ? (
     <Loading />
   ) : (
     <Tocenter>
-      <div className=" ">
-
-      <div className="flex justify-between items-start p-6 py-5">
+      <div>
+        <button
+          onClick={handlePdfDownLoad}
+          className="fixed bottom-7 right-7 flex gap-2 font-semibold bg-green-500 p-2 rounded-lg text-white"
+        >
+          <Download /> Download as Pdf
+        </button>
+{/* print */}
+        <div ref={printRef} className="flex justify-between items-start p-6 py-5">
           <div className="flex items-start  gap-2">
             <Image
               src={post?.creator?.img}
@@ -61,7 +98,6 @@ const PostComponent = () => {
           </h1>
         </div>
 
-
         <div className="">
           <Image
             className="w-full lg:h-[400px] object-cover"
@@ -71,7 +107,7 @@ const PostComponent = () => {
             src={post?.img}
           />
         </div>
-        <div className="PostContainer mt-5">{parse(post?.content)}</div>
+        <div  className="PostContainer mt-5">{parse(post?.content)}</div>
       </div>
     </Tocenter>
   );
