@@ -154,7 +154,7 @@ const { loggedInUser, } = useAppSelector(
       category:form.category.value,
       costing:form.costType.value, 
   }).then(res=>{
-    console.log(res.data)
+   
 
     // clear all stuf 
     if(res.data.statusCode===200){
@@ -177,7 +177,7 @@ const { loggedInUser, } = useAppSelector(
                 {parse(data?.post?.content?.slice(0,150)+" "+"....")}
             </p>
             <div className="flex justify-center items-center mt-3 gap-3">
-                <button onClick={()=>document.getElementById(data?.post?._id)?.showModal()} className="bg-green-500 p-2 rounded-lg px-4 text-lg font-semibold text-white flex items-center gap-2"><FilePen size={20}/> Edit</button>
+                <button onClick={()=>document.getElementById(data?.post?._id)?.showModal()} className="bg-[#25a82b] p-2 rounded-lg px-4 text-lg font-semibold text-white flex items-center gap-2"><FilePen size={20}/> Edit</button>
                 <button onClick={PosetDeleteHandle} className="bg-red-500 p-2 rounded-lg px-4 text-lg font-semibold text-white flex items-center gap-2"><SquareX size={20}/> Delete</button>
             </div>
 

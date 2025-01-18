@@ -20,7 +20,7 @@ const CommentCard = ({ item }) => {
 
   const deleteHandle = () => {
     deleComment(item._id).then((res) => {
-      console.log(res.data);
+      
     });
   };
 
@@ -28,7 +28,7 @@ const editHandle=(e)=>{
     e.preventDefault()
     const comment=e.target.comment.value
     updateComment({id:item._id,comment}).then(res=>{
-        console.log(res)
+      
         setEdit(false)
     })
 }

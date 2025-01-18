@@ -23,7 +23,7 @@ const DashboardPostCard = ({ data }) => {
 
   const deleteHandle = () => {
     deletePost(post._id).then((res) => {
-      console.log(res.data);
+     
     });
   };
 

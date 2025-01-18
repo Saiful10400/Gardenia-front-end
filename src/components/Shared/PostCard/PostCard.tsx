@@ -21,17 +21,9 @@ import { toast } from "react-toastify";
 import blueTick from "../../../assets/profile/blueTick.png";
 import CommentCard from "./sub/CommentCard";
 import { FaHeart } from "react-icons/fa";
-
-
+import Link from "next/link";
 
 const PostCard = ({ data }) => {
-
-
-
-
-
-
-
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
 
   const { loggedInUser } = useAppSelector((e) => e.authStore);
@@ -108,29 +100,36 @@ const PostCard = ({ data }) => {
     }
 
     toggleFav({ postId: data?.post?._id, userId: loggedInUser?._id }).then(
-      (res) => {
-        console.log(res.data);
-      }
+      (res) => {}
     );
   };
 
   const favouriteArray = data?.favourite;
-  console.log(favouriteArray);
+
   const isThisFavourite = !loggedInUser
     ? false
     : favouriteArray?.find((item) => item?.userId === loggedInUser?._id);
 
-
-
-  const canYousee=loggedInUser?.verifyed||data?.post?.creator?._id===loggedInUser?._id
+  const canYousee =
+    loggedInUser?.verifyed || data?.post?.creator?._id === loggedInUser?._id;
 
   return (
-    <div className={data?.post?.costing==="Paid"?canYousee?"block":"hidden":"block"} data-aos="fade-up">
+    <div
+      className={
+        data?.post?.costing === "Paid"
+          ? canYousee
+            ? "block"
+            : "hidden"
+          : "block"
+      }
+      data-aos="fade-up"
+    >
       {/* top image section. */}
 
-      <section className="bg-white pt-6 pb-4  rounded-xl ">
+      <section className="bg-white pt-6 pb-4  rounded-xl shadow-md ">
         <div className="flex justify-between items-start p-6 py-0">
           <div className="flex items-start  gap-2">
+          <Link href={`/profile?id=${data?.post?.creator?._id}`}>
             <Image
               src={data?.post?.creator?.img}
               alt="postImage"
@@ -138,8 +137,9 @@ const PostCard = ({ data }) => {
               height={100}
               className="w-[40px] h-[40px] rounded-full"
             />
+            </Link>
             <div>
-              <div className="font-bold text-base flex items-end gap-1 ">
+              <Link href={`/profile?id=${data?.post?.creator?._id}`}  className="font-bold text-base flex items-end gap-1 ">
                 <span> {data?.post?.creator?.name}</span>{" "}
                 {data?.post?.creator?.verifyed && (
                   <Image
@@ -153,7 +153,7 @@ const PostCard = ({ data }) => {
                 {data?.post?.isBlock && (
                   <span className="font-bold text-red-500">Blocked</span>
                 )}
-              </div>
+              </Link>
               <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
                 <span>10h</span>{" "}
                 <span className="font-normal">{data?.post?.costing}</span>
@@ -199,7 +199,7 @@ const PostCard = ({ data }) => {
               <CircleArrowUp
                 className={
                   reacted?.reactionType === "up"
-                    ? "bg-green-500 text-white rounded-full"
+                    ? "bg-[#25a82b] text-white rounded-full"
                     : "text-gray-500"
                 }
                 size={35}
@@ -337,7 +337,7 @@ const PostCard = ({ data }) => {
                   <CircleArrowUp
                     className={
                       reacted?.reactionType === "up"
-                        ? "bg-green-500 text-white rounded-full"
+                        ? "bg-[#25a82b] text-white rounded-full"
                         : "text-gray-500"
                     }
                     size={35}

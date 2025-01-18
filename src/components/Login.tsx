@@ -10,7 +10,7 @@ import { getToken } from "@/utils/getToken";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -69,10 +69,11 @@ const move=useRouter()
     }
   }, [data]);
 
+  const[loginCredentials,setLoginCredentials]=useState({email:"",password:""})
 
   return (
     <AuthenticationBg>
-      <div className="lg:w-[500px] px-6 py-8 h-[500px] rounded-3xl bg-white">
+      <div className="lg:w-[500px] px-6 py-8 h-[550px] rounded-3xl bg-white">
         <h1 className="text-5xl font-semibold">Login</h1>
         <p className="font-semibold mt-5 mb-4">
           Doesn't have an account yet?{" "}
@@ -81,9 +82,10 @@ const move=useRouter()
           </Link>
         </p>
         <form onSubmit={formSubmitHandle} className="mt-12">
-          <InputField name="email" className="border-2" placeholder="E-mail" type="email" />
+          <InputField dValue={loginCredentials.email} name="email" className="border-2" placeholder="E-mail" type="email" />
           <div className="mt-4">
             <InputField
+            dValue={loginCredentials.password}
               className="border-2"
               placeholder="Password"
               type="password"
@@ -98,8 +100,18 @@ const move=useRouter()
               Forget password
             </Link>
           </p>
-          <Button className="w-full mt-5" text="Login" />
+          <Button  className="w-full mt-5 text-lg" text="Login" />
         </form>
+
+<div className="mt-3 py-3">
+  <h1 className="text-base font-medium">Demo credential</h1>
+  <div className=" flex items-center gap-3 mt-2">
+    <button onClick={()=>setLoginCredentials({email:"admin@g.com",password:"admin admin"})} className="text-white bg-[#25a82b] font-semibold px-4 py-1 rounded-md">Admin</button>
+    <button onClick={()=>setLoginCredentials({email:"user@g.com",password:"user user"})} className="text-white bg-[#25a82b] font-semibold px-4 py-1 rounded-md">User</button>
+  </div>
+</div>
+
+
       </div>
     </AuthenticationBg>
   );

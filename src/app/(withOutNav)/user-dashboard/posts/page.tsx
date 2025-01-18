@@ -12,7 +12,7 @@ const Posts = () => {
 
     const{data:aUserPosts}=useGetAuserAllPostQuery(loggedInUser?._id)
 
-    console.log(aUserPosts)
+    
 
     return (
         <div>

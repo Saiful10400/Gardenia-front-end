@@ -1,6 +1,6 @@
 "use client"
 
-import { DollarSign, LayoutDashboard, RectangleEllipsis, RssIcon, StickyNoteIcon, User, Users } from 'lucide-react';
+import { Bell, ChartNoAxesGantt, DollarSign, LayoutDashboard, RectangleEllipsis, RssIcon, StickyNoteIcon, User, Users } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
@@ -20,6 +20,8 @@ const AdminAside = () => {
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/contents" && "active"}`} href={"/admin-dashboard/contents"}><RssIcon/>Contents</Link>
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/users" && "active"}`} href={"/admin-dashboard/users"}><User/>Users</Link>
     <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/payments" && "active"}`} href={"/admin-dashboard/payments"}><DollarSign/>Payments</Link>
+    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/notification" && "active"}`} href={"/admin-dashboard/notification"}><Bell/>Notification</Link>
+    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/category" && "active"}`} href={"/admin-dashboard/category"}><ChartNoAxesGantt/>Category</Link>
     </>
 
     const userlist=<>

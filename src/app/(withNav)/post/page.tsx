@@ -33,7 +33,7 @@ const printRef=useRef(null)
     try {
       
       const canvas = await html2canvas();
-      console.log(canvas)
+    
       const ImageData = canvas.toDataURL("image/png");
       const pdf = new jsPDF({
         orientation: "landscape",
@@ -57,7 +57,7 @@ const printRef=useRef(null)
       <div>
         <button
           onClick={handlePdfDownLoad}
-          className="fixed bottom-7 right-7 flex gap-2 font-semibold bg-green-500 p-2 rounded-lg text-white"
+          className="fixed bottom-7 right-7 flex gap-2 font-semibold bg-[#25a82b] p-2 rounded-lg text-white"
         >
           <Download /> Download as Pdf
         </button>

@@ -1,9 +1,10 @@
-const imageUploadToDb = async (data) => {
+ export const imageUploadToDb = async (data) => {
+ 
     const image = new FormData();
     image.append("image", data);
   
     const response = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_VITE_IMG_BB_SECRET}`,
+      `https://api.imgbb.com/1/upload?key=1dee2a8fb008a9e4013e3fcb8506eceb`,
       {
         method: "POST",
         body: image,

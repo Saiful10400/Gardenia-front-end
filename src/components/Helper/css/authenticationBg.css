@@ -1,7 +1,10 @@
-.AuthContainer{
+/* .AuthContainer{
     background: url(../../../assets/pages/authentication/background.jpg) no-repeat;
     background-position: top center;
     background-size: cover;
+} */
+.AuthContainer{
+    background:white
 }
 
 .glassMorphisom{

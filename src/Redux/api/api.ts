@@ -9,12 +9,21 @@ export const baseApi = createApi({
       if (getToken()) header.set("Authorization", getToken() as string);
     },
   }),
-  tagTypes: ["aUserData", "aUserFollowing", "post", "totalVote", "allUser"],
+  tagTypes: [
+    "aUserData",
+    "aUserFollowing",
+    "post",
+    "totalVote",
+    "allUser",
+    "notification",
+    "frind",
+    "category",
+    "page",
+  ],
   endpoints: (builder) => {
     return {
       signup: builder.mutation({
         query: (payload) => {
-          console.log(payload);
           return {
             url: "/auth/signup",
             method: "POST",
@@ -24,17 +33,16 @@ export const baseApi = createApi({
       }),
       getNotification: builder.query({
         query: (payload) => {
-          if(!payload)return ""
+          if (!payload) return "";
           return {
             url: `/notification/${payload}`,
             method: "GET",
           };
         },
-        providesTags: ["aUserData", "aUserFollowing", "post", "totalVote", "allUser"],
+        providesTags: ["notification"],
       }),
       login: builder.mutation({
         query: (payload) => {
-          console.log(payload);
           return {
             url: "/auth/login",
             method: "POST",
@@ -62,7 +70,6 @@ export const baseApi = createApi({
           };
         },
       }),
-
 
       changePassword: builder.mutation({
         query: (payload) => {
@@ -108,7 +115,6 @@ export const baseApi = createApi({
 
       getAUser: builder.query({
         query: (payload) => {
-          console.log(payload, "user payload");
           return {
             url: `/auth/${payload}`,
             method: "GET",
@@ -119,7 +125,7 @@ export const baseApi = createApi({
 
       getFollowerAndFollowing: builder.query({
         query: (payload) => {
-          if(!payload)return ""
+          if (!payload) return "";
           return {
             url: `/follow/${payload}`,
             method: "GET",
@@ -144,7 +150,7 @@ export const baseApi = createApi({
           return {
             url: `/follow`,
             method: "DELETE",
-            body:payload
+            body: payload,
           };
         },
         invalidatesTags: ["aUserFollowing", "aUserData"],
@@ -235,7 +241,6 @@ export const baseApi = createApi({
 
       allPostImage: builder.query({
         query: () => {
-          
           return {
             url: `/post/image`,
             method: "GET",
@@ -282,20 +287,28 @@ export const baseApi = createApi({
           return {
             url: `/comment/${payload}`,
             method: "DELETE",
-            
           };
         },
         invalidatesTags: ["post"],
       }),
 
+      makeNotificationRead: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `notification/make-read/${payload}`,
+            method: "PUT",
+          };
+        },
+        invalidatesTags: ["notification"],
+      }),
+
       updateComment: builder.mutation({
         query: (payload) => {
-          const{id,...rest}=payload
+          const { id, ...rest } = payload;
           return {
             url: `/comment/${id}`,
             method: "PUT",
-            body:rest
-            
+            body: rest,
           };
         },
         invalidatesTags: ["post"],
@@ -303,12 +316,10 @@ export const baseApi = createApi({
 
       toggleFavourite: builder.mutation({
         query: (payload) => {
-          
           return {
             url: `/favourite`,
             method: "POST",
-            body:payload
-            
+            body: payload,
           };
         },
         invalidatesTags: ["post"],
@@ -331,12 +342,194 @@ export const baseApi = createApi({
           };
         },
       }),
+
+      sendFrindRequest: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/friend/create`,
+            method: "POST",
+            body: payload,
+          };
+        },
+        invalidatesTags: ["frind"],
+      }),
+
+      modifyFrindRequest: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/friend/modify`,
+            method: "PUT",
+            body: payload,
+          };
+        },
+        invalidatesTags: ["frind"],
+      }),
+      allFriendRef: builder.query({
+        query: (payload) => {
+          return {
+            url: `/friend/getallFrindReference/${payload}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["frind"],
+      }),
+      allFriendRequest: builder.query({
+        query: (id) => {
+          return {
+            url: `/friend/friendRequest/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["frind"],
+      }),
+
+      adminPanalAllNotification: builder.query({
+        query: () => {
+          return {
+            url: `/notification`,
+            method: "GET",
+          };
+        },
+        providesTags: ["notification"],
+      }),
+
+      deleteANotification: builder.mutation({
+        query: (id) => {
+          return {
+            url: `/notification/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["notification"],
+      }),
+      getAllCategory: builder.query({
+        query: () => {
+          return {
+            url: `/category`,
+            method: "GET",
+          };
+        },
+        providesTags: ["category"],
+      }),
+      deleteACategory: builder.mutation({
+        query: (id) => {
+          return {
+            url: `/category/${id}`,
+            method: "DELETE",
+          };
+        },
+        invalidatesTags: ["category"],
+      }),
+      dashboardCredentials: builder.query({
+        query: () => {
+          return {
+            url: `/category/admin-credentials`,
+            method: "GET",
+          };
+        },
+        providesTags: ["post", "allUser"],
+      }),
+
+
+
+
+      CreateApage: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/page/create`,
+            method: "POST",
+            body: payload,
+          };
+        },
+        invalidatesTags: ["page"],
+      }),
+
+      getAUserAllPageInvitation: builder.query({
+        query: (id) => {
+          return {
+            url: `/page/${id}?invitation=true`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
+      getAUserAllPage: builder.query({
+        query: (id) => {
+          return {
+            url: `/page/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
+      pageInvitationSend: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/page/invite`,
+            method: "POST",
+            body: payload,
+          };
+        },
+        invalidatesTags: ["page"],
+      }),
+
+      responseInvite: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/page/invite/${payload?.id}?accept=${payload?.status}`,
+            method: "PUT",
+           
+          };
+        },
+        invalidatesTags: ["page"],
+      }),
+
+      aPageDetails: builder.query({
+        query: (id) => {
+          return {
+            url: `/page/details/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
+      aPageMembers: builder.query({
+        query: (id) => {
+          return {
+            url: `/page/members/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
+
     };
   },
 });
 
 export const {
+  useAPageMembersQuery,
+  useCreateApageMutation,
+  useGetAUserAllPageInvitationQuery,
+  useGetAUserAllPageQuery,
+  usePageInvitationSendMutation,
+  useResponseInviteMutation,
+  useAPageDetailsQuery,
+  
+  useDeleteANotificationMutation,
+  useDashboardCredentialsQuery,
+  useDeleteACategoryMutation,
+  useGetAllCategoryQuery,
+  useAdminPanalAllNotificationQuery,
   useGetNotificationQuery,
+  useAllFriendRequestQuery,
+  useAllFriendRefQuery,
+  useSendFrindRequestMutation,
+  useModifyFrindRequestMutation,
   useNewsfeedPostQuery,
   useAllPostImageQuery,
   useToggleFavouriteMutation,
@@ -365,5 +558,6 @@ export const {
   useGetFollowerAndFollowingQuery,
   useCreateFollowingMutation,
   useUnfollowOneMutation,
-  useLastPassValMutation
+  useLastPassValMutation,
+  useMakeNotificationReadMutation,
 } = baseApi;

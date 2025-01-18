@@ -11,19 +11,24 @@ import {
   Legend,
 } from "recharts";
 
-const BarChart = () => {
-  const data = [
+const BarChart = ({data}:{data:{
+  deletedPost: number;
+  paidPost: number;
+  freePost: number;
+  blockPost: number;
+}}) => {
+  const datas = [
     {
-      Deleted: 20,
-      Paid: 15,
-      Free: 23,
-      Block: 5,
+      Deleted: data?.deletedPost,
+      Paid: data?.paidPost,
+      Free: data?.freePost,
+      Block: data?.blockPost,
     },
   ];
   return (
     <div className="bg-white mt-5 pt-5 px-5 rounded-xl border lg:overflow-hidden overflow-auto">
       <h1 className="text-center text-lg font-semibold">Post status</h1>
-      <BarLIne width={1000} height={350} data={data}>
+      <BarLIne width={1000} height={350} data={datas}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />

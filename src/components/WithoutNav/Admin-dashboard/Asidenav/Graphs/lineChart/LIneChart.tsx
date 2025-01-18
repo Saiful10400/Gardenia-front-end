@@ -18,7 +18,7 @@ const LIneChart = () => {
   const { data } = useAllPaymentHistoryQuery(null);
 
   const payments = data?.data;
-  console.log(payments);
+ 
 
   const demo = [
     {

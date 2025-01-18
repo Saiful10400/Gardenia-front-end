@@ -5,7 +5,7 @@ import { useAllPaymentHistoryQuery } from "@/Redux/api/api";
 
 const Payment = () => {
 const {data:transectionData}=useAllPaymentHistoryQuery(null)
-console.log(transectionData)
+ 
     return (
         <div>
             

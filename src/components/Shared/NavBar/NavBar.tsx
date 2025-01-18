@@ -5,11 +5,15 @@ import logo from "../../../assets/nav/logo.png";
 import Link from "next/link";
 import Tocenter from "@/components/Helper/Tocenter";
 import { usePathname } from "next/navigation";
-import { Bell, CircleUser, Menu } from "lucide-react";
+import { Bell, CircleUser, CircleUserRound, GalleryHorizontal, ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, UsersRound } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import "./style.css";
 import { setUser } from "@/Redux/featcher/AuthSlice";
-import { useGetNotificationQuery } from "@/Redux/api/api";
+import Notification from "@/components/ui/Notification";
+import useGetAllNotification from "@/utils/useGetAllNotification";
+import { Tnotification } from "@/components/ui/SingleNotificationCard";
+import { useState } from "react";
+import { useMakeNotificationReadMutation } from "@/Redux/api/api";
 const NavBar = () => {
   const path = usePathname();
 
@@ -18,37 +22,48 @@ const NavBar = () => {
   const routes = (
     <>
       <Link
-        className={`flex py-2 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
-          path === "/" && "active"
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold  ${
+          path === "/" && "navActive"
         }`}
         href={"/"}
       >
-        News-feed
+        <Newspaper width={30} height={30}/>
       </Link>
 
       {loggedInUser?._id && (
         <Link
-          className={`flex py-2 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
-            path === "/profile" && "active"
+          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
+            path === "/profile" && "navActive"
           }`}
           href={`/profile?id=${loggedInUser?._id}`}
         >
-          My-profile
+         <CircleUserRound width={30} height={30}/>
+        </Link>
+      )}
+
+      {loggedInUser?._id && (
+        <Link
+          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
+            path === "/friends" && "navActive"
+          }`}
+          href={`/friends`}
+        >
+         <UsersRound width={30} height={30}/>
         </Link>
       )}
 
       <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
-          path === "/galary" && "active"
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
+          path === "/galary" && "navActive"
         }`}
         href={"/galary"}
       >
-        Galary
+        <ImageIcon width={30} height={30}/>
       </Link>
 
-      <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
-          path === "/about-us" && "active"
+      {/* <Link
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
+          path === "/about-us" && "navActive"
         }`}
         href={"/about-us"}
       >
@@ -56,17 +71,15 @@ const NavBar = () => {
       </Link>
 
       <Link
-        className={`flex py-2 my-1 pl-3 items-center gap-3 lg:text-lg lg:font-bold ${
-          path === "/contact-us" && "active"
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
+          path === "/contact-us" && "navActive"
         }`}
         href={"/contact-us"}
       >
         Contact Us
-      </Link>
+      </Link> */}
     </>
   );
-
-
 
   const dispatch = useAppDispatch();
   const logoutHandle = () => {
@@ -80,69 +93,75 @@ const NavBar = () => {
     <>
       <li>
         {loggedInUser ? (
-          <button onClick={logoutHandle}>Logout</button>
+          <button onClick={logoutHandle}><LogOut/> Logout</button>
         ) : (
           <Link href={"/login"}>Login</Link>
         )}
-        {loggedInUser && <Link href={"/user-dashboard/posts"}>Dashboard</Link>}
+        {/* {loggedInUser && <Link href={"/user-dashboard/posts"}>Dashboard</Link>} */}
         {loggedInUser?.role === "admin" && (
-          <Link href={"/admin-dashboard"}>Admin-Dashboard</Link>
+          <Link href={"/admin-dashboard"}><LayoutDashboard/>Dashboard</Link>
         )}
       </li>
     </>
   );
-   
-  const{data}=useGetNotificationQuery(loggedInUser?._id)
-  console.log(data,"notificationData.")
+
+  const [showNotification, setShowNotification] = useState(false);
+  const notification: Tnotification[] = useGetAllNotification();
+  const unreadNotification = notification?.filter(
+    (item) => item.isRead === false
+  );
+
+  const[send]=useMakeNotificationReadMutation()
+  const notificationReadHandle=()=>{
+    if(!loggedInUser?._id || unreadNotification.length===0) return
+    send(loggedInUser?._id)
+  }
 
   return (
     <>
       {/* fro desktop view. */}
-      <div className="bg-transparent sticky top-0 bg-white z-30 text-black py-4">
+      <div className="bg-transparent sticky top-0 bg-white z-30 text-black py-2  shadow-md">
         <Tocenter>
           <div className="flex justify-between items-center">
-
-
             <div className="flex items-center gap-2">
-
-            <details className="dropdown block lg:hidden">
+              <details className="dropdown block lg:hidden">
                 <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
-                <Menu />
+                  <Menu />
                 </summary>
                 <ul className="menu  dropdown-content left-[10px] bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
                   {routes}
                 </ul>
               </details>
 
-
-            
               <Link href={"/"}>
                 <Image alt="Logo" width={50} height={400} src={logo}></Image>
               </Link>
             </div>
 
-
             <ul className="lg:flex hidden  gap-4 text-lg font-semibold">
               {routes}
             </ul>
 
-            <div className=" flex items-center gap-3">
-              
+            <div className=" flex items-center gap-3 relative">
+              <div className="relative">
+                {unreadNotification&&unreadNotification?.length !== 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-400 p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center font-semibold text-sm text-white">
+                    {unreadNotification?.length}
+                  </span>
+                )}
+                <button onClick={() =>{
+                   setShowNotification((p) => !p)
+                   notificationReadHandle()
+                }}>
+                  <Bell size={30} />{" "}
+                </button>
+              </div>
+              {showNotification && (
+                <div className="absolute top-full right-0 w-[310px]">
+                  <Notification />
+                </div>
+              )}
 
-            <details className="dropdown">
-                <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
-                <Bell size={30} />
-                </summary>
-                <ul className="menu  dropdown-content right-[40px] bg-base-100 rounded-box z-[1] w-52 p-2 font-semibold shadow">
-               {
-                data?.data?.map((item,idx)=><li className="mt-3 " key={idx}>{idx+1}. {item.message}</li>)
-               }
-                </ul>
-              </details>
-
-
-                
-              
               <details className="dropdown">
                 <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
                   {loggedInUser ? (

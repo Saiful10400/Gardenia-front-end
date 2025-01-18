@@ -107,7 +107,7 @@ const { loggedInUser, } = useAppSelector(
       category:form.category.value,
       costing:form.costType.value, 
   }).then(res=>{
-    console.log(res.data)
+    
 
     // clear all stuf 
     if(res.data.statusCode===200){
@@ -142,7 +142,7 @@ const { loggedInUser, } = useAppSelector(
         </button>
         <button
           onClick={() => document.getElementById("create_post")?.showModal()}
-          className="text-3xl text-green-500 p-2 rounded-full bg-gray-100"
+          className="text-3xl text-[#25a82b] p-2 rounded-full bg-gray-100"
         >
           <MdPhotoLibrary />
         </button>

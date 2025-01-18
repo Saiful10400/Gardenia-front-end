@@ -4,7 +4,7 @@ import React from 'react';
 import blueTick from "../../../assets/profile/blueTick.png"
 import parser from "html-react-parser"
 const FavouritePostCard = ({data}) => {
-    console.log(data,"favouritepost::")
+    
     return (
         <Link className='shadow-2xl p-1 bg-gray-200 rounded-xl' href={`${process.env.NEXT_PUBLIC_FRONT_END_URL}/post?id=${data?.postId?._id}`}>
         
@@ -37,7 +37,7 @@ const FavouritePostCard = ({data}) => {
             </div>
           </div>
 
-          <h1>{parser(data?.postId?.content.slice(0,50))}...</h1>
+          <h1>{parser(data?.postId?.content.slice(0,50)||"")}...</h1>
           <Image
               src={data?.postId?.img}
               alt="postImage"

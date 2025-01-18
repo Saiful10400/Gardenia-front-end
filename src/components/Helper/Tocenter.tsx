@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Tocenter = ({children}) => {
+const Tocenter = ({children}:{children:React.ReactNode}) => {
     return (
-        <div className='lg:max-w-[1400px] mx-auto'>
+        <div className=''>
             {children}
         </div>
     );

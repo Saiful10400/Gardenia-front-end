@@ -5,11 +5,14 @@ import Tocenter from "@/components/Helper/Tocenter";
 import Loading from "@/components/Shared/Loading/Loading";
 import swal from "sweetalert";
 import {
+  useAllFriendRefQuery,
   useCreateFollowingMutation,
   useGetAuserAllPostQuery,
   useGetAUserQuery,
   useGetFollowerAndFollowingQuery,
   useGetTotalVoteQuery,
+  useModifyFrindRequestMutation,
+  useSendFrindRequestMutation,
   useUnfollowOneMutation,
   useUpdateAUserMutation,
 } from "@/Redux/api/api";
@@ -37,6 +40,8 @@ import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvail
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
 import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
+import {  UserCheck, UserCog, UserPlus } from "lucide-react";
+import { Tfrind } from "@/Types";
 
 const ProfileComponent = () => {
   const searchParams = useSearchParams();
@@ -155,12 +160,33 @@ const ProfileComponent = () => {
   const { data: followerData, isLoading: followerLoading } =
     useGetFollowerAndFollowingQuery(id);
 
+  //retrieve firnd data.
+  const { data: frindDataresponse, isLoading: frindLoading } =
+    useAllFriendRefQuery(id);
+
   //retrieved follower data.
 
   const { data: totalVote, isLoading: voteLoading } = useGetTotalVoteQuery(id);
 
   const [isFollowIng, setIsFollowing] = useState(false);
-
+  const [frindStatus, setFrindStatus] = useState("");
+  const frindData: Tfrind[] = frindDataresponse?.data;
+  useEffect(() => {
+    if (loggedInUser && frindData) {
+      const data: Tfrind | undefined = frindData?.find(
+        (item) =>
+          item.sender._id === loggedInUser?._id ||
+          item.receiver._id === loggedInUser?._id
+      );
+      if (data?.status && data?.sender?._id===loggedInUser?._id) {
+        setFrindStatus("friend");
+      } else if (data?.status === false && data?.sender?._id===loggedInUser?._id) {
+        setFrindStatus("pending");
+      } else {
+        setFrindStatus("notFriend");
+      }
+    }
+  }, [loggedInUser, frindData]);
   useEffect(() => {
     if (loggedInUser && followerData) {
       const data = followerData?.data?.followers?.find(
@@ -186,16 +212,12 @@ const ProfileComponent = () => {
         makeFollow({
           follower: loggedInUser?._id,
           following: userData?._id,
-        }).then((res) => {
-          console.log(res);
-        });
+        }).then((res) => {});
       } else {
         makeUnfollow({
           follower: loggedInUser?._id,
           following: userData?._id,
-        }).then((res) => {
-          console.log(res);
-        });
+        }).then((res) => {});
       }
     } else {
       toast.warning("Please Login first.!", {
@@ -204,11 +226,19 @@ const ProfileComponent = () => {
     }
   };
 
+  const [makeFrindREquest] = useSendFrindRequestMutation();
+  const createFriendRequestHandle = () => {
+    makeFrindREquest({ sender: loggedInUser._id, receiver: id });
+  };
+
+  const [makeUnfrind] = useModifyFrindRequestMutation();
+  const unFriendHandle = () => {
+    makeUnfrind({ sender: loggedInUser._id, receiver: id,status:"reject" });
+  };
+
   // get current user data from the db
   const { data: postData, isLoading: postLoading } =
     useGetAuserAllPostQuery(id);
-
-
 
   // inetiate payment
   const inetiatePayment = () => {
@@ -230,8 +260,7 @@ const ProfileComponent = () => {
   // shwoing modal of payment.
 
   const tnxId = searchParams.get("tnxId");
-  const paymentStatus = searchParams.get("paymentStatus");
-  console.log({ paymentStatus });
+
 
   useEffect(() => {
     if (tnxId) {
@@ -252,13 +281,14 @@ const ProfileComponent = () => {
     postLoading ||
     voteLoading ||
     currentLoading ||
+    frindLoading ||
     followerLoading ? (
     <Loading />
   ) : !data ? (
     <NotAvailableContent />
   ) : (
     <Tocenter>
-      <div className="bg-gray-100">
+      <div className="bg-gray-100 lg:w-[80%] mx-auto ">
         {/* top cover photo and profile photo. */}
 
         <div className="relative h-[40vh]">
@@ -358,10 +388,46 @@ const ProfileComponent = () => {
           </div>
           {/* right button */}
           {!isYou && (
-            <div className="pr-5">
+            <div className="pr-5 flex items-center gap-3">
+              {frindStatus === "friend" && (
+                <button
+                onClick={unFriendHandle}
+                  className="flex bg-[#25a82b] text-white rounded-lg p-1 items-center gap-2 px-2"
+                >
+                  
+                      <UserCheck className="text-xl" />{" "}
+                      <span className="text-lg font-semibold">Friend</span>
+                    
+                </button>
+              )}
+
+              {frindStatus === "pending" && (
+                <button
+                   onClick={unFriendHandle}
+                  className="flex bg-[#25a82b] text-white rounded-lg p-1 items-center  gap-2 px-2"
+                >
+                 
+                      <UserCog className="text-xl" />{" "}
+                      <span className="text-lg font-semibold">Requested</span>
+                   
+                </button>
+              )}
+
+              {frindStatus === "notFriend" && (
+                <button
+                  onClick={createFriendRequestHandle}
+                  className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
+                >
+                 
+                      <UserPlus className="text-xl" />{" "}
+                      <span className="text-lg font-semibold">Add friend</span>
+                 
+                </button>
+              )}
+
               <button
                 onClick={followingHandle}
-                className="flex bg-green-500 text-white rounded-lg p-1 items-center gap-2"
+                className="flex bg-[#25a82b] text-white rounded-lg p-1 items-center gap-2"
               >
                 {isFollowIng ? (
                   <>
@@ -381,7 +447,7 @@ const ProfileComponent = () => {
             <div className="pr-5">
               <button
                 onClick={inetiatePayment}
-                className="flex bg-green-500  text-white rounded-lg p-1 px-2 items-center gap-2"
+                className="flex bg-[#25a82b]  text-white rounded-lg p-1 px-2 items-center gap-2"
               >
                 <span className="text-lg font-semibold">Verify Now</span>
               </button>
@@ -393,10 +459,10 @@ const ProfileComponent = () => {
 
         {/* bio and other post. */}
 
-        <div className="flex  lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
+        <div className="flex overflow-hidden lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
           {/* bio section */}
           <div
-            data-aos="fade-right"
+            data-aos="fade-down"
             className="lg:w-[40%] lg:sticky top-[-100px] "
           >
             <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
@@ -413,7 +479,7 @@ const ProfileComponent = () => {
 
                   <button
                     disabled={bioLoading}
-                    className="flex w-full mt-5 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                    className="flex w-full mt-5 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
                   >
                     <MdModeEditOutline className="text-xl" />{" "}
                     <span className="text-lg font-semibold">Update Bio</span>
@@ -426,7 +492,7 @@ const ProfileComponent = () => {
                   {isYou && (
                     <button
                       onClick={() => setUpdateBio(true)}
-                      className="flex w-full mt-5 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                      className="flex w-full mt-5 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
                     >
                       <MdModeEditOutline className="text-xl" />{" "}
                       <span className="text-lg font-semibold">
@@ -484,7 +550,7 @@ const ProfileComponent = () => {
                     onClick={() =>
                       document.getElementById("Update_modal")?.showModal()
                     }
-                    className="flex w-full mt-4 justify-center gap-3 bg-green-500 text-white rounded-lg p-1 items-center"
+                    className="flex w-full mt-4 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
                   >
                     <MdModeEditOutline className="text-xl" />{" "}
                     <span className="text-lg font-semibold">Edit Details</span>
@@ -503,7 +569,7 @@ const ProfileComponent = () => {
                     onClick={() =>
                       document.getElementById("Followers_modal")?.showModal()
                     }
-                    className="text-lg text-green-500 font-medium"
+                    className="text-lg text-[#25a82b] font-medium"
                   >
                     See all follower
                   </button>
@@ -581,7 +647,7 @@ const ProfileComponent = () => {
           </div>
 
           {/* posts. */}
-          <div data-aos="fade-left" className="lg:w-[60%] w-full ">
+          <div data-aos="fade-down" className="lg:w-[60%] w-full overflow-hidden">
             {/* create a post section */}
 
             {isYou && <PostCreate userData={userData} />}

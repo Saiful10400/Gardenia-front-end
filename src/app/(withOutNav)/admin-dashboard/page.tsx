@@ -3,10 +3,17 @@
 import BarChart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/Barchart/BarChart";
 import LIneChart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/lineChart/LIneChart";
 import Piechart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/Piechart/Piechart";
+import { useDashboardCredentialsQuery } from "@/Redux/api/api";
+import { TdashboardData } from "@/Types";
 import { DollarSign, StickyNote, User } from "lucide-react";
 import React from "react";
 
-const page = () => {
+const DashboardOverView = () => {
+  const { data } = useDashboardCredentialsQuery(null);
+
+  const dashboardCredentials: TdashboardData | undefined = data?.data;
+
+  console.log(dashboardCredentials);
   return (
     <div className="lg:px-14 mb-8">
       {/* top cards. */}
@@ -17,7 +24,9 @@ const page = () => {
 
           <div>
             <h1 className="text-4xl ">Total Pyment</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{860}$</h1>
+            <h1 className="text-3xl mt-3 font-semibold">
+              {dashboardCredentials?.cardData?.totalPayment || 0}$
+            </h1>
           </div>
         </div>
 
@@ -26,7 +35,9 @@ const page = () => {
 
           <div>
             <h1 className="text-4xl ">Total Post</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{50}</h1>
+            <h1 className="text-3xl mt-3 font-semibold">
+              {dashboardCredentials?.cardData?.totalPost || 0}
+            </h1>
           </div>
         </div>
 
@@ -35,7 +46,9 @@ const page = () => {
 
           <div>
             <h1 className="text-4xl ">Total user</h1>
-            <h1 className="text-3xl mt-3 font-semibold">{24}</h1>
+            <h1 className="text-3xl mt-3 font-semibold">
+              {dashboardCredentials?.cardData?.totalUser || 0}
+            </h1>
           </div>
         </div>
       </section>
@@ -47,17 +60,26 @@ const page = () => {
 
         <div className="lg:w-[70%] w-full">
           <LIneChart />
-          <BarChart />
+          <BarChart
+            data={
+              dashboardCredentials?.barChartData as {
+                deletedPost: number;
+                paidPost: number;
+                freePost: number;
+                blockPost: number;
+              }
+            }
+          />
         </div>
 
         {/* piechart secion */}
 
         <div className="lg:w-[30%] w-full">
-          <Piechart />
+          <Piechart data={dashboardCredentials?.pieChartData as { verifyedUser: number; unVerifyedUser: number; }} />
         </div>
       </section>
     </div>
   );
 };
 
-export default page;
+export default DashboardOverView;

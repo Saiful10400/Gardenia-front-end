@@ -12,7 +12,7 @@ const GAlary = () => {
    const sortedImages=postImages?.map(item=>{
     return{src:item.img,width:340,height:178}
    })
-   console.log(sortedImages)
+ 
 
 
 
