@@ -19,6 +19,7 @@ export const baseApi = createApi({
     "frind",
     "category",
     "page",
+    "storyMusic"
   ],
   endpoints: (builder) => {
     return {
@@ -506,12 +507,44 @@ export const baseApi = createApi({
         providesTags: ["page"],
       }),
 
+      addMusic: builder.mutation({
+        query: (payload) => {
+          return {
+            url: "/story/add-music",
+            method: "POST",
+            body: payload,
+          };
+        },
+        invalidatesTags:["storyMusic"]
+      }),
+      getAllMusic: builder.query({
+        query: () => {
+          return {
+            url: `/story/all-music`,
+            method: "GET",
+          };
+        },
+        providesTags: ["storyMusic"],
+      }),
+      createStory: builder.mutation({
+        query: (payload) => {
+          return {
+            url: "/story/create-story",
+            method: "POST",
+            body: payload,
+          };
+        }
+      }),
+
 
     };
   },
 });
 
 export const {
+  useCreateStoryMutation,
+  useAddMusicMutation,
+  useGetAllMusicQuery,
   useAPageMembersQuery,
   useCreateApageMutation,
   useGetAUserAllPageInvitationQuery,
