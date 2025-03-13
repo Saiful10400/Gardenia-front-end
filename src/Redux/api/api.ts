@@ -5,6 +5,7 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BACK_END_URL,
+    // baseUrl: "http://localhost:8000/api",
     prepareHeaders: (header) => {
       if (getToken()) header.set("Authorization", getToken() as string);
     },
@@ -19,7 +20,7 @@ export const baseApi = createApi({
     "frind",
     "category",
     "page",
-    "storyMusic"
+    "storyMusic",
   ],
   endpoints: (builder) => {
     return {
@@ -431,9 +432,6 @@ export const baseApi = createApi({
         providesTags: ["post", "allUser"],
       }),
 
-
-
-
       CreateApage: builder.mutation({
         query: (payload) => {
           return {
@@ -467,10 +465,22 @@ export const baseApi = createApi({
 
       pageInvitationSend: builder.mutation({
         query: (payload) => {
+        
           return {
             url: `/page/invite`,
             method: "POST",
             body: payload,
+          };
+        },
+        invalidatesTags: ["page"],
+      }),
+
+      updatePage: builder.mutation({
+        query: (payload) => {
+          return {
+            url: `/page/update/${payload.id}`,
+            method: "PUT",
+            body: payload.body,
           };
         },
         invalidatesTags: ["page"],
@@ -481,7 +491,6 @@ export const baseApi = createApi({
           return {
             url: `/page/invite/${payload?.id}?accept=${payload?.status}`,
             method: "PUT",
-           
           };
         },
         invalidatesTags: ["page"],
@@ -507,6 +516,16 @@ export const baseApi = createApi({
         providesTags: ["page"],
       }),
 
+      aPageAllPosts: builder.query({
+        query: (id) => {
+          return {
+            url: `/page/posts/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
       addMusic: builder.mutation({
         query: (payload) => {
           return {
@@ -515,7 +534,7 @@ export const baseApi = createApi({
             body: payload,
           };
         },
-        invalidatesTags:["storyMusic"]
+        invalidatesTags: ["storyMusic"],
       }),
       getAllMusic: builder.query({
         query: () => {
@@ -533,10 +552,8 @@ export const baseApi = createApi({
             method: "POST",
             body: payload,
           };
-        }
+        },
       }),
-
-
     };
   },
 });
@@ -552,7 +569,9 @@ export const {
   usePageInvitationSendMutation,
   useResponseInviteMutation,
   useAPageDetailsQuery,
-  
+  useAPageAllPostsQuery,
+
+  useUpdatePageMutation,
   useDeleteANotificationMutation,
   useDashboardCredentialsQuery,
   useDeleteACategoryMutation,

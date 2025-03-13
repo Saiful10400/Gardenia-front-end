@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 
 import Heading from "@tiptap/extension-heading";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -17,7 +16,6 @@ import {
   Italic as ItalicIcon,
   List,
   UnderlineIcon,
-
 } from "lucide-react";
 import { Bold as BoldicIcon } from "lucide-react";
 import { Heading1 as Headingxl } from "lucide-react";
@@ -30,21 +28,23 @@ import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
-import DropDown from "../DropDown/DropDown";
-import { postCategories, PostCosting } from "@/StaticData/CreatePost";
+ 
+ 
 import Button from "../Button/Button";
 import { toast } from "react-toastify";
 import imageUpload from "@/utils/imageUpload";
 import { useCreatePostMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
+import { Tuser } from "@/Types";
+import { usePathname, useSearchParams } from "next/navigation";
 
-const PostCreate = ({ userData }) => {
+const PostCreate = ({ userData }: { userData: Tuser }) => {
   // configure rich-text editor.
-
+ 
   const editor = useEditor({
     extensions: [
       StarterKit,
-     
+
       Underline,
       Bold,
       Italic,
@@ -58,9 +58,6 @@ const PostCreate = ({ userData }) => {
     ],
     // content:"<p>dsfsd</p>"
   });
-
-
-
 
   // image upload handle.
   const [postImage, setPostImage] = useState(null);
@@ -81,48 +78,50 @@ const PostCreate = ({ userData }) => {
       });
   };
 
-
   // submit form.
-const[createPost]=useCreatePostMutation()
-const { loggedInUser, } = useAppSelector(
-  (e) => e.authStore
-);
-  const submitPost=(e)=>{
-    e.preventDefault()
-    if(!postImage){
+
+//# checking if you are in a page.
+const currentRoute=usePathname()
+//# get current page id.
+const searchParams = useSearchParams();
+const id = searchParams.get("id");
+
+console.log({currentRoute,id})
+
+  const [createPost] = useCreatePostMutation();
+  const { loggedInUser } = useAppSelector((e) => e.authStore);
+  const submitPost = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!postImage) {
       toast.error("Please upload Image!", {
         position: "top-right",
-      })
-      return
+      });
+      return;
     }
-   if(!loggedInUser||!editor){
-    return
-   }
-    const form=e.target
-    const text=editor.getHTML()
-    createPost({
-      content:text,
-      img:postImage,
-      creator:loggedInUser._id,
-      category:form.category.value,
-      costing:form.costType.value, 
-  }).then(res=>{
-    
-
-    // clear all stuf 
-    if(res.data.statusCode===200){
-      editor.commands.setContent("")
-      setPostImage(null)
-      form.reset()
-      document.getElementById("create_post")?.close()
-      swal("Success","Post Created", "success");
+    if (!loggedInUser || !editor) {
+      return;
     }
-  })
-
-
-
-  }
-
+    // const form = new FormData(e.currentTarget);   category and costing temporary removed.
+    const text = editor.getHTML();
+    const postData:{content:string,img:string,creator:string,isGroupPost:boolean,group?:string}={
+      content: text,
+      img: postImage,
+      creator: loggedInUser._id,
+      isGroupPost:currentRoute==="/page"
+      // category: form.get("category"),
+      // costing: form.get("costType"),
+    }
+    if(currentRoute==="/page") postData.group=id as string
+    createPost(postData).then((res) => {
+      // clear all stuf
+      if (res.data.statusCode === 200) {
+        editor.commands.setContent("");
+        setPostImage(null);
+        // document.getElementById("create_post")?.close();
+        swal("Success", "Post Created", "success");
+      }
+    });
+  };
 
   return (
     <>
@@ -162,8 +161,38 @@ const { loggedInUser, } = useAppSelector(
           {editor && (
             <section className="mt-5">
               <div>
+                {/* upload image. */}
+
+                <label
+                  htmlFor="ImagePost"
+                  className="relative border border-black w-full flex justify-center items-center h-[200px] rounded-lg mt-4"
+                >
+                  {isPostImageUploading && (
+                    <div className="flex absolute top-0 left-0 bg-[#55555577] items-center justify-center w-full h-full">
+                      <span className="loading loading-dots loading-lg"></span>
+                    </div>
+                  )}
+                  {postImage ? (
+                    <Image
+                      height={200}
+                      width={500}
+                      src={postImage}
+                      alt="PostImage"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    !isPostImageUploading && <ImagePlus size={40} />
+                  )}
+                  <input
+                    onInput={postImageUploadHandle}
+                    hidden
+                    id="ImagePost"
+                    type="file"
+                  />
+                </label>
+
                 {/* buttons. */}
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3 mb-3 mt-5">
                   <button
                     className={`${
                       editor?.isActive("italic")
@@ -297,34 +326,28 @@ const { loggedInUser, } = useAppSelector(
                   >
                     <Redo />
                   </button> */}
-
-
-
                 </div>
 
                 <div>
                   <EditorContent editor={editor} />
                 </div>
 
-{/* upload image. */}
-
-<label  htmlFor="ImagePost" className="relative border border-black w-full flex justify-center items-center h-[200px] rounded-lg mt-4">
-  {isPostImageUploading&&<div className="flex absolute top-0 left-0 bg-[#55555577] items-center justify-center w-full h-full">
-    <span className="loading loading-dots loading-lg"></span>
-    </div>}
-  {postImage?<Image height={200} width={500} src={postImage} alt="PostImage" className="w-full h-full object-cover"/>:!isPostImageUploading&&<ImagePlus size={40}/> }
-  <input onInput={postImageUploadHandle} hidden id="ImagePost" type="file" />
-</label>
-
-{/* catatory selecion drop downs. */}
-<form onSubmit={submitPost}>
-<div className="grid grid-cols-2 mt-4 gap-4">
-  <DropDown name="category" placeholder="Select Categorie " values={postCategories}/>
-  <DropDown name="costType" placeholder="Post Type" values={PostCosting}/>
-</div>
-<Button className="w-full mt-4" text="Post"/>
-</form>
-
+                {/* catatory selecion drop downs. */}
+                <form onSubmit={submitPost}>
+                  {/* <div className="grid grid-cols-2 mt-4 gap-4">
+                    <DropDown
+                      name="category"
+                      placeholder="Select Categorie "
+                      values={postCategories}
+                    />
+                    <DropDown
+                      name="costType"
+                      placeholder="Post Type"
+                      values={PostCosting}
+                    />
+                  </div> */}
+                  <Button className="w-full mt-4" text="Post" />
+                </form>
               </div>
             </section>
           )}

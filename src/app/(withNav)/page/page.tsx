@@ -3,12 +3,13 @@ import Tocenter from "@/components/Helper/Tocenter";
 import Loading from "@/components/Shared/Loading/Loading";
 import {
   useAllFriendRefQuery,
+  useAPageAllPostsQuery,
   useAPageDetailsQuery,
   useAPageMembersQuery,
   usePageInvitationSendMutation,
-  useResponseInviteMutation,
+  useUpdatePageMutation,
 } from "@/Redux/api/api";
-import { Plus } from "lucide-react";
+import { Edit,  Plus } from "lucide-react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import React from "react";
@@ -17,11 +18,17 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   useDisclosure,
 } from "@nextui-org/react";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
+import { MdEmail, MdModeEditOutline } from "react-icons/md";
+import { PiStudentBold } from "react-icons/pi";
+import { IoHomeSharp } from "react-icons/io5";
+import { FaPhoneAlt } from "react-icons/fa";
+import PostCreate from "@/components/Shared/PostCreate/PostCreate";
+import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
+import PostCard from "@/components/Shared/PostCard/PostCard";
 
 type TpageData = {
   _id: string;
@@ -82,6 +89,11 @@ const SinglePageDetails = () => {
   const page: TpageData = data?.data?.result;
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenUpdatePage,
+    onOpen: onOpenUpdatePage,
+    onOpenChange: onOpenChangeUpdatePage,
+  } = useDisclosure();
 
   const { loggedInUser } = useAppSelector((s) => s.authStore);
 
@@ -95,12 +107,38 @@ const SinglePageDetails = () => {
   });
 
   const { data: members } = useAPageMembersQuery(id);
-console.log(members)
+
   // invitation handle.
   const [sendInvitation] = usePageInvitationSendMutation();
   const handleInvite = (userId: string) => {
+   
     sendInvitation({ page: id, user: userId });
   };
+
+  // bio and page posts handle.
+
+  const isYou = true;
+  
+ 
+  
+ 
+
+
+// update page bio.
+const[updatePage]=useUpdatePageMutation()
+
+const pageDetailsUpdateHandle=(e)=>{
+  e.preventDefault()
+  const description=e.target.pageBio.value
+  updatePage({body:{description},id})
+}
+
+
+
+// retrieve page all posts.
+const {data:pageAllPosts}=useAPageAllPostsQuery(id)
+ 
+
 
   return isLoading ? (
     <Loading />
@@ -119,7 +157,7 @@ console.log(members)
           ></Image>
         </div>
 
-        {/* profile section. */}
+        {/* profile and cover photos section. */}
 
         <div className="flex flex-col lg:flex-row items-center lg:pb-0 pb-4 bg-white justify-between ">
           <div className="flex items-center justify-end gap-5 lg:gap-14">
@@ -141,30 +179,75 @@ console.log(members)
               </h1>
             </div>
           </div>
-
-          <Button
-            onPress={onOpen}
-            className="lg:mr-5 bg-[#22c55e] font-semibold text-lg text-white flex items-center px-2 py-1 rounded-md"
+          {/* top button section. */}
+          <section className="flex items-center gap-5">
+            {" "}
+            <Button
+              onPress={onOpenChangeUpdatePage}
+              className="lg:mr-5 bg-[#22c55e] font-semibold text-lg text-white flex items-center px-2 py-1 rounded-md"
+            >
+              <Edit /> Edit
+            </Button>
+            <Button
+              onPress={onOpen}
+              className="lg:mr-5 bg-[#22c55e] font-semibold text-lg text-white flex items-center px-2 py-1 rounded-md"
+            >
+              <Plus /> Invite
+            </Button>
+          </section>
+          {/* update modal. */}
+          <Modal
+            isOpen={isOpenUpdatePage}
+            onOpenChange={onOpenChangeUpdatePage}
           >
-            <Plus /> Invite
-          </Button>
-
+            <ModalContent>
+              {() => (
+                <>
+                  <ModalHeader className="flex flex-col gap-1">
+                    Update Page Information
+                  </ModalHeader>
+                  <ModalBody>
+                    <form onSubmit={pageDetailsUpdateHandle} className="w-full">
+                      <textarea defaultValue={data?.data?.result?.description}
+                      name="pageBio"
+                        className="resize-none w-full min-h-[200px] pl-2 py-2 border border-gray-400 rounded-md focus:outline-none"
+                        placeholder="Page bio."
+                      />
+                      <Button type="submit" className="lg:mr-5 bg-[#22c55e] font-semibold text-sm text-white flex items-center px-1 py-1 rounded-md">
+                        Update
+                      </Button>
+                    </form>
+                  </ModalBody>
+                </>
+              )}
+            </ModalContent>
+          </Modal>
           <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
               {() => (
                 <>
                   <ModalHeader className="flex flex-col gap-1">
-                    Friend list
+                    Friend list dsfsdfsdf
                   </ModalHeader>
                   <ModalBody>
                     {allFriends?.map((item: Tuser) => {
-                        const hidden=members?.data?.activeUser?.find(element=>element?.user===item?._id)?true:false
-                        const invited=members?.data?.pendingUser?.find(element=>element?.user===item?._id)?true:false
-                        
+                      const hidden = members?.data?.activeUser?.find(
+                        (element) => element?.user === item?._id
+                      )
+                        ? true
+                        : false;
+                      const invited = members?.data?.pendingUser?.find(
+                        (element) => element?.user === item?._id
+                      )
+                        ? true
+                        : false;
+
                       return (
-                        <div 
+                        <div
                           key={item._id}
-                          className={`flex justify-between items-center rounded-md p-2 hover:bg-gray-300 ${hidden?"hidden":"block"}`}
+                          className={`flex justify-between items-center rounded-md p-2 hover:bg-gray-300 ${
+                            hidden ? "hidden" : "block"
+                          }`}
                         >
                           {" "}
                           <Image
@@ -175,8 +258,14 @@ console.log(members)
                             src={item.img}
                           ></Image>
                           <h1 className="font-semibold">{item.name}</h1>
-                          <button disabled={invited}  onClick={()=>handleInvite(item._id)} className={`lg:mr-5 ${invited?"bg-gray-400":"bg-[#22c55e]"} font-semibold text-lg text-white flex items-center px-2 py-1 rounded-md`}>
-                            {invited?"invited":"invite"}
+                          <button
+                            disabled={invited}
+                            onClick={() => handleInvite(item._id)}
+                            className={`lg:mr-5 ${
+                              invited ? "bg-gray-400" : "bg-[#22c55e]"
+                            } font-semibold text-lg text-white flex items-center px-2 py-1 rounded-md`}
+                          >
+                            {invited ? "invited" : "invite"}
                           </button>
                         </div>
                       );
@@ -186,6 +275,41 @@ console.log(members)
               )}
             </ModalContent>
           </Modal>
+        </div>
+
+        {/* bio and page post section. */}
+
+        <div className="flex overflow-hidden lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
+          {/* posts. */}
+          <div
+            data-aos="fade-down"
+            className="lg:w-[60%] w-full overflow-hidden"
+          >
+            {/* create a post section */}
+
+            {isYou && <PostCreate userData={loggedInUser} />}
+
+            {/* post cards. */}
+
+            <section>
+              <div className="grid grid-cols-1 mt-4 gap-5">
+                {pageAllPosts?.data?.map((item, idx) => (
+                  <PostCard data-aos="fade-up" key={idx} data={item} />
+                ))}
+              </div>
+            </section>
+          </div>
+
+          {/* bio section */}
+          <div
+            data-aos="fade-down"
+            className="lg:w-[40%] lg:sticky top-[-100px] "
+          >
+            <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
+              <h1 className="text-xl font-semibold">About</h1>
+              <p className="text-center mt-4">{data?.data?.result?.description}</p>
+            </div>
+          </div>
         </div>
       </div>
     </Tocenter>

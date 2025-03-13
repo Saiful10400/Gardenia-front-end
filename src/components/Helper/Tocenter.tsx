@@ -2,7 +2,7 @@ import React from 'react';
 
 const Tocenter = ({children}:{children:React.ReactNode}) => {
     return (
-        <div className=''>
+        <div className='bg-[#f2f4f7]'>
             {children}
         </div>
     );

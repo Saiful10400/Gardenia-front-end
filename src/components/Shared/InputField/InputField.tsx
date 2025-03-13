@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { ChangeEvent, FC } from "react";
 
@@ -10,6 +10,7 @@ interface InputFieldProps {
   disabled?: boolean;
   name?: string;
   dValue?: string;
+  borderBottom?: boolean;
   valueUpdate?: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => void; // Handles both input and textarea
@@ -22,7 +23,8 @@ const InputField: FC<InputFieldProps> = ({
   valueUpdate,
   className,
   name,
-  dValue
+  dValue,
+  borderBottom,
 }) => {
   const propsConfigure = () => {
     if (altimeValue) return { value: altimeValue };
@@ -45,7 +47,14 @@ const InputField: FC<InputFieldProps> = ({
         />
       ) : (
         <input
-        name={name}
+          name={name}
+          style={{
+            border: borderBottom ? "none" : "",
+            borderBottom: borderBottom ? "2px solid #4b5563" : "",
+            borderRadius: borderBottom ? "0" : "",
+            background: borderBottom ? "transparent" : "",
+            padding: borderBottom ? "5px 3px" : "",
+          }}
           required
           disabled={disabled}
           defaultValue={dValue}

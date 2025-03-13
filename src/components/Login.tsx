@@ -73,18 +73,19 @@ const move=useRouter()
 
   return (
     <AuthenticationBg>
-      <div className="lg:w-[500px] px-6 py-8 h-[550px] rounded-3xl bg-white">
-        <h1 className="text-5xl font-semibold">Login</h1>
-        <p className="font-semibold mt-5 mb-4">
-          Doesn't have an account yet?{" "}
+      <div className="lg:w-[500px] px-6 py-8 h-[550px] rounded-3xl">
+        <h1 className="text-5xl font-semibold text-center">Login</h1>
+        <p className="font-semibold mt-5 mb-4 text-center">
+          {"Doesn't have an account yet? "}
           <Link className="underline text-green-400" href={"/signup"}>
             Sign Up
           </Link>
         </p>
         <form onSubmit={formSubmitHandle} className="mt-12">
-          <InputField dValue={loginCredentials.email} name="email" className="border-2" placeholder="E-mail" type="email" />
+          <InputField  borderBottom={true} dValue={loginCredentials.email} name="email" className="border-2" placeholder="E-mail" type="email" />
           <div className="mt-4">
             <InputField
+            borderBottom={true}
             dValue={loginCredentials.password}
               className="border-2"
               placeholder="Password"

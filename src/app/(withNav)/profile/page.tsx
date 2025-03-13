@@ -40,7 +40,7 @@ import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvail
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
 import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
-import {  UserCheck, UserCog, UserPlus } from "lucide-react";
+import { UserCheck, UserCog, UserPlus } from "lucide-react";
 import { Tfrind } from "@/Types";
 
 const ProfileComponent = () => {
@@ -178,9 +178,12 @@ const ProfileComponent = () => {
           item.sender._id === loggedInUser?._id ||
           item.receiver._id === loggedInUser?._id
       );
-      if (data?.status && data?.sender?._id===loggedInUser?._id) {
+      if (data?.status && data?.sender?._id === loggedInUser?._id) {
         setFrindStatus("friend");
-      } else if (data?.status === false && data?.sender?._id===loggedInUser?._id) {
+      } else if (
+        data?.status === false &&
+        data?.sender?._id === loggedInUser?._id
+      ) {
         setFrindStatus("pending");
       } else {
         setFrindStatus("notFriend");
@@ -233,13 +236,13 @@ const ProfileComponent = () => {
 
   const [makeUnfrind] = useModifyFrindRequestMutation();
   const unFriendHandle = () => {
-    makeUnfrind({ sender: loggedInUser._id, receiver: id,status:"reject" });
+    makeUnfrind({ sender: loggedInUser._id, receiver: id, status: "reject" });
   };
 
   // get current user data from the db
   const { data: postData, isLoading: postLoading } =
     useGetAuserAllPostQuery(id);
-
+  console.log(postData, "post from user profile.");
   // inetiate payment
   const inetiatePayment = () => {
     if (loggedInUser) {
@@ -260,7 +263,6 @@ const ProfileComponent = () => {
   // shwoing modal of payment.
 
   const tnxId = searchParams.get("tnxId");
-
 
   useEffect(() => {
     if (tnxId) {
@@ -391,25 +393,21 @@ const ProfileComponent = () => {
             <div className="pr-5 flex items-center gap-3">
               {frindStatus === "friend" && (
                 <button
-                onClick={unFriendHandle}
+                  onClick={unFriendHandle}
                   className="flex bg-[#25a82b] text-white rounded-lg p-1 items-center gap-2 px-2"
                 >
-                  
-                      <UserCheck className="text-xl" />{" "}
-                      <span className="text-lg font-semibold">Friend</span>
-                    
+                  <UserCheck className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Friend</span>
                 </button>
               )}
 
               {frindStatus === "pending" && (
                 <button
-                   onClick={unFriendHandle}
+                  onClick={unFriendHandle}
                   className="flex bg-[#25a82b] text-white rounded-lg p-1 items-center  gap-2 px-2"
                 >
-                 
-                      <UserCog className="text-xl" />{" "}
-                      <span className="text-lg font-semibold">Requested</span>
-                   
+                  <UserCog className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Requested</span>
                 </button>
               )}
 
@@ -418,10 +416,8 @@ const ProfileComponent = () => {
                   onClick={createFriendRequestHandle}
                   className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
                 >
-                 
-                      <UserPlus className="text-xl" />{" "}
-                      <span className="text-lg font-semibold">Add friend</span>
-                 
+                  <UserPlus className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Add friend</span>
                 </button>
               )}
 
@@ -647,7 +643,10 @@ const ProfileComponent = () => {
           </div>
 
           {/* posts. */}
-          <div data-aos="fade-down" className="lg:w-[60%] w-full overflow-hidden">
+          <div
+            data-aos="fade-down"
+            className="lg:w-[60%] w-full overflow-hidden"
+          >
             {/* create a post section */}
 
             {isYou && <PostCreate userData={userData} />}

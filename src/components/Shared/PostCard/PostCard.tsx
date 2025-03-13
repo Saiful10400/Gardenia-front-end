@@ -22,6 +22,8 @@ import blueTick from "../../../assets/profile/blueTick.png";
 import CommentCard from "./sub/CommentCard";
 import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
+import dateFormatter from "@/utils/dateFormatter";
+import { usePathname } from "next/navigation";
 
 const PostCard = ({ data }) => {
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
@@ -113,6 +115,10 @@ const PostCard = ({ data }) => {
   const canYousee =
     loggedInUser?.verifyed || data?.post?.creator?._id === loggedInUser?._id;
 
+  // currnt route path name.
+  const currentRoute=usePathname()
+  const isInHomeRoute=currentRoute==="/"
+
   return (
     <div
       className={
@@ -128,41 +134,103 @@ const PostCard = ({ data }) => {
 
       <section className="bg-white pt-6 pb-4  rounded-xl shadow-md ">
         <div className="flex justify-between items-start p-6 py-0">
-          <div className="flex items-start  gap-2">
-          <Link href={`/profile?id=${data?.post?.creator?._id}`}>
-            <Image
-              src={data?.post?.creator?.img}
-              alt="postImage"
-              width={100}
-              height={100}
-              className="w-[40px] h-[40px] rounded-full"
-            />
-            </Link>
-            <div>
-              <Link href={`/profile?id=${data?.post?.creator?._id}`}  className="font-bold text-base flex items-end gap-1 ">
-                <span> {data?.post?.creator?.name}</span>{" "}
-                {data?.post?.creator?.verifyed && (
-                  <Image
-                    className="w-[20px]  h-[20px] box-content"
-                    src={blueTick}
-                    width={200}
-                    height={200}
-                    alt="blueTick"
-                  />
-                )}
-                {data?.post?.isBlock && (
-                  <span className="font-bold text-red-500">Blocked</span>
-                )}
+          {/* condition group and profile post. */}
+
+          {data?.post.isGroupPost && isInHomeRoute ? (
+            <div className="flex items-start  gap-2">
+              <div className="relative">
+              <Link href={`/page?id=${data?.post?.group?._id}`}>
+                <Image
+                  src={data?.post?.group?.logo}
+                  alt="postImage"
+                  width={100}
+                  height={100}
+                  className="w-[40px] h-[40px] rounded-full"
+                />
               </Link>
-              <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
-                <span>10h</span>{" "}
-                <span className="font-normal">{data?.post?.costing}</span>
-              </h1>
+              <Link className="absolute -bottom-1 -right-1" href={`/profile?id=${data?.post?.creator?._id}`}>
+                <Image
+                  src={data?.post?.creator?.img}
+                  alt="postImage"
+                  width={100}
+                  height={100}
+                  className="w-[25px] h-[25px] rounded-full"
+                />
+              </Link>
+              </div>
+              <div className="ml-1">
+                <Link
+                  href={`/page?id=${data?.post?.group?._id}`}
+                  className="font-bold text-base flex items-end gap-1 "
+                >
+                  <span> {data?.post?.group?.name}</span>{" "}
+                 
+                </Link>
+                <Link
+                  href={`/profile?id=${data?.post?.creator?._id}`}
+                  className="font-bold text-base flex items-end gap-1 "
+                >
+                  <span className="font-semibold text-xs text-gray-600"> {data?.post?.creator?.name}</span>
+                  {data?.post?.creator?.verifyed && (
+                    <Image
+                      className="w-[15px]  h-[15px] box-content"
+                      src={blueTick}
+                      width={200}
+                      height={200}
+                      alt="blueTick"
+                    />
+                  )}
+                  {/* {data?.post?.isBlock && (
+        <span className="font-bold text-red-500">Blocked</span>
+      )} */}
+                </Link>
+                <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
+                  <span className="text-xs font-normal">{dateFormatter(data?.post?.createdAt)}</span>{" "}
+                  {/* <span className="font-normal">{data?.post?.costing}</span> */}
+                </h1>
+              </div>
             </div>
-          </div>
-          <h1 className="bg-gray-300 rounded-[3px] text-gray-800 text-sm p-1 font-semibold">
+          ) : (
+            <div className="flex items-start  gap-2">
+              <Link href={`/profile?id=${data?.post?.creator?._id}`}>
+                <Image
+                  src={data?.post?.creator?.img}
+                  alt="postImage"
+                  width={100}
+                  height={100}
+                  className="w-[40px] h-[40px] rounded-full"
+                />
+              </Link>
+              <div>
+                <Link
+                  href={`/profile?id=${data?.post?.creator?._id}`}
+                  className="font-bold text-base flex items-end gap-1 "
+                >
+                  <span> {data?.post?.creator?.name}</span>{" "}
+                  {data?.post?.creator?.verifyed && (
+                    <Image
+                      className="w-[20px]  h-[20px] box-content"
+                      src={blueTick}
+                      width={200}
+                      height={200}
+                      alt="blueTick"
+                    />
+                  )}
+                  {/* {data?.post?.isBlock && (
+                  <span className="font-bold text-red-500">Blocked</span>
+                )} */}
+                </Link>
+                <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
+                <span className="text-xs font-normal">{dateFormatter(data?.post?.createdAt)}</span>{" "}
+                  {/* <span className="font-normal">{data?.post?.costing}</span> */}
+                </h1>
+              </div>
+            </div>
+          )}
+
+          {/* <h1 className="bg-gray-300 rounded-[3px] text-gray-800 text-sm p-1 font-semibold">
             {data?.post?.category}
-          </h1>
+          </h1> */}
         </div>
         <div className="PostContainer p-6 py-0 mt-3 ">
           {parse(
@@ -185,7 +253,7 @@ const PostCard = ({ data }) => {
           alt="postImage"
           height={1080}
           width={1920}
-          className="w-full mb-3 object-cover h-full mt-4"
+          className="w-full h-[500px] mb-3 object-cover   mt-4"
         />
 
         {/* reaction section */}
@@ -286,19 +354,19 @@ const PostCard = ({ data }) => {
                         alt="blueTick"
                       />
                     )}
-                    {data?.post?.isBlock && (
+                    {/* {data?.post?.isBlock && (
                       <span className="font-bold text-red-500">Blocked</span>
-                    )}
+                    )} */}
                   </div>
                   <h1 className="font-semibold flex gap-2 items-end text-gray-700 text-[14px]">
                     <span>10h</span>{" "}
-                    <span className="font-normal">{data?.post?.costing}</span>
+                    {/* <span className="font-normal">{data?.post?.costing}</span> */}
                   </h1>
                 </div>
               </div>
-              <h1 className="bg-gray-300 rounded-[3px] text-gray-800 text-sm p-1 font-semibold">
+              {/* <h1 className="bg-gray-300 rounded-[3px] text-gray-800 text-sm p-1 font-semibold">
                 {data?.post?.category}
-              </h1>
+              </h1> */}
             </div>
             <div className="PostContainer p-6 py-0 mt-3 ">
               {parse(
