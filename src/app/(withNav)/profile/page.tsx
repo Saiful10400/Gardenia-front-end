@@ -242,7 +242,7 @@ const ProfileComponent = () => {
   // get current user data from the db
   const { data: postData, isLoading: postLoading } =
     useGetAuserAllPostQuery(id);
-  console.log(postData, "post from user profile.");
+ 
   // inetiate payment
   const inetiatePayment = () => {
     if (loggedInUser) {

@@ -85,8 +85,7 @@ const currentRoute=usePathname()
 //# get current page id.
 const searchParams = useSearchParams();
 const id = searchParams.get("id");
-
-console.log({currentRoute,id})
+ 
 
   const [createPost] = useCreatePostMutation();
   const { loggedInUser } = useAppSelector((e) => e.authStore);

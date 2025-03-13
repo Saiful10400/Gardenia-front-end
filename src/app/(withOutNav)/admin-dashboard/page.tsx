@@ -12,8 +12,7 @@ const DashboardOverView = () => {
   const { data } = useDashboardCredentialsQuery(null);
 
   const dashboardCredentials: TdashboardData | undefined = data?.data;
-
-  console.log(dashboardCredentials);
+ 
   return (
     <div className="lg:px-14 mb-8">
       {/* top cards. */}

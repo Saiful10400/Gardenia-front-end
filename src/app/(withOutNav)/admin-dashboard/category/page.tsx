@@ -12,7 +12,7 @@ const Category = () => {
   const deleteCategoryHandle = (id: string) => {
     deleteCategory(id);
   };
-  console.log(data);
+ 
   return (
     <div className=" grid grid-cols-4 gap-4">
       {category?.map((item) => {

@@ -32,7 +32,7 @@ const ActiveFriends = () => {
 
   const activeUserId = activeFriends?.map((item) => item._id);
 
-  console.log(activeUserId);
+ 
 
   return (
     <div className="mt-3">

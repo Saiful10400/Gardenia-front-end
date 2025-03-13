@@ -5,7 +5,7 @@ import Button from '@/components/Shared/Button/Button';
 import { useUpdateAUserMutation } from '@/Redux/api/api';
 import demoCoverImage from "../../../../assets/dashboard/demoCover.jpg"
 const DashboardUserDetailsCard = ({data}) => {
-console.log(data)
+ 
 // role update hadle.
 const[userUpdate]=useUpdateAUserMutation()
 
