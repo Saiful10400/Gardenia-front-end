@@ -1,7 +1,7 @@
 const AuthenticationBloobs = ({style}:{style:string}) => {
   return (
     <svg
-    className={"bg-transparent fixed top-0 -right-[400px] w-[1100px] z-50 rotate-[150deg]"}
+    className={"  fixed top-0 -right-[400px] w-[1100px] z-10 rotate-[150deg]"}
       viewBox="0 0 500 500"
       xmlns="http://www.w3.org/2000/svg"
       width="100%"

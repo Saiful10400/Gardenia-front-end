@@ -32,14 +32,12 @@ const ActiveFriends = () => {
 
   const activeUserId = activeFriends?.map((item) => item._id);
 
- 
-
   return (
     <div className="mt-3">
       <HomepageTittles text="Friends" />
       <div className="mt-3 flex flex-col gap-2">
         {allFriends?.map((item) => {
-          const isActive=activeUserId?.includes(item._id)
+          const isActive = activeUserId?.includes(item._id);
           return (
             <Link
               key={item?._id}
@@ -54,9 +52,9 @@ const ActiveFriends = () => {
                   width={50}
                   alt="user image"
                 />
-                {
-                  isActive&&<span className="w-[12px] h-[12px] rounded-full absolute bottom-[1px] right-[1px] border-2 bg-green-500"></span>
-                }
+                {isActive && (
+                  <span className="w-[12px] h-[12px] rounded-full absolute bottom-[1px] right-[1px] border-2 bg-green-500"></span>
+                )}
               </div>
               <h1 className="text-base">{item?.name}</h1>
             </Link>

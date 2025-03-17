@@ -6,7 +6,7 @@ import parser from "html-react-parser"
 const FavouritePostCard = ({data}) => {
     
     return (
-        <Link className='shadow-2xl p-1 bg-gray-200 rounded-xl' href={`${process.env.NEXT_PUBLIC_FRONT_END_URL}/post?id=${data?.postId?._id}`}>
+        <div className='shadow-md   bg-gray-300 rounded-xl p-3'>
         
         <div className="flex items-start  gap-2">
             <Image
@@ -43,9 +43,9 @@ const FavouritePostCard = ({data}) => {
               alt="postImage"
               width={500}
               height={500}
-              className="w-full rounded-xl object-cover h-[200px]"
+              className="w-full rounded-md object-cover h-[200px]"
             />
-        </Link>
+        </div>
     );
 };
 

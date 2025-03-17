@@ -4,7 +4,7 @@ import AuthenticationBg from "@/components/Helper/AuthenticationBg";
 import Button from "@/components/Shared/Button/Button";
 import InputField from "@/components/Shared/InputField/InputField";
 import { useSignupMutation } from "@/Redux/api/api";
-import imageUpload, { imageUploadToDb } from "@/utils/imageUpload";
+import  { imageUploadToDb } from "@/utils/imageUpload";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -85,10 +85,10 @@ const Signup = () => {
     <div>
       <AuthenticationBg>
         <div className="lg:w-[500px] px-6 py-8  rounded-3xl bg-white">
-          <h1 className="text-5xl font-semibold">Signup</h1>
-          <p className="font-semibold mt-5 mb-4">
+          <h1 className="text-5xl text-center font-semibold">Signup</h1>
+          <p className="font-semibold text-center mt-5 mb-4">
             Have an account?{" "}
-            <Link className="underline text-green-400" href={"/login"}>
+            <Link className="underline text-green-900" href={"/login"}>
               Login
             </Link>
           </p>
@@ -131,27 +131,27 @@ const Signup = () => {
             onSubmit={formSubmitHandle}
             className="mt-12 flex flex-col gap-4"
           >
-            <InputField
+            <InputField borderBottom={true}
               className="border-2"
               placeholder="Full name"
               type="text"
               name="name"
             />
 
-            <InputField
+            <InputField borderBottom={true}
               className="border-2"
               placeholder="E-mail"
               type="email"
               name="email"
             />
-            <InputField
+            <InputField borderBottom={true}
               className="border-2"
               placeholder="Phone number"
               type="number"
               name="phone"
             />
 
-            <InputField
+            <InputField borderBottom={true}
               className="border-2"
               placeholder="Password"
               type="password"

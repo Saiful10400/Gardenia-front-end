@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    // baseUrl: process.env.NEXT_PUBLIC_BACK_END_URL,
-    baseUrl: "http://localhost:8000/api",
+    baseUrl: process.env.NEXT_PUBLIC_BACK_END_URL,
+    // baseUrl: "http://localhost:8000/api",
     prepareHeaders: (header) => {
       if (getToken()) header.set("Authorization", getToken() as string);
     },
@@ -563,6 +563,29 @@ export const baseApi = createApi({
           };
         },
       }),
+
+      peopleYouMayKnow: builder.query({
+        query: (id) => {
+          return {
+            url: `/friend/peopleYouMayknow/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      }),
+
+      existingFriends: builder.query({
+        query: (id) => {
+          return {
+            url: `/friend/existingFriends/${id}`,
+            method: "GET",
+          };
+        },
+        providesTags: ["page"],
+      })
+
+
+
     };
   },
 });
@@ -580,6 +603,8 @@ export const {
   useAPageDetailsQuery,
   useAPageAllPostsQuery,
   useAUserAllFollowingPagesQuery,
+  usePeopleYouMayKnowQuery,
+  useExistingFriendsQuery,
 
   useUpdatePageMutation,
   useDeleteANotificationMutation,

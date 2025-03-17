@@ -1,7 +1,9 @@
 "use client";
 import Button from "@/components/Shared/Button/Button";
 import InputField from "@/components/Shared/InputField/InputField";
+import DashboardTable from "@/components/ui/DashboardTable";
 import { useAddMusicMutation, useGetAllMusicQuery } from "@/Redux/api/api";
+import { TtableData } from "@/Types";
 import { imageUploadToDb } from "@/utils/imageUpload";
 import Image from "next/image";
 import React from "react";
@@ -40,34 +42,48 @@ const Story = () => {
 
   const { data } = useGetAllMusicQuery(null);
 
+  const tableData: TtableData = {
+      name: "story",
+      tittle: "All Story Music",
+      createRoute: " ",
+      keyValue: {
+        "Music Art": "musicArt",
+        "Track Name": "name",
+        "Date":"createdAt"
+         
+      },
+    };
+
+
   return (
     <>
       <form
         onSubmit={formSubmitHandle}
-        className="lg:w-[30%] flex flex-col gap-3 bg-white rounded-md p-2"
+        className="w-full flex flex-col gap-3 bg-white rounded-md p-4 mb-3"
       >
-        <InputField
+        <div className="flex flex-col lg:flex-row justify-between"><InputField
           name="name"
-          className="border-2"
+          className="border-2 w-full"
           placeholder="Music name"
           type="text"
         />
         <InputField
           name="coverArt"
-          className="border-2"
+          className="border-2 w-full"
           placeholder="Music cover art"
           type="file"
         />
         <InputField
           name="audio"
-          className="border-2"
+          className="border-2 w-full"
           placeholder="Music file"
           type="file"
-        />
-        <Button className="w-full mt-5 text-lg" text="Upload" />
+        /></div>
+        <Button className="  w-max mt-5 text-base " text="Upload" />
       </form>
+      <DashboardTable data={tableData}/>
 
-      <div className="grid lg:grid-cols-7 gap-2 mt-4">
+      {/* <div className="grid lg:grid-cols-7 gap-2 mt-4">
         {data?.data.map((item) => (
           <div key={item._id} className="p-1 bg-white rounded-md text-center">
             {item.name}
@@ -77,7 +93,7 @@ const Story = () => {
             </audio>
           </div>
         ))}
-      </div>
+      </div> */}
     </>
   );
 };

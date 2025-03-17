@@ -7,6 +7,7 @@ import swal from "sweetalert";
 import {
   useAllFriendRefQuery,
   useCreateFollowingMutation,
+  useExistingFriendsQuery,
   useGetAuserAllPostQuery,
   useGetAUserQuery,
   useGetFollowerAndFollowingQuery,
@@ -279,6 +280,27 @@ const ProfileComponent = () => {
     }
   }, [tnxId]);
 
+
+
+
+
+// checking is he is my 
+const{data:MyfriendList}=useExistingFriendsQuery(loggedInUser?._id)
+
+const isThisMyFriend=MyfriendList?.data?.includes(id)
+ 
+
+
+
+
+
+
+
+
+
+
+
+
   return isLoading ||
     postLoading ||
     voteLoading ||
@@ -412,7 +434,14 @@ const ProfileComponent = () => {
               )}
 
               {frindStatus === "notFriend" && (
-                <button
+                isThisMyFriend?<span
+                 
+                className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
+              >
+                <UserCheck className="text-xl" />{" "}
+                <span className="text-lg font-semibold">Friend</span>
+              </span>
+              :<button
                   onClick={createFriendRequestHandle}
                   className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
                 >

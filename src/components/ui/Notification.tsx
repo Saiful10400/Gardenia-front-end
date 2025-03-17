@@ -8,7 +8,7 @@ import SingleNotificationCard, {
 const Notification = () => {
   const notification = useGetAllNotification();
   return (
-    <div className="bg-gray-100 p-1 flex flex-col gap-3 h-[300px] overflow-x-hidden">
+    <div className="bg-gray-300 rounded-md p-1 flex flex-col gap-3 pt-4 min-h-[300px] overflow-x-hidden">
       {notification?.map((item: Tnotification) => (
         <SingleNotificationCard key={item._id} notification={item} />
       ))}

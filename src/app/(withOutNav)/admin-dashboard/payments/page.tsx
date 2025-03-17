@@ -1,22 +1,27 @@
 "use client"
 
-import DashboardPaymentCard from "@/components/WithoutNav/Shared/DashboardPaymentCard/DashboardPaymentCard";
-import { useAllPaymentHistoryQuery } from "@/Redux/api/api";
+import DashboardTable from "@/components/ui/DashboardTable";
+ 
+import { TtableData } from "@/Types";
 
 const Payment = () => {
-const {data:transectionData}=useAllPaymentHistoryQuery(null)
  
-    return (
-        <div>
-            
+ const tableData: TtableData = {
+    name: "payments",
+    tittle: "All Payments",
+    createRoute: " ",
+    keyValue: {
+      "Transection Id": "tnxId",
+      "Amount": "amount",
+      "Currency":"currency",
+      "Payment Method":"paymentMethod",
+      "Transection Date":"createdAt"
+       
+    },
+  };
 
-<div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-{transectionData?.data?.map((item,idx)=><DashboardPaymentCard key={idx} data={item}/>)}
-</div>
-
-
-        </div>
-    );
+ 
+  return  <DashboardTable data={tableData}/>
 };
 
 export default Payment;

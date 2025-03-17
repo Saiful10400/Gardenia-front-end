@@ -122,7 +122,7 @@ const NavBar = () => {
       {/* fro desktop view. */}
       <div className="bg-transparent sticky top-0 bg-white z-30 text-black py-2  shadow-md">
         <Tocenter>
-          <div className="flex justify-between items-center">
+          <div className="flex bg-white justify-between items-center">
             <div className="flex items-center gap-2">
               <details className="dropdown block lg:hidden">
                 <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent m-1">
