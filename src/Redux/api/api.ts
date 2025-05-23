@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_BACK_END_URL,
-    // baseUrl: "http://localhost:8000/api",
+    // baseUrl: process.env.NEXT_PUBLIC_BACK_END_URL,
+    baseUrl: "http://localhost:8000/api",
     prepareHeaders: (header) => {
       if (getToken()) header.set("Authorization", getToken() as string);
     },
@@ -582,6 +582,16 @@ export const baseApi = createApi({
           };
         },
         providesTags: ["page"],
+      }),
+
+      getAllStories: builder.query({
+        query: () => {
+          return {
+            url: `/story/get-story`,
+            method: "GET",
+          };
+        },
+        providesTags: ["storyMusic"],
       })
 
 
@@ -605,6 +615,7 @@ export const {
   useAUserAllFollowingPagesQuery,
   usePeopleYouMayKnowQuery,
   useExistingFriendsQuery,
+  useGetAllStoriesQuery,
 
   useUpdatePageMutation,
   useDeleteANotificationMutation,

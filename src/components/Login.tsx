@@ -34,6 +34,7 @@ const Login = () => {
         axios
           .get(
             `${
+              // "http://localhost:8000"
               process.env.NEXT_PUBLIC_BACK_END_URL as string
             }/auth/getCurrentUser`,
             {

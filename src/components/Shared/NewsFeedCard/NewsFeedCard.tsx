@@ -14,7 +14,7 @@ const NewsFeedCard = ({ data }:{data:{[key:string]:string}[]}) => {
 
   return (
     <div>
-      {/* <Story/> */}
+      <Story/>
 
       <PostCreate userData={loggedInUser} />
 

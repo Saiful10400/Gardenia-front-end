@@ -6,10 +6,14 @@ import Image from "next/image";
  
 import CreateStory from "./CreateStory";
 import { useState } from "react";
+import { useGetAllStoriesQuery } from "@/Redux/api/api";
 
 const Story = () => {
   const { loggedInUser } = useAppSelector((e) => e.authStore);
   const [visibleStoryDiv, setVisibleStoryDiv] = useState(false);
+
+  const{data:AllStorys}=useGetAllStoriesQuery(null)
+  console.dir({allStory:AllStorys},{depth:"infinity"})
  
   return (
     <div>
