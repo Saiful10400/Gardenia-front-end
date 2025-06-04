@@ -4,22 +4,28 @@ import Story from "@/components/Page/Home/Story";
 import PostCard from "../PostCard/PostCard";
 import PostCreate from "../PostCreate/PostCreate";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
+import { useNewsfeedPostQuery } from "@/Redux/api/api";
+import SkeletonGeneRator from "@/utils/Component/SkeletonGeneRator";
+import PostSkeleton from "@/components/ui/skleton/PostSkeleton";
 
-const NewsFeedCard = ({ data }:{data:{[key:string]:string}[]}) => {
+const NewsFeed = () => {
 
   const { loggedInUser } = useAppSelector(
     (e) => e.authStore
   );
 
-
+  const { data, isLoading } = useNewsfeedPostQuery(null);
   return (
     <div>
-      <Story/>
+      <Story />
 
       <PostCreate userData={loggedInUser} />
 
       <div className="flex flex-col gap-4 mt-4">
-        {data?.map((item:{[key:string]:string}, idx:number) => (
+
+        {isLoading&&<SkeletonGeneRator quantity={5} component={<PostSkeleton />} />}
+
+        {!isLoading && data?.data?.map((item: { [key: string]: string }, idx: number) => (
           <PostCard data={item} key={idx} />
         ))}
       </div>
@@ -27,4 +33,4 @@ const NewsFeedCard = ({ data }:{data:{[key:string]:string}[]}) => {
   );
 };
 
-export default NewsFeedCard;
+export default NewsFeed;

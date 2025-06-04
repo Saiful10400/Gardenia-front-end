@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useAppDispatch();
-  const [login, { data, error }] = useLoginMutation();
+  const [login, { data, error,isLoading }] = useLoginMutation();
 
   const move = useRouter();
 
@@ -113,7 +113,7 @@ const Login = () => {
               Forget password
             </Link>
           </p>
-          <Button className="w-full mt-5 text-lg" text="Login" />
+          <Button loading={isLoading} disable={isLoading} className="w-full mt-5 text-lg" text="Login" />
         </form>
 
         <div className="mt-3 py-3">

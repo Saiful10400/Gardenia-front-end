@@ -32,7 +32,7 @@ const PostCard = ({ data }) => {
 
   // managee reacton.
   const [setReaction, { isLoading: reactionLoadin }] = useReactionMutation();
-  const handleReaction = (e) => {
+  const handleReaction = (e:string) => {
     if (!loggedInUser) {
       return toast.error("Please Login First!", {
         position: "top-center",
@@ -105,6 +105,8 @@ const PostCard = ({ data }) => {
       (res) => {}
     );
   };
+
+  console.log(parse(data?.post?.content))
 
   const favouriteArray = data?.favourite;
 
@@ -232,19 +234,19 @@ const PostCard = ({ data }) => {
             {data?.post?.category}
           </h1> */}
         </div>
-        <div className="PostContainer p-6 py-0 mt-3 ">
+        <button  onClick={() => setCollaps(p=>!p)} className="PostContainer text-start p-6 py-0 mt-3 ">
           {parse(
             collaps ? data?.post?.content?.slice(0, 300) : data?.post?.content
           )}
           {collaps && (
-            <button
-              onClick={() => setCollaps(false)}
+            <span
+             
               className="text-base font-bold"
             >
               ... See more
-            </button>
+            </span>
           )}
-        </div>
+        </button>
 
         {/* image sction. */}
 

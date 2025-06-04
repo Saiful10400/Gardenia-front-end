@@ -40,7 +40,7 @@ const Story = () => {
             <h1>Create story</h1>
           </div>
         </button>
-        <button>SeeStory.</button>
+        {/* <button>SeeStory.</button> */}
       </div>
     </div>
   );

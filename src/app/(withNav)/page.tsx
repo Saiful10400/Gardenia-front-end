@@ -3,7 +3,8 @@ import Tocenter from "@/components/Helper/Tocenter";
 import Banner from "@/components/Page/Home/Banner";
 import LeftAside from "@/components/Page/Home/LeftAside";
 import RightAsiide from "@/components/Page/Home/RightAsiide";
-import NewsFeedCard from "@/components/Shared/NewsFeedCard/NewsFeedCard";
+import NewsFeed from "@/components/Shared/NewsFeedCard/NewsFeed";
+ 
 import { useNewsfeedPostQuery } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import React, { useEffect, useState } from "react";
@@ -144,7 +145,7 @@ const Home = () => {
       <div className="flex gap-4 flex-col-reverse lg:flex-row justify-between bg-[#f2f4f7]  min-h-[calc(100vh-72px)]">
        <LeftAside />
         <div className="w-full lg:w-[40%] mt-5">
-           <NewsFeedCard data={data?.data} />
+           <NewsFeed />
         </div>
         <RightAsiide />
       </div>

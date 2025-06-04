@@ -6,13 +6,13 @@ interface ButtonProps {
     disable?: boolean;   // Optional boolean type for disable
     className?: string;  // Optional string type for className
     loading?: boolean;  // Optional string type for className
-    type?: "submit" | "reset" | "button" ;  // Optional string type for className
-  }
+    type?: "submit" | "reset" | "button";  // Optional string type for className
+}
 
-const Button: FC<ButtonProps> = ({text,onClick,disable,className,loading,type='submit'}) => {
+const Button: FC<ButtonProps> = ({ text, onClick, disable, className, loading, type = 'submit' }) => {
     return (
-        <button type={type} disabled={disable?true:false} onClick={onClick} className={`font-bold  btn hover:bg-[#26ad2d] bg-[#25a82b] border-none text-white p-2 rounded-xl ${className}`}>
-           {loading?<div className='flex justify-center items-center gap-3'>{text}<span className="loading loading-spinner loading-sm"></span></div>:text}
+        <button type={type} style={{ "pointerEvents": disable ? "none" : "initial" }}  onClick={onClick} className={`font-bold  btn hover:bg-[#26ad2d] bg-[#25a82b] border-none text-white p-2 rounded-xl ${className}`}>
+            {loading ? <div className='flex justify-center items-center gap-3'><span className="loading loading-infinity loading-xl"></span></div> : text}
         </button>
     );
 };
