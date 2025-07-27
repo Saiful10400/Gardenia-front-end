@@ -87,7 +87,7 @@ const DashboardTable = ({ data }: { data: TtableData }) => {
     }
   };
 
-  // console.log(fetchedData?.data?.data?.result[0]);
+ 
 
 
 
@@ -109,7 +109,7 @@ if(data.name==="Content"){
 if(data.name==="payments"||data.name==="category"||data.name==="notification" || data.name==="story"){
     FetchedData=fetchedData?.data?.data
 }
- console.log(FetchedData)
+ 
   return (  
     <div className="border bg-white rounded-lg pb-6">
       <div className="flex justify-between border-b py-4 lg:px-5">

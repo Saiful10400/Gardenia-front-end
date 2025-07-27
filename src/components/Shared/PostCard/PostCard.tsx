@@ -106,7 +106,7 @@ const PostCard = ({ data }) => {
     );
   };
 
-  console.log(parse(data?.post?.content))
+   
 
   const favouriteArray = data?.favourite;
 

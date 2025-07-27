@@ -1,6 +1,5 @@
 "use client";
-
-import Story from "@/components/Page/Home/Story";
+ 
 import PostCard from "../PostCard/PostCard";
 import PostCreate from "../PostCreate/PostCreate";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
@@ -17,13 +16,13 @@ const NewsFeed = () => {
   const { data, isLoading } = useNewsfeedPostQuery(null);
   return (
     <div>
-      <Story />
+      {/* <Story /> */}
 
       <PostCreate userData={loggedInUser} />
 
       <div className="flex flex-col gap-4 mt-4">
 
-        {isLoading&&<SkeletonGeneRator quantity={5} component={<PostSkeleton />} />}
+        {isLoading && <SkeletonGeneRator quantity={5} component={<PostSkeleton />} />}
 
         {!isLoading && data?.data?.map((item: { [key: string]: string }, idx: number) => (
           <PostCard data={item} key={idx} />

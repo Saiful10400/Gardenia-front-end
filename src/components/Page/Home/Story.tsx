@@ -6,14 +6,13 @@ import Image from "next/image";
  
 import CreateStory from "./CreateStory";
 import { useState } from "react";
-import { useGetAllStoriesQuery } from "@/Redux/api/api";
+import NewsfeedStoryes from "@/components/ui/Story/NewsfeedStoryes";
 
 const Story = () => {
   const { loggedInUser } = useAppSelector((e) => e.authStore);
   const [visibleStoryDiv, setVisibleStoryDiv] = useState(false);
 
-  const{data:AllStorys}=useGetAllStoriesQuery(null)
-  console.dir({allStory:AllStorys},{depth:"infinity"})
+
  
   return (
     <div>
@@ -40,7 +39,7 @@ const Story = () => {
             <h1>Create story</h1>
           </div>
         </button>
-        {/* <button>SeeStory.</button> */}
+        <NewsfeedStoryes/>
       </div>
     </div>
   );
