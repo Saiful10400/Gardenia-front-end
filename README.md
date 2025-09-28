@@ -13,7 +13,7 @@ The frontend of Gardenia is a Next.js-based blogging platform for farmers and fa
 
 2. **Profile Verification:**
    - Users can verify their profiles to unlock premium content after making a payment.
-
+ 
 3. **Post Management:**
    - Users can create, update, and delete posts.
    - Posts can be downloaded as PDFs.
