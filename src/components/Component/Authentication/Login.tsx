@@ -79,7 +79,7 @@ const Login = () => {
   return (
     <AuthenticationBg>
       <div className="lg:w-[500px] px-6 py-8 h-[550px] rounded-3xl">
-        <h1 className="text-5xl font-semibold text-center">Login v2</h1>
+        <h1 className="text-5xl font-semibold text-center">Login</h1>
         <p className="font-semibold mt-5 mb-4 text-center">
           {"Doesn't have an account yet? "}
           <Link className="underline text-green-900" href={"/signup"}>
