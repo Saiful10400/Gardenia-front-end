@@ -487,15 +487,15 @@ const ProfileComponent = () => {
         {/* bio and other post. */}
 
         <div className="flex lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
-           
-            <Bio
-              followerData={followerData}
-              id={id}
-              isYou={isYou}
-              updateProfile={updateProfile}
-              userData={userData}
-            />
-       
+
+          <Bio
+            followerData={followerData}
+            id={id}
+            isYou={isYou}
+            updateProfile={updateProfile}
+            userData={userData}
+          />
+
 
           <ProfilePosts isYou={isYou} postData={postData} userData={userData} />
         </div>
