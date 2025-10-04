@@ -15,7 +15,7 @@ import Heading from "@tiptap/extension-heading";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useState } from "react";
-import { MdPhotoLibrary } from "react-icons/md";
+// import { MdPhotoLibrary } from "react-icons/md";
 import "./style.css";
 import Italic from "@tiptap/extension-italic";
 import swal from "sweetalert";
@@ -44,7 +44,7 @@ import { postCategories, PostCosting } from "@/StaticData/CreatePost";
 
 import { toast } from "react-toastify";
 import imageUpload from "@/utils/imageUpload";
-import { useCreatePostMutation } from "@/Redux/api/api";
+// import { useCreatePostMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import DropDown from "@/components/Component/DropDown/DropDown";
 import Button from "@/components/Component/Button/Button";
@@ -130,7 +130,7 @@ const editor = useEditor({
   const[updatePost]=useUpdatePostMutation() // with id and other things
 
   // submit form.
-const[createPost]=useCreatePostMutation()
+// const[createPost]=useCreatePostMutation()
 const { loggedInUser, } = useAppSelector(
   (e) => e.authStore
 );

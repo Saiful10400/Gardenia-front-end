@@ -5,7 +5,7 @@ import logo from "../../../assets/nav/logo.png";
 import Link from "next/link";
 import Tocenter from "@/components/Helper/Tocenter";
 import { usePathname } from "next/navigation";
-import { Bell, CircleUser, CircleUserRound, GalleryHorizontal, ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, UsersRound } from "lucide-react";
+import { Bell, CircleUser, CircleUserRound, ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, UsersRound } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import "./style.css";
 import { setUser } from "@/Redux/featcher/AuthSlice";

@@ -1,4 +1,4 @@
-const AuthenticationBloobs = ({style}:{style:string}) => {
+const AuthenticationBloobs = () => {
   return (
     <svg
     className={"  fixed top-0 -right-[400px] w-[1100px] z-10 rotate-[150deg]"}

@@ -159,3 +159,27 @@ export type TdashboardData = {
     blockPost: number;
   };
 };
+
+
+
+export type Tpost = {
+  _id: {
+    $oid: string;
+  };
+  content: string;
+  img: string;
+  creator: {
+    $oid: string;
+  };
+  vote: number;
+  isBlock: boolean;
+  isDeleted: boolean;
+  isGroupPost: boolean;
+  createdAt: {
+    $date: string;
+  };
+  updatedAt: {
+    $date: string;
+  };
+  __v: number;
+};

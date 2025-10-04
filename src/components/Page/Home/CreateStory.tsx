@@ -4,10 +4,10 @@ import "./css/createStory.css";
 import { useCreateStoryMutation, useGetAllMusicQuery } from "@/Redux/api/api";
 import Image from "next/image";
 import audioWave from "../../../assets/home/icon/audio-wave.gif";
-import { MdPhoto, MdSpeaker } from "react-icons/md";
-import { Music2Icon, Text, Type, Volume, Volume1 } from "lucide-react";
-import { imageUploadToDb } from "@/utils/imageUpload";
-import Button from "@/components/Component/Button/Button";
+import { MdPhoto } from "react-icons/md";
+import {   Type, Volume1 } from "lucide-react";
+// import { imageUploadToDb } from "@/utils/imageUpload";
+// import Button from "@/components/Component/Button/Button";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { toast } from "react-toastify";
 

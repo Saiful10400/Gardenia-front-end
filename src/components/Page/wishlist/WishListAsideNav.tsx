@@ -1,5 +1,5 @@
 "use client";
-import { ListCollapseIcon, Users } from "lucide-react";
+import { ListCollapseIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";

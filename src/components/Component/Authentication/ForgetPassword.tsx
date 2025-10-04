@@ -4,7 +4,7 @@ import AuthenticationBg from "@/components/Helper/AuthenticationBg";
 import Button from "@/components/Component/Button/Button";
 import InputField from "@/components/Component/InputField/InputField";
 import {
-  useChangePasswordMutation,
+  // useChangePasswordMutation,
   useCheckCredentialsMutation,
 } from "@/Redux/api/api";
 import { useRouter } from "next/navigation";
@@ -17,8 +17,8 @@ const ForgetPassword = () => {
 
   // checking apis.(rtk)
   const [checkCredentials, { isLoading:credentialsLoading }] = useCheckCredentialsMutation();
-  const [updatePassword, { error: updateError, data: updateData }] =
-    useChangePasswordMutation();
+  // const [updatePassword, { error: updateError, data: updateData }] =
+  //   useChangePasswordMutation();
   // form submit handle.
   const userNameandEmailHandle = (e) => {
     e.preventDefault();

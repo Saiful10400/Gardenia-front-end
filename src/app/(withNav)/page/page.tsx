@@ -22,12 +22,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
-import { MdEmail, MdModeEditOutline } from "react-icons/md";
-import { PiStudentBold } from "react-icons/pi";
-import { IoHomeSharp } from "react-icons/io5";
-import { FaPhoneAlt } from "react-icons/fa";
+// import { MdEmail, MdModeEditOutline } from "react-icons/md";
+// import { PiStudentBold } from "react-icons/pi";
+// import { IoHomeSharp } from "react-icons/io5";
+// import { FaPhoneAlt } from "react-icons/fa";
 import PostCreate from "@/components/Component/PostCreate/PostCreate";
-import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
+// import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
 import PostCard from "@/components/Component/PostCard/PostCard";
 
 type TpageData = {
@@ -91,7 +91,7 @@ const SinglePageDetails = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     isOpen: isOpenUpdatePage,
-    onOpen: onOpenUpdatePage,
+    // onOpen: onOpenUpdatePage,
     onOpenChange: onOpenChangeUpdatePage,
   } = useDisclosure();
 
@@ -138,7 +138,7 @@ const pageDetailsUpdateHandle=(e)=>{
 // retrieve page all posts.
 const {data:pageAllPosts}=useAPageAllPostsQuery(id)
  
-
+ 
 
   return isLoading ? (
     <Loading />
@@ -232,12 +232,12 @@ const {data:pageAllPosts}=useAPageAllPostsQuery(id)
                   <ModalBody>
                     {allFriends?.map((item: Tuser) => {
                       const hidden = members?.data?.activeUser?.find(
-                        (element) => element?.user === item?._id
+                        (element:{user:string}) => element?.user === item?._id
                       )
                         ? true
                         : false;
                       const invited = members?.data?.pendingUser?.find(
-                        (element) => element?.user === item?._id
+                        (element:{user:string}) => element?.user === item?._id
                       )
                         ? true
                         : false;
@@ -293,7 +293,7 @@ const {data:pageAllPosts}=useAPageAllPostsQuery(id)
 
             <section>
               <div className="grid grid-cols-1 mt-4 gap-5">
-                {pageAllPosts?.data?.map((item, idx) => (
+                {pageAllPosts?.data?.map((item, idx:number) => (
                   <PostCard data-aos="fade-up" key={idx} data={item} />
                 ))}
               </div>

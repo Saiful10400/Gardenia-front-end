@@ -7,11 +7,11 @@ import { TtableData } from "../../Types";
  
  
 import formateDate from "@/utils/formateDate";
-import { useAppSelector } from "@/Redux/hoocks/Convaying";
+// import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import Image from "next/image";
 import { useAdminPanalAllNotificationQuery, useAllPaymentHistoryQuery, useGetAllCategoryQuery, useGetAllMusicQuery, useGetPostQuery } from "@/Redux/api/api";
 const DashboardTable = ({ data }: { data: TtableData }) => {
-   const { loggedInUser } = useAppSelector((s) => s.authStore);
+  //  const { loggedInUser } = useAppSelector((s) => s.authStore);
   const headers = Object.keys(data.keyValue);
   const keys = Object.values(data.keyValue);
 

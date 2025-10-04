@@ -84,10 +84,10 @@ const page = () => {
                 Our Story: Background and Evolution
               </h1>
               <p className="text-center font-normal text-lg">
-                Our journey began with a simple idea: to create a space where
+               {` Our journey began with a simple idea: to create a space where
                 innovation, collaboration, and productivity thrive. Over the
                 years, we've evolved into a thriving co-working community that
-                serves freelancers, startups, and established businesses alike.
+                serves freelancers, startups, and established businesses alike.`}
               </p>
               <p className="font-normal text-lg">
                 <span className="font-semibold text-2xl mt-6 block mb-3">Background:</span>

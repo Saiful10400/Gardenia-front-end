@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 const ChangePassword = () => {
 
     const[checkCredentials]=useLastPassValMutation()
-    const { loggedInUser, isLoading: currentLoading } = useAppSelector(
+    const { loggedInUser,   } = useAppSelector(
         (e) => e.authStore
       );
 

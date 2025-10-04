@@ -24,8 +24,11 @@ import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import dateFormatter from "@/utils/dateFormatter";
 import { usePathname } from "next/navigation";
+import { Tpost } from "@/Types";
 
-const PostCard = ({ data }) => {
+
+ 
+const PostCard = ({ data }:{data:{post:Tpost}}) => {
   const [collaps, setCollaps] = useState(data?.post?.content.length >= 300);
 
   const { loggedInUser } = useAppSelector((e) => e.authStore);
@@ -102,7 +105,7 @@ const PostCard = ({ data }) => {
     }
 
     toggleFav({ postId: data?.post?._id, userId: loggedInUser?._id }).then(
-      (res) => {}
+      () => {}
     );
   };
 

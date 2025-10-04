@@ -1,6 +1,6 @@
 "use client"
 
-import { useBlockAPostMutation, useDeletePostMutation } from "@/Redux/api/api";
+import { useBlockAPostMutation } from "@/Redux/api/api";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,13 +19,13 @@ const DashboardPostCard = ({ data }) => {
 
   // delete handle.
 
-  const [deletePost] = useDeletePostMutation();
+  // const [deletePost] = useDeletePostMutation();
 
-  const deleteHandle = () => {
-    deletePost(post._id).then((res) => {
+  // const deleteHandle = () => {
+  //   deletePost(post._id).then((res) => {
      
-    });
-  };
+  //   });
+  // };
 
   //block handle.
   const [block] = useBlockAPostMutation();
@@ -56,7 +56,7 @@ const DashboardPostCard = ({ data }) => {
           {post.isBlock ? "Un-block" : "Block"}
         </button>
         <button
-          onClick={deleteHandle}
+          // onClick={deleteHandle}
           className="font-semibold hover hover:bg-white  "
         >
           Delete

@@ -19,7 +19,7 @@ const CommentCard = ({ item }) => {
   const [updateComment] = useUpdateCommentMutation();
 
   const deleteHandle = () => {
-    deleComment(item._id).then((res) => {
+    deleComment(item._id).then(() => {
       
     });
   };
@@ -27,7 +27,7 @@ const CommentCard = ({ item }) => {
 const editHandle=(e)=>{
     e.preventDefault()
     const comment=e.target.comment.value
-    updateComment({id:item._id,comment}).then(res=>{
+    updateComment({id:item._id,comment}).then(()=>{
       
         setEdit(false)
     })

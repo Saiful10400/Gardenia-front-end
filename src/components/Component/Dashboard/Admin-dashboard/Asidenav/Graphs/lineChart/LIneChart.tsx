@@ -12,12 +12,12 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { useAllPaymentHistoryQuery } from "@/Redux/api/api";
+// import { useAllPaymentHistoryQuery } from "@/Redux/api/api";
 
 const LIneChart = () => {
-  const { data } = useAllPaymentHistoryQuery(null);
+  // const { data } = useAllPaymentHistoryQuery(null);
 
-  const payments = data?.data;
+  // const payments = data?.data;
  
 
   const demo = [
