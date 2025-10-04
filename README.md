@@ -2,7 +2,7 @@
 
 The frontend of Gardenia is a Next.js-based blogging platform for farmers and farming enthusiasts. It allows users to interact with the platform by posting, upvoting, following users, and accessing premium content.
 
-## 🌐 Live Site
+## 🌐 Live Site 
 
 - **Frontend URL:** [Gardenia Frontend](https://apollow-assignment-6-front-end.vercel.app)
 
@@ -13,7 +13,7 @@ The frontend of Gardenia is a Next.js-based blogging platform for farmers and fa
 
 2. **Profile Verification:**
    - Users can verify their profiles to unlock premium content after making a payment.
-
+ 
 3. **Post Management:**
    - Users can create, update, and delete posts.
    - Posts can be downloaded as PDFs.
