@@ -27,7 +27,7 @@ const Login = () => {
 
     login({ email, password })
       .then((res) => {
-        if (res?.error?.status) return;
+        if (res?.error) return;
         dispatch(setUser(null));
         localStorage.setItem("token", res.data.token);
 
