@@ -70,7 +70,7 @@ const PostCard = ({ data }: Props) => {
       {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
-          <Link href={`/profile?id=${data.post.creator}`}>
+          <Link href={`/profile?id=${data.post.creator?._id}`}>
             <Image
               src={data.post.creator?.img || "/default-avatar.png"}
               alt="Profile"
@@ -81,7 +81,7 @@ const PostCard = ({ data }: Props) => {
           </Link>
           <div className="flex flex-col">
             <Link
-              href={`/profile?id=${data.post.creator.$oid}`}
+              href={`/profile?id=${data.post.creator?._id}`}
               className="font-semibold hover:text-blue-600"
             >
               {data.post.creator?.name}

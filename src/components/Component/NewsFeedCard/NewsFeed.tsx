@@ -15,12 +15,12 @@ const NewsFeed = () => {
 
   const { data, isLoading } = useNewsfeedPostQuery(null);
   return (
-    <div>
+    <div className="px-2 lg:px-0">
       {/* <Story /> */}
 
       <PostCreate userData={loggedInUser} />
 
-      <div className="flex flex-col gap-4 mt-4">
+      <div className="flex flex-col gap-2 mt-2  lg:gap-4">
 
         {isLoading && <SkeletonGeneRator quantity={5} component={<PostSkeleton />} />}
 
