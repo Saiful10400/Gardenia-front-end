@@ -1,5 +1,5 @@
 "use client"
-import DashboardUserDetailsCard from '@/components/WithoutNav/Shared/DashboardUserCard/DashboardUserDetailsCard';
+import DashboardUserDetailsCard from '@/components/Component/Dashboard/Shared/DashboardUserCard/DashboardUserDetailsCard';
 import { useGetAllUserQuery } from '@/Redux/api/api';
 
 

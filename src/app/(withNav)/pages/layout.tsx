@@ -11,7 +11,7 @@ import {
 import PageAside from "@/components/Page/userPage/PageAside";
 import { Plus } from "lucide-react";
 import React, { useState } from "react";
-import InputField from "@/components/Shared/InputField/InputField";
+import InputField from "@/components/Component/InputField/InputField";
 import { imageUploadToDb } from "@/utils/imageUpload";
 import { useCreateApageMutation } from "@/Redux/api/api";
 import { toast } from "react-toastify";

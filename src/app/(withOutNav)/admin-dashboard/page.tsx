@@ -1,8 +1,8 @@
 "use client";
 
-import BarChart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/Barchart/BarChart";
-import LIneChart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/lineChart/LIneChart";
-import Piechart from "@/components/WithoutNav/Admin-dashboard/Asidenav/Graphs/Piechart/Piechart";
+import BarChart from "@/components/Component/Dashboard/Admin-dashboard/Asidenav/Graphs/Barchart/BarChart";
+import LIneChart from "@/components/Component/Dashboard/Admin-dashboard/Asidenav/Graphs/lineChart/LIneChart";
+import Piechart from "@/components/Component/Dashboard/Admin-dashboard/Asidenav/Graphs/Piechart/Piechart";
 import { useDashboardCredentialsQuery } from "@/Redux/api/api";
 import { TdashboardData } from "@/Types";
 import { DollarSign, StickyNote, User } from "lucide-react";

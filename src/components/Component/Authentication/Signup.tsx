@@ -1,8 +1,8 @@
 "use client";
 
 import AuthenticationBg from "@/components/Helper/AuthenticationBg";
-import Button from "@/components/Shared/Button/Button";
-import InputField from "@/components/Shared/InputField/InputField";
+import Button from "@/components/Component/Button/Button";
+import InputField from "@/components/Component/InputField/InputField";
 import { useSignupMutation } from "@/Redux/api/api";
 import  { imageUploadToDb } from "@/utils/imageUpload";
 import Image from "next/image";

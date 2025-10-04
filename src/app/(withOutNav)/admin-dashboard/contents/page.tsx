@@ -1,6 +1,6 @@
 "use client";
 
-import Loading from "@/components/Shared/Loading/Loading";
+import Loading from "@/components/Component/Loading/Loading";
 import { TtableData } from "@/Types";
 import DashboardTable from "../../../../components/ui/DashboardTable";
 

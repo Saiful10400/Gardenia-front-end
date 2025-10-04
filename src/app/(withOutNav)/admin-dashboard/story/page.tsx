@@ -1,6 +1,6 @@
 "use client";
-import Button from "@/components/Shared/Button/Button";
-import InputField from "@/components/Shared/InputField/InputField";
+import Button from "@/components/Component/Button/Button";
+import InputField from "@/components/Component/InputField/InputField";
 import DashboardTable from "@/components/ui/DashboardTable";
 import { useAddMusicMutation, useGetAllMusicQuery } from "@/Redux/api/api";
 import { TtableData } from "@/Types";

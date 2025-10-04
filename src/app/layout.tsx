@@ -5,7 +5,7 @@ import "./globals.css";
 import Providers from "@/lib/Providers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AuthenticateRoute from "@/components/Authentication/Authentication";
+import AuthenticateRoute from "@/components/Component/Authentication/Authentication";
 import Authentication from "@/lib/Authentication";
 
 const geistSans = localFont({

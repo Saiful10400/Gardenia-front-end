@@ -1,7 +1,7 @@
 "use client"
 import Tocenter from "@/components/Helper/Tocenter";
-import Button from "@/components/Shared/Button/Button";
-import InputField from "@/components/Shared/InputField/InputField";
+import Button from "@/components/Component/Button/Button";
+import InputField from "@/components/Component/InputField/InputField";
 import React, { FormEvent } from "react";
 import swal from "sweetalert";
 import { IoLogoWechat } from "react-icons/io5";

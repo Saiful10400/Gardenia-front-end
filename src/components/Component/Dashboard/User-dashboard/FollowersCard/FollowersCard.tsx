@@ -1,6 +1,6 @@
 "use client"
 
-import Button from '@/components/Shared/Button/Button';
+import Button from '@/components/Component/Button/Button';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';

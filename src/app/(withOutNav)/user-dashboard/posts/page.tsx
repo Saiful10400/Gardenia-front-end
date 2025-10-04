@@ -1,6 +1,6 @@
 "use client"
 
-import UserPostCard from "@/components/WithoutNav/User-dashboard/UserPostCard/UserPostCard";
+import UserPostCard from "@/components/Component/Dashboard/User-dashboard/UserPostCard/UserPostCard";
 import { useGetAuserAllPostQuery } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 

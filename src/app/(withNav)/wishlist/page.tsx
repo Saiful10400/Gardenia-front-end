@@ -1,5 +1,5 @@
 "use client"
-import FavouritePostCard from '@/components/Shared/FavouritePostcard/FavouritePostCard';
+import FavouritePostCard from '@/components/Component/FavouritePostcard/FavouritePostCard';
 import { useGetAuserAllPostQuery } from '@/Redux/api/api';
 import { useAppSelector } from '@/Redux/hoocks/Convaying';
 import React from 'react';

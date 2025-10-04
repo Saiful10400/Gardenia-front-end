@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import parse from "html-react-parser";
-import Loading from "@/components/Shared/Loading/Loading";
+import Loading from "@/components/Component/Loading/Loading";
 import blueTick from "../../../assets/profile/blueTick.png";
 import "./style.css";
 import { Download } from "lucide-react";

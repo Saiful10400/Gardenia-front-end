@@ -1,6 +1,6 @@
 "use client"
 
-import FollowersCard from '@/components/WithoutNav/User-dashboard/FollowersCard/FollowersCard';
+import FollowersCard from '@/components/Component/Dashboard/User-dashboard/FollowersCard/FollowersCard';
 import { useGetFollowerAndFollowingQuery } from '@/Redux/api/api';
 import { useAppSelector } from '@/Redux/hoocks/Convaying';
 import React from 'react';

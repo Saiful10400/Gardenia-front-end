@@ -1,6 +1,6 @@
 "use-client";
 
-import useGetAllNotification from "@/utils/useGetAllNotification";
+import useGetAllNotification from "@/utils/helperComponent/useGetAllNotification";
 import SingleNotificationCard, {
   Tnotification,
 } from "./SingleNotificationCard";

@@ -3,7 +3,7 @@ import Tocenter from "@/components/Helper/Tocenter";
 import Banner from "@/components/Page/Home/Banner";
 import LeftAside from "@/components/Page/Home/LeftAside";
 import RightAsiide from "@/components/Page/Home/RightAsiide";
-import NewsFeed from "@/components/Shared/NewsFeedCard/NewsFeed";
+import NewsFeed from "@/components/Component/NewsFeedCard/NewsFeed";
  
 import { useNewsfeedPostQuery } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";

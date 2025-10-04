@@ -1,8 +1,8 @@
 "use client";
 
 import AuthenticationBg from "@/components/Helper/AuthenticationBg";
-import Button from "@/components/Shared/Button/Button";
-import InputField from "@/components/Shared/InputField/InputField";
+import Button from "@/components/Component/Button/Button";
+import InputField from "@/components/Component/InputField/InputField";
 import { useLoginMutation } from "@/Redux/api/api";
 import { setUser } from "@/Redux/featcher/AuthSlice";
 import { useAppDispatch } from "@/Redux/hoocks/Convaying";
@@ -79,7 +79,7 @@ const Login = () => {
   return (
     <AuthenticationBg>
       <div className="lg:w-[500px] px-6 py-8 h-[550px] rounded-3xl">
-        <h1 className="text-5xl font-semibold text-center">Login</h1>
+        <h1 className="text-5xl font-semibold text-center">Login v2</h1>
         <p className="font-semibold mt-5 mb-4 text-center">
           {"Doesn't have an account yet? "}
           <Link className="underline text-green-900" href={"/signup"}>

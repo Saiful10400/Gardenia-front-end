@@ -1,5 +1,5 @@
-import AdminAside from '@/components/WithoutNav/Admin-dashboard/Asidenav/AdminAside';
-import DashboardNav from '@/components/WithoutNav/Shared/DashboardNav/DashboardNav';
+import AdminAside from '@/components/Component/Dashboard/Admin-dashboard/Asidenav/AdminAside';
+import DashboardNav from '@/components/Component/Dashboard/Shared/DashboardNav/DashboardNav';
 import { Home } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';

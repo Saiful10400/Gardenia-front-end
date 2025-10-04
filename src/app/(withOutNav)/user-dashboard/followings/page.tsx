@@ -1,6 +1,6 @@
 "use client"
 
-import FollowingCard from "@/components/WithoutNav/User-dashboard/FollowingCard/FollowingCard";
+import FollowingCard from "@/components/Component/Dashboard/User-dashboard/FollowingCard/FollowingCard";
 import { useGetFollowerAndFollowingQuery } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 

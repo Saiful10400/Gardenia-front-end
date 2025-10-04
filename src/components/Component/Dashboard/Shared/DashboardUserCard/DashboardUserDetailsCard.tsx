@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import blueTick from "../../../../assets/profile/blueTick.png"
-import Button from '@/components/Shared/Button/Button';
+import Button from '@/components/Component/Button/Button';
 import { useUpdateAUserMutation } from '@/Redux/api/api';
 import demoCoverImage from "../../../../assets/dashboard/demoCover.jpg"
 const DashboardUserDetailsCard = ({data}) => {

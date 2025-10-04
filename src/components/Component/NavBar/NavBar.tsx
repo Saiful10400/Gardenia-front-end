@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import "./style.css";
 import { setUser } from "@/Redux/featcher/AuthSlice";
 import Notification from "@/components/ui/Notification";
-import useGetAllNotification from "@/utils/useGetAllNotification";
+import useGetAllNotification from "@/utils/helperComponent/useGetAllNotification";
 import { Tnotification } from "@/components/ui/SingleNotificationCard";
 import { useState } from "react";
 import { useMakeNotificationReadMutation } from "@/Redux/api/api";

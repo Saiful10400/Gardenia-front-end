@@ -46,8 +46,8 @@ import { toast } from "react-toastify";
 import imageUpload from "@/utils/imageUpload";
 import { useCreatePostMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
-import DropDown from "@/components/Shared/DropDown/DropDown";
-import Button from "@/components/Shared/Button/Button";
+import DropDown from "@/components/Component/DropDown/DropDown";
+import Button from "@/components/Component/Button/Button";
 
 
 

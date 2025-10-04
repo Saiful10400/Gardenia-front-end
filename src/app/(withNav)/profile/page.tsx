@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 
 import Tocenter from "@/components/Helper/Tocenter";
-import Loading from "@/components/Shared/Loading/Loading";
+import Loading from "@/components/Component/Loading/Loading";
 import swal from "sweetalert";
 import {
   useAllFriendRefQuery,
@@ -30,17 +30,17 @@ import { MdEmail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import imageUpload from "@/utils/imageUpload";
 import { toast } from "react-toastify";
-import InputField from "@/components/Shared/InputField/InputField";
-import Button from "@/components/Shared/Button/Button";
+import InputField from "@/components/Component/InputField/InputField";
+import Button from "@/components/Component/Button/Button";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
-import PostCreate from "@/components/Shared/PostCreate/PostCreate";
-import PostCard from "@/components/Shared/PostCard/PostCard";
-import NotAvailableContent from "@/components/Shared/NotAvailabeContent/NotAvailableContent";
+import PostCreate from "@/components/Component/PostCreate/PostCreate";
+import PostCard from "@/components/Component/PostCard/PostCard";
+import NotAvailableContent from "@/components/Component/NotAvailabeContent/NotAvailableContent";
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
-import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
+import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
 import { UserCheck, UserCog, UserPlus } from "lucide-react";
 import { Tfrind } from "@/Types";
 

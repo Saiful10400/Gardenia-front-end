@@ -1,6 +1,6 @@
 "use client";
 import Tocenter from "@/components/Helper/Tocenter";
-import Loading from "@/components/Shared/Loading/Loading";
+import Loading from "@/components/Component/Loading/Loading";
 import {
   useAllFriendRefQuery,
   useAPageAllPostsQuery,
@@ -26,9 +26,9 @@ import { MdEmail, MdModeEditOutline } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
 import { IoHomeSharp } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
-import PostCreate from "@/components/Shared/PostCreate/PostCreate";
-import FavouritePostCard from "@/components/Shared/FavouritePostcard/FavouritePostCard";
-import PostCard from "@/components/Shared/PostCard/PostCard";
+import PostCreate from "@/components/Component/PostCreate/PostCreate";
+import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
+import PostCard from "@/components/Component/PostCard/PostCard";
 
 type TpageData = {
   _id: string;

@@ -4,7 +4,7 @@ import PostCard from "../PostCard/PostCard";
 import PostCreate from "../PostCreate/PostCreate";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { useNewsfeedPostQuery } from "@/Redux/api/api";
-import SkeletonGeneRator from "@/utils/Component/SkeletonGeneRator";
+import SkeletonGeneRator from "@/utils/helperComponent/SkeletonGeneRator";
 import PostSkeleton from "@/components/ui/skleton/PostSkeleton";
 
 const NewsFeed = () => {

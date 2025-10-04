@@ -1,5 +1,5 @@
 "use client"
-import Button from '@/components/Shared/Button/Button';
+import Button from '@/components/Component/Button/Button';
 import { useUnfollowOneMutation } from '@/Redux/api/api';
 import { useAppSelector } from '@/Redux/hoocks/Convaying';
 import Image from 'next/image';
