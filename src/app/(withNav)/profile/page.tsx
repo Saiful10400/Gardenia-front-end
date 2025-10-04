@@ -43,6 +43,8 @@ import blueTick from "../../../assets/profile/blueTick.png";
 import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
 import { UserCheck, UserCog, UserPlus } from "lucide-react";
 import { Tfrind } from "@/Types";
+import ProfilePosts from "./(components)/ProfilePosts";
+import Bio from "./(components)/Bio";
 
 const ProfileComponent = () => {
   const searchParams = useSearchParams();
@@ -216,12 +218,12 @@ const ProfileComponent = () => {
         makeFollow({
           follower: loggedInUser?._id,
           following: userData?._id,
-        }).then((res) => {});
+        }).then((res) => { });
       } else {
         makeUnfollow({
           follower: loggedInUser?._id,
           following: userData?._id,
-        }).then((res) => {});
+        }).then((res) => { });
       }
     } else {
       toast.warning("Please Login first.!", {
@@ -243,7 +245,7 @@ const ProfileComponent = () => {
   // get current user data from the db
   const { data: postData, isLoading: postLoading } =
     useGetAuserAllPostQuery(id);
- 
+
   // inetiate payment
   const inetiatePayment = () => {
     if (loggedInUser) {
@@ -284,11 +286,11 @@ const ProfileComponent = () => {
 
 
 
-// checking is he is my 
-const{data:MyfriendList}=useExistingFriendsQuery(loggedInUser?._id)
+  // checking is he is my 
+  const { data: MyfriendList } = useExistingFriendsQuery(loggedInUser?._id)
 
-const isThisMyFriend=MyfriendList?.data?.includes(id)
- 
+  const isThisMyFriend = MyfriendList?.data?.includes(id)
+
 
 
 
@@ -434,20 +436,20 @@ const isThisMyFriend=MyfriendList?.data?.includes(id)
               )}
 
               {frindStatus === "notFriend" && (
-                isThisMyFriend?<span
-                 
-                className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
-              >
-                <UserCheck className="text-xl" />{" "}
-                <span className="text-lg font-semibold">Friend</span>
-              </span>
-              :<button
-                  onClick={createFriendRequestHandle}
+                isThisMyFriend ? <span
+
                   className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
                 >
-                  <UserPlus className="text-xl" />{" "}
-                  <span className="text-lg font-semibold">Add friend</span>
-                </button>
+                  <UserCheck className="text-xl" />{" "}
+                  <span className="text-lg font-semibold">Friend</span>
+                </span>
+                  : <button
+                    onClick={createFriendRequestHandle}
+                    className=" bg-[#25a82b] text-white rounded-lg p-1 items-center  px-2 flex gap-2"
+                  >
+                    <UserPlus className="text-xl" />{" "}
+                    <span className="text-lg font-semibold">Add friend</span>
+                  </button>
               )}
 
               <button
@@ -484,229 +486,20 @@ const isThisMyFriend=MyfriendList?.data?.includes(id)
 
         {/* bio and other post. */}
 
-        <div className="flex overflow-hidden lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
-          {/* bio section */}
-          <div
-            data-aos="fade-down"
-            className="lg:w-[40%] lg:sticky top-[-100px] "
-          >
-            <div className="w-full rounded-xl shadow-md p-3 bg-white min-h-4">
-              <h1 className="text-xl font-bold">Intro</h1>
+        <div className="flex lg:flex-row lg:px-0 px-3 flex-col items-start gap-4 mt-4">
+           
+            <Bio
+              followerData={followerData}
+              id={id}
+              isYou={isYou}
+              updateProfile={updateProfile}
+              userData={userData}
+            />
+       
 
-              {updateBio ? (
-                <form onSubmit={bioHandle}>
-                  <textarea
-                    style={{ resize: "none" }}
-                    className="w-full min-h-[200px] border p-1"
-                    name="bio"
-                    defaultValue={userData?.bio}
-                  ></textarea>
-
-                  <button
-                    disabled={bioLoading}
-                    className="flex w-full mt-5 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
-                  >
-                    <MdModeEditOutline className="text-xl" />{" "}
-                    <span className="text-lg font-semibold">Update Bio</span>
-                  </button>
-                </form>
-              ) : (
-                <div className="mb-4">
-                  <p className="mt-4 text-center text-xl font-semibold">Bio</p>
-                  <p className="text-center mt-4">{userData?.bio}</p>
-                  {isYou && (
-                    <button
-                      onClick={() => setUpdateBio(true)}
-                      className="flex w-full mt-5 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
-                    >
-                      <MdModeEditOutline className="text-xl" />{" "}
-                      <span className="text-lg font-semibold">
-                        {userData?.bio ? "Edit Bio" : "Add Bio"}
-                      </span>
-                    </button>
-                  )}
-                </div>
-              )}
-
-              {/* home and designation. */}
-              <hr />
-              <section className="mt-6 flex flex-col gap-3">
-                {userData?.educationInstitute && (
-                  <div className="flex gap-3">
-                    <PiStudentBold className="text-3xl text-gray-500" />
-                    <div className="text-base font-semibold">
-                      <span>Study at {userData?.educationInstitute}</span>
-                    </div>
-                  </div>
-                )}
-
-                {userData?.address && (
-                  <div className="flex gap-3">
-                    <IoHomeSharp className="text-2xl text-gray-500" />
-                    <div className="text-base font-semibold">
-                      <span>Live in {userData?.address}</span>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex gap-3">
-                  <MdEmail className="text-2xl text-gray-500" />
-                  <div className="text-base font-semibold">
-                    <input
-                      className="focus:outline-none"
-                      defaultValue={userData?.email}
-                      type="text"
-                      disabled
-                    />
-                  </div>
-                </div>
-
-                {userData?.phone && (
-                  <div className="flex gap-3">
-                    <FaPhoneAlt className="text-2xl text-gray-500" />
-                    <div className="text-base font-semibold">
-                      <span>{userData?.phone}</span>
-                    </div>
-                  </div>
-                )}
-
-                {isYou && (
-                  <button
-                    onClick={() =>
-                      document.getElementById("Update_modal")?.showModal()
-                    }
-                    className="flex w-full mt-4 justify-center gap-3 bg-[#25a82b] text-white rounded-lg p-1 items-center"
-                  >
-                    <MdModeEditOutline className="text-xl" />{" "}
-                    <span className="text-lg font-semibold">Edit Details</span>
-                  </button>
-                )}
-              </section>
-            </div>
-
-            {/* followers */}
-
-            <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Follower</h1>
-                {followerData?.data?.followers.length > 0 && (
-                  <button
-                    onClick={() =>
-                      document.getElementById("Followers_modal")?.showModal()
-                    }
-                    className="text-lg text-[#25a82b] font-medium"
-                  >
-                    See all follower
-                  </button>
-                )}
-              </div>
-
-              {/* showing followers. */}
-
-              {followerData?.data?.followers.length > 0 ? (
-                <div className="grid grid-cols-3 gap-3 mt-4">
-                  {followerData?.data?.followers.slice(-9).map((item) => {
-                    return (
-                      <Link
-                        key={item?._id}
-                        href={`profile?id=${item?.follower?._id}`}
-                      >
-                        <Image
-                          className="w-full h-[200px] object-cover rounded-lg"
-                          src={item?.follower?.img}
-                          alt="follwerImage"
-                          height={300}
-                          width={300}
-                        ></Image>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-center">No Followers</p>
-              )}
-            </section>
-
-            {/* Following */}
-
-            <section className="w-full rounded-xl shadow-md p-3 bg-white min-h-4 mt-4">
-              <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold">Following</h1>
-                {followerData?.data?.following.length > 0 && (
-                  <button
-                    onClick={() =>
-                      document.getElementById("Following_modal")?.showModal()
-                    }
-                    className="text-lg text-green-500 font-medium"
-                  >
-                    See all following
-                  </button>
-                )}
-              </div>
-
-              {/* showing following. */}
-
-              {followerData?.data?.following.length > 0 ? (
-                <div className="grid grid-cols-3 gap-3 mt-4">
-                  {followerData?.data?.following.slice(-9).map((item) => {
-                    return (
-                      <Link
-                        key={item?._id}
-                        href={`profile?id=${item?.following?._id}`}
-                      >
-                        <Image
-                          className="w-full h-[200px] object-cover rounded-lg"
-                          src={item?.following?.img}
-                          alt="follwerImage"
-                          height={300}
-                          width={300}
-                        ></Image>
-                      </Link>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-center">No following</p>
-              )}
-            </section>
-          </div>
-
-          {/* posts. */}
-          <div
-            data-aos="fade-down"
-            className="lg:w-[60%] w-full overflow-hidden"
-          >
-            {/* create a post section */}
-
-            {isYou && <PostCreate userData={userData} />}
-
-            {/* favourite posts. */}
-            {isYou && (
-              <section className="bg-white mt-4 rounded-xl shadow-lg p-4">
-                <h1 className="text-xl font-bold">Favourite Posts</h1>
-                <div className="grid grid-cols-2 lg:grid-cols-3 mt-4 gap-5">
-                  {postData?.data?.favourite?.map((item, idx) => (
-                    <FavouritePostCard
-                      data-aos="fade-up"
-                      key={idx}
-                      data={item}
-                    />
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* post cards. */}
-
-            <section>
-              <div className="grid grid-cols-1 mt-4 gap-5">
-                {postData?.data?.all?.map((item, idx) => (
-                  <PostCard data-aos="fade-up" key={idx} data={item} />
-                ))}
-              </div>
-            </section>
-          </div>
+          <ProfilePosts isYou={isYou} postData={postData} userData={userData} />
         </div>
+
       </div>
 
       {/* daisy ui. */}
