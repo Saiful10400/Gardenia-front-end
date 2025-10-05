@@ -12,21 +12,17 @@ const CommentModal = ({ data, commentHandle, reactionLoading, handleReaction, re
     return (
         <dialog
             id={data?.post?._id?.toString()}
-            className="modal backdrop:bg-black/30 backdrop:backdrop-blur-sm "
+            className="modal backdrop:bg-black/30 backdrop:backdrop-blur-sm   "
         >
-            <div className="modal-box w-full max-w-2xl p-4 relative rounded-xl shadow-xl ">
+            <div className="modal-box max-h-screen lg:max-h-[calc(100vh-5rem)] rounded-none  w-full max-w-2xl p-4 relative lg:rounded-xl shadow-xl ">
                 {/* Close Button */}
-                <form method="dialog">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 text-green-700 hover:bg-green-200 transition">
-                        ✕
-                    </button>
-                </form>
 
-
-
-
-                <div>
-                    {/* Post Header */}
+                <div className="sticky lg:relative -top-4 py-2 w-full bg-white">
+                    <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 text-green-700 hover:bg-green-200 transition">
+                            ✕
+                        </button>
+                    </form>
                     <div className="flex items-start gap-3 mb-4">
                         <Image
                             src={data?.post?.creator?.img}
@@ -45,6 +41,13 @@ const CommentModal = ({ data, commentHandle, reactionLoading, handleReaction, re
                             <p className="text-xs text-gray-500 mt-1">{data?.post?.createdAt.$date}</p>
                         </div>
                     </div>
+                </div>
+
+
+
+                <div className="">
+                    {/* Post Header */}
+
 
                     {/* Post Content */}
                     <div className="text-gray-800 mb-3">
@@ -101,29 +104,31 @@ const CommentModal = ({ data, commentHandle, reactionLoading, handleReaction, re
                             </button>
                         </div>
                     </div>
+
+                    {/* Comments List */}
+                    <div className="flex flex-col gap-3 max-h-72 mb-4 px-1">
+                        {data?.comments?.map((item, idx) => (
+                            <CommentCard key={idx} item={item} />
+                        ))}
+                    </div>
+
+                    {/* Comment Input */}
+                    <form
+                        onSubmit={commentHandle}
+                        className="flex items-center gap-2 border-t border-green-200 pt-2 pb-3 sticky -bottom-4 rounded-lg pl-2 px-1 bg-green-50"
+                    >
+                        <textarea
+                            name="comment"
+                            placeholder="Write a comment..."
+                            className="flex-1 p-2 rounded-lg border border-green-300 resize-none focus:outline-none focus:ring focus:ring-green-200 bg-white"
+                        />
+                        <button className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">
+                            <SendHorizonal size={18} />
+                        </button>
+                    </form>
                 </div>
 
-                {/* Comments List */}
-                <div className="flex flex-col gap-3 max-h-72 overflow-y-auto mb-4 px-1">
-                    {data?.comments?.map((item, idx) => (
-                        <CommentCard key={idx} item={item} />
-                    ))}
-                </div>
 
-                {/* Comment Input */}
-                <form
-                    onSubmit={commentHandle}
-                    className="flex items-center gap-2 border-t border-green-200 pt-2 pb-3 sticky -bottom-4 rounded-lg pl-2 px-1 bg-green-50"
-                >
-                    <textarea
-                        name="comment"
-                        placeholder="Write a comment..."
-                        className="flex-1 p-2 rounded-lg border border-green-300 resize-none focus:outline-none focus:ring focus:ring-green-200 bg-white"
-                    />
-                    <button className="bg-green-500 text-white p-2 rounded-lg hover:bg-green-600 transition">
-                        <SendHorizonal size={18} />
-                    </button>
-                </form>
             </div>
         </dialog>
     );
