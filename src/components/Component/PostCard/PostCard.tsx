@@ -24,6 +24,7 @@ import {
 } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import CommentModal from "./CommentModal";
+import { usePathname } from "next/navigation";
 
 
 
@@ -31,7 +32,9 @@ import CommentModal from "./CommentModal";
 
 const PostCard = ({ data }: { data: TpostCard }) => {
 
-  console.log(data, "post card data")
+  const route=usePathname()
+ 
+ 
   const [collaps, setCollaps] = useState(data.post.content.length > 300);
   const { loggedInUser } = useAppSelector((e) => e.authStore);
 
@@ -74,7 +77,7 @@ const PostCard = ({ data }: { data: TpostCard }) => {
 
 
       {/* Header */}
-      {data.post.isGroupPost ? (<div className="flex items-center justify-between p-4">
+      {data.post.isGroupPost && !route.includes("/page") ? (<div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 object-cover relative">
             <Link className="w-full h-full" href={`/profile?id=${data.post.creator?._id}`}>
@@ -100,7 +103,7 @@ const PostCard = ({ data }: { data: TpostCard }) => {
 
           <div className="flex flex-col">
             <Link
-              href={`/profile?id=${data.post.creator?._id}`}
+              href={`/page?id=${data.post.group?._id}`}
               className="font-semibold hover:text-blue-600"
             >
               {data.post.group?.name}
