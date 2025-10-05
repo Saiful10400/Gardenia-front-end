@@ -7,14 +7,14 @@ import {
   CircleArrowDown,
   CircleArrowUp,
   MessageCircle,
- 
+
 } from "lucide-react";
 import { PiShareFat } from "react-icons/pi";
 import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { Tpost } from "@/Types";
- 
+import { TpostCard } from "@/Types";
+
 import blueTick from "../../../assets/profile/blueTick.png";
 import dateFormatter from "@/utils/dateFormatter";
 import {
@@ -25,11 +25,13 @@ import {
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import CommentModal from "./CommentModal";
 
-interface Props {
-  data: { post: Tpost; favourite?: any[]; reaction?: any[]; comments?: any[] };
-}
 
-const PostCard = ({ data }: Props) => {
+
+
+
+const PostCard = ({ data }: { data: TpostCard }) => {
+
+  console.log(data, "post card data")
   const [collaps, setCollaps] = useState(data.post.content.length > 300);
   const { loggedInUser } = useAppSelector((e) => e.authStore);
 
@@ -67,9 +69,59 @@ const PostCard = ({ data }: Props) => {
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 mb-6">
+
+
+
+
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      {data.post.isGroupPost ? (<div className="flex items-center justify-between p-4">
         <div className="flex items-center gap-3">
+          <div className="w-12 h-12 object-cover relative">
+            <Link className="w-full h-full" href={`/profile?id=${data.post.creator?._id}`}>
+              <Image
+                src={data.post.group?.logo || "/default-avatar.png"}
+                alt="Profile"
+                width={48}
+                height={48}
+                className="w-full h-full rounded-full "
+              />
+            </Link>
+
+            <Link className="absolute -bottom-2 -right-1 z-10" href={`/profile?id=${data.post.creator?._id}`}>
+              <Image
+                src={data.post.creator?.img || "/default-avatar.png"}
+                alt="Profile"
+                width={48}
+                height={48}
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            </Link>
+          </div>
+
+          <div className="flex flex-col">
+            <Link
+              href={`/profile?id=${data.post.creator?._id}`}
+              className="font-semibold hover:text-blue-600"
+            >
+              {data.post.group?.name}
+              
+            </Link>
+            <div className="flex items-center gap-1">
+            <Link
+              href={`/profile?id=${data.post.creator?._id}`}
+              className="font-semibold text-gray-600 text-xs hover:text-blue-600"
+            >
+              {data.post.creator?.name}
+              {data.post.creator?.verifyed && (
+                <Image src={blueTick} width={16} height={16} alt="Verified" className="inline ml-1" />
+              )}
+            </Link>
+            <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span></div>
+          </div>
+        </div>
+      </div>) : (<div className="flex items-center justify-between p-4">
+        <div className="flex items-center gap-3">
+
           <Link href={`/profile?id=${data.post.creator?._id}`}>
             <Image
               src={data.post.creator?.img || "/default-avatar.png"}
@@ -92,7 +144,7 @@ const PostCard = ({ data }: Props) => {
             <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span>
           </div>
         </div>
-      </div>
+      </div>)}
 
 
       {/* Content */}
@@ -154,7 +206,7 @@ const PostCard = ({ data }: Props) => {
         </div>
       </div>
 
-      <CommentModal commentHandle={commentHandle} handleReaction={handleReaction} reacted={reacted} reactionLoading={reactionLoading} data={data}/>
+      <CommentModal commentHandle={commentHandle} handleReaction={handleReaction} reacted={reacted} reactionLoading={reactionLoading} data={data} />
     </div>
   );
 };
