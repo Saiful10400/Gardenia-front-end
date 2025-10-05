@@ -7,6 +7,7 @@ import {
   useUpdateCommentMutation,
 } from "@/Redux/api/api";
 import dateFormatter from "@/utils/dateFormatter";
+import ContentLInkFilter from "./Utils/ContentLInkFilter";
 
 const CommentCard = ({ item }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -60,7 +61,7 @@ const CommentCard = ({ item }) => {
         </div>
       </div>
 
-      <form onSubmit={editHandle} className="relative">
+      {edit?<form onSubmit={editHandle} className="relative">
         <textarea
           name="comment"
           defaultValue={item.comment}
@@ -74,7 +75,7 @@ const CommentCard = ({ item }) => {
             <SendHorizonal size={14} />
           </button>
         )}
-      </form>
+      </form>:<div><ContentLInkFilter content={item.comment}/></div>}
     </div>
   );
 };

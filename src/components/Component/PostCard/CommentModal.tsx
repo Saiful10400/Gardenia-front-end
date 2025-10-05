@@ -2,7 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { CircleArrowDown, CircleArrowUp, MessageCircle, SendHorizonal } from "lucide-react";
-import CommentCard from "./sub/CommentCard";
+import CommentCard from "./subComponentAndUtils/CommentCard";
 import blueTick from "../../../assets/profile/blueTick.png";
 import { PiShareFat } from "react-icons/pi";
 import parse from "html-react-parser";
