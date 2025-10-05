@@ -25,6 +25,7 @@ import {
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import CommentModal from "./CommentModal";
 import { usePathname } from "next/navigation";
+import ContentImage from "./ContentImage";
 
 
 
@@ -165,13 +166,7 @@ const PostCard = ({ data }: { data: TpostCard }) => {
 
       {/* Post Image */}
       {data.post.img && (
-        <Image
-          src={data.post.img}
-          alt="Post Image"
-          width={1920}
-          height={1080}
-          className="w-full h-[400px] lg:h-[500px] object-cover rounded-b-xl hover:scale-105 transition-transform duration-500"
-        />
+        <ContentImage link={data.post.img} />
       )}
 
       {/* Reaction Bar */}
