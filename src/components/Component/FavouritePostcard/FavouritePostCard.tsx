@@ -5,7 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import parser from 'html-react-parser';
 import blueTick from '../../../assets/profile/blueTick.png';
-import { MessageCircle, Heart, Share2 } from 'lucide-react';
+// import { MessageCircle, Heart, Share2 } from 'lucide-react';
 
 const FavouritePostCard = ({ data }) => {
   const post = data?.postId;
@@ -13,7 +13,7 @@ const FavouritePostCard = ({ data }) => {
   const profileLink = creator?._id ? `/profile?id=${creator._id}` : '#';
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col justify-between h-[420px] hover:shadow-md transition-all duration-300">
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col gap-3 lg:h-[420px] hover:shadow-md transition-all duration-300">
       {/* Header */}
       <div className="flex items-center gap-3 px-4 pt-4">
         <Link href={profileLink} className="shrink-0">
@@ -46,24 +46,25 @@ const FavouritePostCard = ({ data }) => {
             )}
           </div>
           <div className="text-xs text-gray-500">
-            10h • {post?.costing || 'Free'}
+            10h
+             {/* {post?.costing || 'Free'} */}
           </div>
         </div>
       </div>
 
       {/* Post Content */}
-      <div className="px-4 py-3 flex-1 overflow-hidden">
-        <p className="text-gray-700 text-sm leading-relaxed mb-2 line-clamp-4">
+      <div className="px-4  overflow-hidden">
+        <p className="text-gray-700 text-sm leading-relaxed mb-2 line-clamp-4 h-16">
           {parser(post?.content || '')}
         </p>
 
         {post?.img && (
-          <div className="relative w-full h-56 rounded-lg overflow-hidden">
+          <div className="relative w-full h-16 lg:h-56  rounded-sm overflow-hidden">
             <Image
               src={post?.img}
               alt="Post"
               fill
-              className="object-cover hover:scale-105 transition-transform duration-500"
+              className="object-cover hover:scale-105 transition-transform duration-500  rounded-md"
             />
           </div>
         )}

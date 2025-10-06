@@ -23,11 +23,11 @@ import React, { useEffect, useState } from "react";
 import dummycover from "../../../assets/pages/profile/plainCover.jpeg";
 import { FaCamera } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
-import { MdModeEditOutline } from "react-icons/md";
-import { IoHomeSharp } from "react-icons/io5";
-import { PiStudentBold } from "react-icons/pi";
-import { MdEmail } from "react-icons/md";
-import { FaPhoneAlt } from "react-icons/fa";
+// import { MdModeEditOutline } from "react-icons/md";
+// import { IoHomeSharp } from "react-icons/io5";
+// import { PiStudentBold } from "react-icons/pi";
+// import { MdEmail } from "react-icons/md";
+// import { FaPhoneAlt } from "react-icons/fa";
 import imageUpload from "@/utils/imageUpload";
 import { toast } from "react-toastify";
 import InputField from "@/components/Component/InputField/InputField";
@@ -35,12 +35,12 @@ import Button from "@/components/Component/Button/Button";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
-import PostCreate from "@/components/Component/PostCreate/PostCreate";
-import PostCard from "@/components/Component/PostCard/PostCard";
+// import PostCreate from "@/components/Component/PostCreate/PostCreate";
+// import PostCard from "@/components/Component/PostCard/PostCard";
 import NotAvailableContent from "@/components/Component/NotAvailabeContent/NotAvailableContent";
 import axios from "axios";
 import blueTick from "../../../assets/profile/blueTick.png";
-import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
+// import FavouritePostCard from "@/components/Component/FavouritePostcard/FavouritePostCard";
 import { UserCheck, UserCog, UserPlus } from "lucide-react";
 import { Tfrind } from "@/Types";
 import ProfilePosts from "./(components)/ProfilePosts";
@@ -291,17 +291,7 @@ const ProfileComponent = () => {
 
   const isThisMyFriend = MyfriendList?.data?.includes(id)
 
-
-
-
-
-
-
-
-
-
-
-
+ 
 
   return isLoading ||
     postLoading ||
