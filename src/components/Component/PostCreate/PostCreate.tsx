@@ -37,6 +37,7 @@ import { useCreatePostMutation } from "@/Redux/api/api";
 import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import { Tuser } from "@/Types";
 import { usePathname, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 const PostCreate = ({ userData }: { userData: Tuser }) => {
   // configure rich-text editor.
@@ -125,13 +126,13 @@ const id = searchParams.get("id");
   return (
     <>
       <section className="rounded-xl shadow-md p-3  border bg-white flex justify-evenly items-center">
-        <Image
+        <Link href={`/profile?id=${loggedInUser?._id}`}><Image
           className="w-[50px] h-[50px] rounded-full object-cover"
           src={userData?.img}
           width={50}
           height={50}
           alt="profile"
-        ></Image>
+        ></Image></Link>
         <button
           onClick={() => document.getElementById("create_post")?.showModal()}
           className="w-[70%] bg-gray-100 text-base font-medium rounded-3xl py-3 text-start px-4"
