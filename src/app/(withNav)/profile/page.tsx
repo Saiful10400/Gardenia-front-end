@@ -334,13 +334,13 @@ const ProfileComponent = () => {
           )}
 
           {isYou && (
-            <div className="absolute bottom-[20px] right-[10px]">
+            <div className="absolute bottom-2 lg:bottom-[20px] right-[10px]">
               <label
                 htmlFor="coverUpdate"
                 className="text-xl bg-gray-200 cursor-pointer  p-2 rounded-lg flex gap-3 items-center"
               >
                 <FaCamera />
-                <span className="text-base font-semibold">
+                <span className="text-sm lg:text-base font-semibold">
                   {userData?.coverImg
                     ? "Update cover Photo"
                     : "Add cover Photo"}
@@ -395,7 +395,7 @@ const ProfileComponent = () => {
             </div>
             <div className=" ">
               <h1 className="text-4xl font-bold flex gap-3 items-end">
-                <span className="text-lg lg:text-base">{userData?.name}</span>
+                <span className="text-lg lg:text-xl">{userData?.name}</span>
                 {userData?.verifyed && (
                   <Image
                     className="w-[30px] h-[30px] box-content"

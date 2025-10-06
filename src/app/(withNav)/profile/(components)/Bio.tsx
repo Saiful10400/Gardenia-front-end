@@ -26,7 +26,7 @@ const Bio = ({ userData, isYou, followerData, updateProfile, id }) => {
   };
 
   return (
-    <div data-aos="fade-down" className="lg:w-[40%] lg:sticky top-[-80px] space-y-5">
+    <div data-aos="fade-down" className="lg:w-[40%] w-full lg:sticky top-[-80px] space-y-5">
       {/* ---------- BIO / INTRO ---------- */}
       <div className="w-full bg-white rounded-2xl shadow-sm p-5 border border-gray-100">
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">Intro</h1>
