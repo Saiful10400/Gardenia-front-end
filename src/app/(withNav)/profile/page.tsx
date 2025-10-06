@@ -317,11 +317,11 @@ const ProfileComponent = () => {
       <div className="bg-gray-100 lg:w-[80%] mx-auto ">
         {/* top cover photo and profile photo. */}
 
-        <div className="relative h-[40vh]">
+        <div className="relative h-[200px] lg:h-[40vh]">
           <Image
             src={userData?.coverImg || dummycover}
             alt="coverPhoto"
-            className="w-full object-cover rounded-lg h-full"
+            className="w-full object-cover h-full"
             height={300}
             width={1900}
           ></Image>
@@ -395,7 +395,7 @@ const ProfileComponent = () => {
             </div>
             <div className=" ">
               <h1 className="text-4xl font-bold flex gap-3 items-end">
-                <span>{userData?.name}</span>
+                <span className="text-lg lg:text-base">{userData?.name}</span>
                 {userData?.verifyed && (
                   <Image
                     className="w-[30px] h-[30px] box-content"
