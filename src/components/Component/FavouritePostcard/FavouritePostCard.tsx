@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import parser from 'html-react-parser';
 import blueTick from '../../../assets/profile/blueTick.png';
+import { Tpost } from '@/Types';
 // import { MessageCircle, Heart, Share2 } from 'lucide-react';
 
 const FavouritePostCard = ({ data }) => {

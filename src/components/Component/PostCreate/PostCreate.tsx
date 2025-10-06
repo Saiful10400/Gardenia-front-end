@@ -98,7 +98,7 @@ const id = searchParams.get("id");
       });
       return;
     }
-    if (!loggedInUser || !editor) {
+    if (!loggedInUser || !editor) { 
       return;
     }
     // const form = new FormData(e.currentTarget);   category and costing temporary removed.
