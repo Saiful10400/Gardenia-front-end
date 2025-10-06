@@ -4,7 +4,7 @@ The frontend of Gardenia is a Next.js-based blogging platform for farmers and fa
 
 ## 🌐 Live Site 
 
-- **Frontend URL:** [Gardenia Frontend](https://apollow-assignment-6-front-end.vercel.app)
+- **Frontend URL:** [Social media Frontend](https://socialmedia10400.vercel.app/)
 
 ## 🛠️ Key Features
 
