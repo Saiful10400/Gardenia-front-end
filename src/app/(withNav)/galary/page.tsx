@@ -10,7 +10,7 @@ const GAlary = () => {
     const{data}=useAllPostImageQuery(null)
     const postImages=data?.data
    const sortedImages=postImages?.map(item=>{
-    return{src:item.img,width:340,height:178}
+    return{src:item.img,width:340}
    })
  
 
