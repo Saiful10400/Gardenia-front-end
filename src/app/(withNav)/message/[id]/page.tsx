@@ -1,13 +1,16 @@
 "use client"
 
-import React from 'react';
+ 
+import React  from 'react';
 
-const page = () => {
+const DynamicMessageRoute = () => {
+   
     return (
         <div className='border border-black'>
-            dynamic message page.
+            dynamic message Sz.
+          
         </div>
     );
 };
 
-export default page;
+export default DynamicMessageRoute;

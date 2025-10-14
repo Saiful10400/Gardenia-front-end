@@ -5,7 +5,7 @@ import logo from "../../../assets/nav/logo.png";
 import Link from "next/link";
 import Tocenter from "@/components/Helper/Tocenter";
 import { usePathname } from "next/navigation";
-import { Bell, CircleUser, CircleUserRound, ImageIcon, LayoutDashboard, LogOut, Menu, Newspaper, UsersRound } from "lucide-react";
+import { Bell, CircleUser, CircleUserRound, ImageIcon, LayoutDashboard, LogOut, LucideMessageCircleMore, Menu, Newspaper, UsersRound } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import "./style.css";
 import { setUser } from "@/Redux/featcher/AuthSlice";
@@ -22,43 +22,39 @@ const NavBar = () => {
   const routes = (
     <>
       <Link
-        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold  ${
-          path === "/" && "navActive"
-        }`}
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold  ${path === "/" && "navActive"
+          }`}
         href={"/"}
       >
-        <Newspaper width={30} height={30}/>
+        <Newspaper width={30} height={30} />
       </Link>
 
       {loggedInUser?._id && (
         <Link
-          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
-            path === "/profile" && "navActive"
-          }`}
+          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${path === "/profile" && "navActive"
+            }`}
           href={`/profile?id=${loggedInUser?._id}`}
         >
-         <CircleUserRound width={30} height={30}/>
+          <CircleUserRound width={30} height={30} />
         </Link>
       )}
 
       {loggedInUser?._id && (
         <Link
-          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
-            path === "/friends" && "navActive"
-          }`}
+          className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${path === "/friends" && "navActive"
+            }`}
           href={`/friends`}
         >
-         <UsersRound width={30} height={30}/>
+          <UsersRound width={30} height={30} />
         </Link>
       )}
 
       <Link
-        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${
-          path === "/galary" && "navActive"
-        }`}
+        className={` py-2 px-5  gap-3 lg:text-lg border-b-[3px] border-transparent lg:font-bold   ${path === "/galary" && "navActive"
+          }`}
         href={"/galary"}
       >
-        <ImageIcon width={30} height={30}/>
+        <ImageIcon width={30} height={30} />
       </Link>
 
       {/* <Link
@@ -93,13 +89,13 @@ const NavBar = () => {
     <>
       <li>
         {loggedInUser ? (
-          <button onClick={logoutHandle}><LogOut/> Logout</button>
+          <button onClick={logoutHandle}><LogOut /> Logout</button>
         ) : (
           <Link href={"/login"}>Login</Link>
         )}
         {/* {loggedInUser && <Link href={"/user-dashboard/posts"}>Dashboard</Link>} */}
         {loggedInUser?.role === "admin" && (
-          <Link href={"/admin-dashboard"}><LayoutDashboard/>Dashboard</Link>
+          <Link href={"/admin-dashboard"}><LayoutDashboard />Dashboard</Link>
         )}
       </li>
     </>
@@ -111,9 +107,9 @@ const NavBar = () => {
     (item) => item.isRead === false
   );
 
-  const[send]=useMakeNotificationReadMutation()
-  const notificationReadHandle=()=>{
-    if(!loggedInUser?._id || unreadNotification.length===0) return
+  const [send] = useMakeNotificationReadMutation()
+  const notificationReadHandle = () => {
+    if (!loggedInUser?._id || unreadNotification.length === 0) return
     send(loggedInUser?._id)
   }
 
@@ -143,15 +139,22 @@ const NavBar = () => {
             </ul>
 
             <div className=" flex items-center gap-3 relative">
+
+              <Link href="/message" className="pb-1">
+                <LucideMessageCircleMore size={30} />
+              </Link>
+
+
+
               <div className="relative">
-                {unreadNotification&&unreadNotification?.length !== 0 && (
+                {unreadNotification && unreadNotification?.length !== 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-400 p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center font-semibold text-sm text-white">
                     {unreadNotification?.length}
                   </span>
                 )}
-                <button onClick={() =>{
-                   setShowNotification((p) => !p)
-                   notificationReadHandle()
+                <button onClick={() => {
+                  setShowNotification((p) => !p)
+                  notificationReadHandle()
                 }}>
                   <Bell size={30} />{" "}
                 </button>
