@@ -140,7 +140,7 @@ const NavBar = () => {
 
             <div className=" flex items-center gap-3 relative">
 
-              <Link href="/message" className="pb-1">
+              <Link href="/message" className="pb-1 hidden">
                 <LucideMessageCircleMore size={30} />
               </Link>
 
