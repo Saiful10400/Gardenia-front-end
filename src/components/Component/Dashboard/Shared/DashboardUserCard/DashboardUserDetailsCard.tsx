@@ -1,52 +1,154 @@
-import Image from 'next/image';
-import React from 'react';
-import bluticVarifyIcon from "../../../../../assets/profile/blueTick.png"
-import Button from '@/components/Component/Button/Button';
-import { useUpdateAUserMutation } from '@/Redux/api/api';
-import defaultCoverImage from "../../../../../assets/dashboard/demoCover.jpg"
-const DashboardUserDetailsCard = ({data}) => {
- 
-// role update hadle.
-const[userUpdate]=useUpdateAUserMutation()
+import Image from "next/image";
+import React from "react";
+import bluticVarifyIcon from "../../../../../assets/profile/blueTick.png";
+import Button from "@/components/Component/Button/Button";
+import { useUpdateAUserMutation } from "@/Redux/api/api";
+import defaultCoverImage from "../../../../../assets/dashboard/demoCover.jpg";
 
+const DashboardUserDetailsCard = ({ data }) => {
+  const [userUpdate] = useUpdateAUserMutation();
 
-const handleRole=()=>{
-userUpdate({id:data?._id,role:data?.role==="user"?"admin":"user"})
-}
+  const handleRole = () => {
+    userUpdate({
+      id: data?._id,
+      role: data?.role === "user" ? "admin" : "user",
+    });
+  };
 
-const blockingHandle=()=>{
-userUpdate({id:data?._id,isBlocked:data?.isBlocked?false:true})
-}
+  const blockingHandle = () => {
+    userUpdate({
+      id: data?._id,
+      isBlocked: data?.isBlocked ? false : true,
+    });
+  };
 
-console.log(data);
- 
+  return (
+    <div
+      data-aos="fade-up"
+      className="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+    >
+      {/* LEFT SIDE - Modern Cover + Profile Section */}
+      <div className="relative w-full md:w-[35%] h-[200px] flex items-end justify-center md:justify-start p-6 bg-gradient-to-br from-[#121121] to-[#1e1e2f]">
+        {/* Cover Image */}
+        <Image
+          src={data?.coverImg || defaultCoverImage}
+          alt="cover"
+          fill
+          className="object-cover opacity-70 absolute inset-0"
+        />
 
-    return (
-        <div data-aos="zoom-in" className='bg-white pb-5 rounded-lg overflow-hidden'>
-            <Image height={300} width={400} className='w-full h-[100px] object-cover' alt='cover' src={data?.coverImg || defaultCoverImage}/>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
 
-            <section className='flex flex-col h-[140px] items-center justify-center relative bottom-8'>
-            <Image height={300} width={400} className='w-[100px]  h-[100px] rounded-full object-cover' alt='cover' src={data?.img||defaultCoverImage}/>
-            <div className=''>
-            <h1 className='font-bold text-xl inline-block'>{data?.name}</h1>
-            {data?.verifyed&&<Image height={300} width={400} className='w-[30px] inline-block h-[30px] rounded-full object-cover' alt='cover' src={bluticVarifyIcon}/>}
+        {/* Profile Picture */}
+        <div className="relative z-10 flex flex-col items-center md:items-start">
+          <div className="relative">
+            <div className="p-[3px] bg-gradient-to-tr from-[#f4cb0d] to-[#121121] rounded-full">
+              <Image
+                src={data?.img || defaultCoverImage}
+                alt="profile"
+                height={90}
+                width={90}
+                className="w-[85px] h-[85px] rounded-full object-cover border-2 border-white shadow-lg hover:scale-105 transition-transform duration-300"
+              />
             </div>
-            <h1 className='font-normal text-lg'>{data?.email}</h1>
-            
-            </section>
-            <section className='px-4'>
-                <h1 className='text-lg font-semibold'>Role: <span className='font-normal'>{data?.role}</span></h1>
-                <h1 className='text-lg font-semibold'>Status: <span className='font-normal'>{data?.isBlocked?"Blocked":"Un-Blocked"}</span></h1>
-                <h1 className='text-lg font-semibold'>Address: <span className='font-normal'>{data?.address}</span></h1>
-                <h1 className='text-lg font-semibold'>Phone: <span className='font-normal'>{data?.phone}</span></h1>
-            </section>
-            
-            <section className='flex items-center justify-center gap-4 mt-4'>
-                <Button onClick={handleRole} className='rounded-sm p-1 font-semibold' text={data?.role==="user"?"Make Admin":"Make User"}/>
-                <Button onClick={blockingHandle} className='rounded-sm px-5 font-semibold bg-red-500' text={data?.isBlocked?"Un-Block":"Block"}/>
-            </section>
+
+            {/* Verified Badge */}
+            {data?.verifyed && (
+              <Image
+                src={bluticVarifyIcon}
+                alt="verified"
+                height={26}
+                width={26}
+                className="absolute bottom-0 right-0 w-[26px] h-[26px]"
+              />
+            )}
+          </div>
+
+          {/* Name + Email (in cover area) */}
+          <div className="text-white mt-3 md:mt-4 text-center md:text-left">
+            <h2 className="text-lg font-semibold">{data?.name}</h2>
+            <p className="text-gray-200 text-sm">{data?.email}</p>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* RIGHT SIDE - User Info & Actions */}
+      <div className="flex flex-col w-full md:w-[65%] px-6 py-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-gray-800">
+              {data?.name}
+            </h1>
+            <p className="text-gray-500 text-sm">{data?.email}</p>
+          </div>
+
+          <div className="mt-4 md:mt-0 flex gap-3">
+            <Button
+              onClick={handleRole}
+              className="rounded-md px-4 py-2 bg-[#121121] text-white font-semibold hover:bg-[#1a1a2b] transition-all duration-200"
+              text={data?.role === "user" ? "Make Admin" : "Make User"}
+            />
+            <Button
+              onClick={blockingHandle}
+              className={`rounded-md px-4 py-2 font-semibold transition-all duration-200 ${
+                data?.isBlocked
+                  ? "bg-green-600 hover:bg-green-700 text-white"
+                  : "bg-red-600 hover:bg-red-700 text-white"
+              }`}
+              text={data?.isBlocked ? "Unblock" : "Block"}
+            />
+          </div>
+        </div>
+
+        {/* Divider */}
+        <hr className="my-4 border-gray-200" />
+
+        {/* Info Section */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3">
+          <div className="flex justify-between">
+            <span className="text-gray-600 font-medium">Role</span>
+            <span
+              className={`font-semibold ${
+                data?.role === "admin" ? "text-blue-600" : "text-gray-800"
+              }`}
+            >
+              {data?.role}
+            </span>
+          </div>
+
+          <div className="flex justify-between">
+            <span className="text-gray-600 font-medium">Status</span>
+            <span
+              className={`font-semibold ${
+                data?.isBlocked ? "text-red-600" : "text-green-600"
+              }`}
+            >
+              {data?.isBlocked ? "Blocked" : "Active"}
+            </span>
+          </div>
+
+          {data?.address && (
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-medium">Address</span>
+              <span className="text-gray-700 font-semibold text-right">
+                {data?.address}
+              </span>
+            </div>
+          )}
+
+          {data?.phone && (
+            <div className="flex justify-between">
+              <span className="text-gray-600 font-medium">Phone</span>
+              <span className="text-gray-700 font-semibold">
+                {data?.phone}
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default DashboardUserDetailsCard;
