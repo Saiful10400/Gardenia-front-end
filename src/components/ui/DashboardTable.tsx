@@ -1,187 +1,153 @@
-/* eslint-disable react-hooks/rules-of-hooks */
- "use client"
+"use client";
 
 import { TtableData } from "../../Types";
- 
- 
- 
- 
 import formateDate from "@/utils/formateDate";
-// import { useAppSelector } from "@/Redux/hoocks/Convaying";
 import Image from "next/image";
-import { useAdminPanalAllNotificationQuery, useAllPaymentHistoryQuery, useGetAllCategoryQuery, useGetAllMusicQuery, useGetPostQuery } from "@/Redux/api/api";
+import {
+  useAdminPanalAllNotificationQuery,
+  useAllPaymentHistoryQuery,
+  useGetAllCategoryQuery,
+  useGetAllMusicQuery,
+  useGetPostQuery,
+} from "@/Redux/api/api";
+
 const DashboardTable = ({ data }: { data: TtableData }) => {
-  //  const { loggedInUser } = useAppSelector((s) => s.authStore);
   const headers = Object.keys(data.keyValue);
   const keys = Object.values(data.keyValue);
 
- 
- 
- 
-
   let fetchedData;
 
-  if (data.name === "Content") {
-    
-    fetchedData = useGetPostQuery(null)
-  }
+  if (data.name === "Content") fetchedData = useGetPostQuery(null);
+  if (data.name === "payments") fetchedData = useAllPaymentHistoryQuery(null);
+  if (data.name === "category") fetchedData = useGetAllCategoryQuery(null);
+  if (data.name === "notification")
+    fetchedData = useAdminPanalAllNotificationQuery(null);
+  if (data.name === "story") fetchedData = useGetAllMusicQuery(null);
 
-  if (data.name === "payments") {
-    
-    fetchedData = useAllPaymentHistoryQuery(null)
-  }
-  if (data.name === "category") {
-    
-    fetchedData = useGetAllCategoryQuery(null)
-  }
-  if (data.name === "notification") {
-    
-    fetchedData = useAdminPanalAllNotificationQuery(null)
-  }
-  if (data.name === "story") {
-    
-    fetchedData = useGetAllMusicQuery(null)
-  }
-
- 
-  const typeFormate = (key: string, item) => {
-    if (key === "logo" || key === "image"|| key === "img"|| key === "userPhoto" ||key==="musicArt") {
+  const typeFormate = (key: string, item: any) => {
+    if (
+      key === "logo" ||
+      key === "image" ||
+      key === "img" ||
+      key === "userPhoto" ||
+      key === "musicArt"
+    ) {
       return (
-        <td className="border-none lg:py-5 pl-4 " key={key}>
-          <Image height={60} width={60}
-            className="w-[60px] h-[40px] rounded-md object-contain"
-            src={item[key]}
-            alt="photo"
-          />
+        <td key={key} className="py-3 pl-5">
+          <div className="flex items-center">
+            <Image
+              height={50}
+              width={50}
+              src={item[key]}
+              alt="photo"
+              className="w-[50px] h-[50px] rounded-md object-cover border border-gray-200 shadow-sm"
+            />
+          </div>
         </td>
       );
-    } 
-    else if (key === "isGroupPost"||key==="isBlock" || key==="isDeleted" || key==="isRead") {
+    } else if (
+      key === "isGroupPost" ||
+      key === "isBlock" ||
+      key === "isDeleted" ||
+      key === "isRead"
+    ) {
+      const val = item[key];
       return (
-        <td className="border-none lg:py-5  pl-4 " key={key}>
-          {item[key]?"Yes":"No"}
+        <td key={key} className="py-3 pl-5 font-medium">
+          <span
+            className={`px-3 py-1 rounded-full text-sm font-semibold ${
+              val
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-600"
+            }`}
+          >
+            {val ? "Yes" : "No"}
+          </span>
         </td>
       );
-    } 
-    else if (key === "updated"||key === "created") {
+    } else if (key === "updated" || key === "created" || key === "createdAt") {
       return (
-        <td className="border-none lg:py-5  pl-4 " key={key}>
+        <td key={key} className="py-3 pl-5 text-gray-600 text-sm">
           {formateDate(item[key])}
         </td>
       );
-    } 
-    else if (key === "updated"||key === "createdAt") {
-        return (
-          <td className="border-none lg:py-5  pl-4 " key={key}>
-            {formateDate(item[key])}
-          </td>
-        );
-      }
-   
-    else {
+    } else {
       return (
-        <td className="border-none lg:py-5 pl-4 " key={key}>
-          {item[key]}
+        <td key={key} className="py-3 pl-5 text-gray-700 font-medium">
+          {item[key] ?? "-"}
         </td>
       );
     }
   };
 
- 
+  let FetchedData: any[] = [];
+  if (data.name === "Content") {
+    FetchedData = fetchedData?.data?.data?.map((item) => item.post);
+  } else {
+    FetchedData = fetchedData?.data?.data || [];
+  }
 
-
-
-
-  // pagination logics.
-//   const totalPage = Math.ceil(fetchedData?.data?.data?.total / 10);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   useEffect(() => {
-//     setPagination({ offset: (currentPage - 1) * 10, limit: 10 });
-//   }, [currentPage]);
-
-
-
-let FetchedData=[]
-
-if(data.name==="Content"){
-    FetchedData=fetchedData?.data?.data?.map(item=>item.post)
-}
-if(data.name==="payments"||data.name==="category"||data.name==="notification" || data.name==="story"){
-    FetchedData=fetchedData?.data?.data
-}
- 
-  return (  
-    <div className="border bg-white rounded-lg pb-6">
-      <div className="flex justify-between border-b py-4 lg:px-5">
-        <h1 className="text-base font-bold">{data.tittle}</h1>
-       
+  return (
+    <div
+      className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+      data-aos="fade-up"
+    >
+      {/* Header Section */}
+      <div className="flex justify-between items-center border-b px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100">
+        <h1 className="text-lg font-semibold text-gray-800">
+          {data.tittle}
+        </h1>
+        {/* optional: add a small refresh or search */}
+        {/* <button className="text-sm text-blue-600 font-medium hover:underline">
+          Refresh
+        </button> */}
       </div>
 
-      {/* <div className="py-4 lg:px-5 flex justify-start gap-2 items-center">
-        <input
-          type="text"
-          placeholder="search here..."
-          className="focus:outline-[#f97316] border py-1 rounded-md pl-2 w-[250px]"
-        /> <button className="bg-[#f97316] text-white font-medium rounded-md py-1 px-2">Search</button>
-      </div> */}
-
-      <div className="lg:px-5 overflow-auto">
-        <table className="w-full text-base ">
-          <thead className="">
-            <tr className="border  bg-[#f1f5f9] font-semibold">
-              {headers?.map((item) => (
+      {/* Table Wrapper */}
+      <div className="overflow-x-auto  scrollbar-thin scrollbar-thumb-gray-300">
+        <table className="w-full border-collapse text-left">
+          <thead className="sticky top-0 bg-gray-100 text-gray-700 text-sm uppercase tracking-wide shadow-sm">
+            <tr>
+              {headers.map((header) => (
                 <th
-                  className="h-12 px-4 border-none text-left font-semibold text-gray-600    "
-                  key={item}
+                  key={header}
+                  className="py-3 px-5 font-semibold border-b border-gray-200"
                 >
-                  {item}
+                  {header}
                 </th>
               ))}
             </tr>
           </thead>
 
-          <tbody>
-            {FetchedData?.map((item) => (
-              <tr key={item.brandId} className="border">
-                {keys.map((key) => typeFormate(key, item))}
+          <tbody className="text-sm animate-fadeIn">
+            {FetchedData?.length > 0 ? (
+              FetchedData.map((item: any, index: number) => (
+                <tr
+                  key={index}
+                  className={`transition-all duration-200 hover:bg-gray-50 ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                  }`}
+                >
+                  {keys.map((key) => typeFormate(key, item))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={headers.length}
+                  className="py-10 text-center text-gray-500 font-medium"
+                >
+                  No data available
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
 
-      {/* <div className="lg:px-5 text-sm flex justify-between items-center">
-        <h1 className="font-semibold text-gray-400">
-          {(currentPage - 1) * 10 + fetchedData?.data?.data?.result?.length} of{" "}
-          {fetchedData?.data?.data?.total} row(s)
-        </h1>
-
-        <div className="flex items-center gap-10">
-          <h1 className="font-bold">
-            Page {currentPage} of {totalPage}
-          </h1>
-
-          <div className="flex items-center gap-2">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage((p) => p - 1)}
-              className={`border p-1 rounded-md hover:bg-gray-200 ${
-                currentPage === 1 && "opacity-40"
-              }`}
-            >
-              <ChevronLeft height={20} width={20} />
-            </button>
-            <button
-              disabled={currentPage === totalPage}
-              onClick={() => setCurrentPage((p) => p + 1)}
-              className={`border p-1 rounded-md hover:bg-gray-200 ${
-                currentPage === totalPage && "opacity-40"
-              }`}
-            >
-              <ChevronRight height={20} width={20} />
-            </button>
-          </div>
-        </div>
+      {/* Optional Footer */}
+      {/* <div className="px-6 py-3 border-t text-sm text-gray-500">
+        Showing {FetchedData?.length || 0} entries
       </div> */}
     </div>
   );
