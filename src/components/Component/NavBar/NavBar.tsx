@@ -129,7 +129,7 @@ const NavBar = () => {
                 </ul>
               </details>
 
-              <Link href={"/"}>
+              <Link className="ml-3 hover:scale-105 transition-all duration-400" href={"/"}>
                 <Image alt="Logo" width={50} height={400} src={logo}></Image>
               </Link>
             </div>
