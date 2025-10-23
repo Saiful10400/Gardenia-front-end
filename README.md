@@ -1,4 +1,4 @@
-# Social media Frontend
+# Social media Frontend .
 
 The frontend of Gardenia is a Next.js-based blogging platform for farmers and farming enthusiasts. It allows users to interact with the platform by posting, upvoting, following users, and accessing premium content.
 
