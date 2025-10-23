@@ -43,58 +43,71 @@ const Story = () => {
   const { data } = useGetAllMusicQuery(null);
 
   const tableData: TtableData = {
-      name: "story",
-      tittle: "All Story Music",
-      createRoute: " ",
-      keyValue: {
-        "Music Art": "musicArt",
-        "Track Name": "name",
-        "Date":"createdAt"
-         
-      },
-    };
+    name: "story",
+    tittle: "All Story Music",
+    createRoute: " ",
+    keyValue: {
+      "Music Art": "musicArt",
+      "Track Name": "name",
+      "Date": "createdAt"
+
+    },
+  };
 
 
   return (
     <>
+      {/* Upload Form Card */}
       <form
         onSubmit={formSubmitHandle}
-        className="w-full flex flex-col gap-3 bg-white rounded-md p-4 mb-3"
+        className="w-full bg-white rounded-2xl shadow-md p-6 mb-6 flex flex-col gap-5"
       >
-        <div className="flex flex-col lg:flex-row justify-between"><InputField
-          name="name"
-          className="border-2 w-full"
-          placeholder="Music name"
-          type="text"
-        />
-        <InputField
-          name="coverArt"
-          className="border-2 w-full"
-          placeholder="Music cover art"
-          type="file"
-        />
-        <InputField
-          name="audio"
-          className="border-2 w-full"
-          placeholder="Music file"
-          type="file"
-        /></div>
-        <Button className="  w-max mt-5 text-base " text="Upload" />
-      </form>
-      <DashboardTable data={tableData}/>
+        {/* Form Title */}
+        <h2 className="text-2xl font-bold text-[#147d3b] mb-4">
+          Upload New Music
+        </h2>
 
-      {/* <div className="grid lg:grid-cols-7 gap-2 mt-4">
-        {data?.data.map((item) => (
-          <div key={item._id} className="p-1 bg-white rounded-md text-center">
-            {item.name}
-            <Image className="w-full h-[200px] object-cover" alt="music cover art" src={item.musicArt || "https://picsum.photos/seed/picsum/400/500"} width={400} height={500}/>
-            <audio controls className="w-full">
-              <source src={item.url} type="audio/mp3" />
-            </audio>
-          </div>
-        ))}
-      </div> */}
+        {/* Input Fields */}
+        <div className="flex flex-col lg:flex-row gap-4">
+          {/* Music Name */}
+          <InputField
+            name="name"
+            className="flex-1 border-2 border-gray-300 rounded-md p-2 focus:border-[#147d3b] focus:outline-none"
+            placeholder="Music name"
+            type="text"
+          />
+
+          {/* Cover Art */}
+          <InputField
+            name="coverArt"
+            className="flex-1 border-2 border-gray-300 rounded-md   cursor-pointer file:border-none file:bg-[#147d3b] file:text-white file:px-3 file:py-1 file:rounded-md file:font-semibold focus:outline-none"
+            placeholder="Music cover art"
+            type="file"
+          />
+
+          {/* Audio File */}
+          <InputField
+            name="audio"
+            className="flex-1 border-2 border-gray-300 rounded-md   cursor-pointer file:border-none file:bg-[#147d3b] file:text-white file:px-3 file:py-1 file:rounded-md file:font-semibold focus:outline-none"
+            placeholder="Music file"
+            type="file"
+          />
+        </div>
+
+        {/* Upload Button */}
+        <Button
+          className="mt-4 w-max px-6 py-2 bg-[#147d3b] text-white font-semibold rounded-md hover:bg-[#0f622d] transition-all duration-200"
+          text="Upload"
+        />
+      </form>
+
+      {/* Dashboard Table */}
+      <div className="w-full">
+        <DashboardTable data={tableData} />
+      </div>
     </>
+
+
   );
 };
 
