@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  setUser,
-} from "@/Redux/featcher/AuthSlice";
+import { setUser } from "@/Redux/featcher/AuthSlice";
 import { useAppDispatch, useAppSelector } from "@/Redux/hoocks/Convaying";
 import {
   CircleUser,
@@ -54,7 +52,6 @@ const DashboardNav = () => {
   ];
 
   const links = isUser ? userLinks : adminLinks;
-
   const activeClass =
     "bg-[#f4cb0d] text-[#121121] shadow-md font-semibold rounded-lg";
 
@@ -63,7 +60,7 @@ const DashboardNav = () => {
       {loggedInUser && (
         <li>
           <Link
-            href={"/"}
+            href="/"
             className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md transition"
           >
             <Home size={18} /> Home
@@ -92,7 +89,7 @@ const DashboardNav = () => {
       ) : (
         <li>
           <Link
-            href={"/login"}
+            href="/login"
             className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md transition"
           >
             <User size={18} /> Login
@@ -103,13 +100,13 @@ const DashboardNav = () => {
   );
 
   return (
-    <nav className="flex justify-between items-center h-16 px-6 lg:px-10  bg-white shadow-sm sticky top-0 z-50">
+    <nav className="flex justify-between w-full items-center h-16 px-4 lg:pr-10 bg-white shadow-sm sticky top-0 z-50">
       {/* Mobile Menu */}
       <details className="dropdown lg:hidden">
         <summary className="btn btn-ghost p-2">
           <Menu size={22} />
         </summary>
-        <ul className="menu dropdown-content bg-white rounded-box shadow-md w-56 p-2 mt-2">
+        <ul className="menu dropdown-content bg-white rounded-xl shadow-lg w-56 p-2 mt-2">
           {links.map(({ href, label, icon }) => {
             const isActive = path === href;
             return (
@@ -120,8 +117,7 @@ const DashboardNav = () => {
                     isActive ? activeClass : "text-gray-600"
                   }`}
                 >
-                  {icon}
-                  {label}
+                  {icon} {label}
                 </Link>
               </li>
             );
@@ -131,23 +127,23 @@ const DashboardNav = () => {
 
       {/* Dashboard Title */}
       <Link
-        href={"/"}
+        href="/"
         className="font-bold text-lg lg:text-2xl text-[#121121] tracking-wide"
       >
         {isUser ? "User Dashboard" : "Admin Dashboard"}
       </Link>
 
-      {/* Right Side Profile Dropdown */}
-      <div className="flex items-center gap-4">
+      {/* Profile Dropdown */}
+      <div className="flex items-center gap-4 ">
         <details className="dropdown dropdown-end">
-          <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent">
+          <summary className="btn bg-transparent shadow-none border-none hover:bg-transparent p-0">
             {loggedInUser ? (
               <Image
                 height={40}
                 width={40}
                 alt="userProfile"
                 src={loggedInUser?.img}
-                className="w-10 h-10 rounded-full object-cover border-2 border-[#f4cb0d]"
+                className="w-10 h-10 rounded-full object-cover border-2 border-[#f4cb0d] shadow-sm"
               />
             ) : (
               <CircleUser size={35} className="text-gray-500" />
@@ -158,6 +154,7 @@ const DashboardNav = () => {
           </ul>
         </details>
       </div>
+
     </nav>
   );
 };
