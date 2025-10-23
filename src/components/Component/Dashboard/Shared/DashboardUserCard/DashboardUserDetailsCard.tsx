@@ -18,11 +18,12 @@ const blockingHandle=()=>{
 userUpdate({id:data?._id,isBlocked:data?.isBlocked?false:true})
 }
 
-
+console.log(data);
+ 
 
     return (
         <div data-aos="zoom-in" className='bg-white pb-5 rounded-lg overflow-hidden'>
-            <Image height={300} width={400} className='w-full h-[100px] object-cover' alt='cover' src={data?.coverImg}/>
+            <Image height={300} width={400} className='w-full h-[100px] object-cover' alt='cover' src={data?.coverImg || defaultCoverImage}/>
 
             <section className='flex flex-col h-[140px] items-center justify-center relative bottom-8'>
             <Image height={300} width={400} className='w-[100px]  h-[100px] rounded-full object-cover' alt='cover' src={data?.img||defaultCoverImage}/>
@@ -41,7 +42,6 @@ userUpdate({id:data?._id,isBlocked:data?.isBlocked?false:true})
             </section>
             
             <section className='flex items-center justify-center gap-4 mt-4'>
-                {/* buttons. */}
                 <Button onClick={handleRole} className='rounded-sm p-1 font-semibold' text={data?.role==="user"?"Make Admin":"Make User"}/>
                 <Button onClick={blockingHandle} className='rounded-sm px-5 font-semibold bg-red-500' text={data?.isBlocked?"Un-Block":"Block"}/>
             </section>

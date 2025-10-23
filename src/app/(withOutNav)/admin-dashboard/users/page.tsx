@@ -5,7 +5,7 @@ import { useGetAllUserQuery } from '@/Redux/api/api';
 
 const User = () => {
     const {data:allUserData}=useGetAllUserQuery(null)
-
+ 
     return (
         <div>
             

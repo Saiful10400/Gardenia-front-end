@@ -1,46 +1,71 @@
-"use client"
+"use client";
 
-import { Bell, ChartNoAxesGantt, DollarSign, LayoutDashboard, RectangleEllipsis, RssIcon, StickyNoteIcon, User, Users } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React from 'react';
-import "./style.css"
-import { FaPhotoVideo } from 'react-icons/fa';
+import {
+  Bell,
+  ChartNoAxesGantt,
+  DollarSign,
+  LayoutDashboard,
+  RectangleEllipsis,
+  RssIcon,
+  StickyNoteIcon,
+  User,
+  Users,
+} from "lucide-react";
+import { FaPhotoVideo } from "react-icons/fa";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 
 const AdminAside = () => {
+  const path = usePathname();
+  const isUser = path.includes("/user-dashboard");
 
-    const path=usePathname()
+  const adminLinks = [
+    { href: "/admin-dashboard", label: "Dashboard", icon: <LayoutDashboard /> },
+    { href: "/admin-dashboard/contents", label: "Contents", icon: <RssIcon /> },
+    { href: "/admin-dashboard/users", label: "Users", icon: <User /> },
+    { href: "/admin-dashboard/payments", label: "Payments", icon: <DollarSign /> },
+    { href: "/admin-dashboard/notification", label: "Notification", icon: <Bell /> },
+    { href: "/admin-dashboard/category", label: "Category", icon: <ChartNoAxesGantt /> },
+    { href: "/admin-dashboard/story", label: "Story", icon: <FaPhotoVideo /> },
+  ];
 
+  const userLinks = [
+    { href: "/user-dashboard/posts", label: "Posts", icon: <StickyNoteIcon /> },
+    { href: "/user-dashboard/followers", label: "Followers", icon: <Users /> },
+    { href: "/user-dashboard/followings", label: "Followings", icon: <User /> },
+    {
+      href: "/user-dashboard/change-password",
+      label: "Change Password",
+      icon: <RectangleEllipsis />,
+    },
+  ];
 
- const isuser= path.includes("/user-dashboard")
+  const activeClass =
+    "bg-[#147d3b] text-[white] font-semibold shadow-md rounded-xl";
 
-
-
-    const list=<>
-    <Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard" && "active"}`} href={"/admin-dashboard"}><LayoutDashboard/>Dashboard</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/contents" && "active"}`} href={"/admin-dashboard/contents"}><RssIcon/>Contents</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/users" && "active"}`} href={"/admin-dashboard/users"}><User/>Users</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/payments" && "active"}`} href={"/admin-dashboard/payments"}><DollarSign/>Payments</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/notification" && "active"}`} href={"/admin-dashboard/notification"}><Bell/>Notification</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/category" && "active"}`} href={"/admin-dashboard/category"}><ChartNoAxesGantt/>Category</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/admin-dashboard/story" && "active"}`} href={"/admin-dashboard/story"}><FaPhotoVideo/>Story</Link>
-    </>
-
-    const userlist=<>
-    {/* <Link className={`flex py-2 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard" && "active"}`} href={"/user-dashboard"}><LayoutDashboard/>Dashboard</Link> */}
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/posts" && "active"}`} href={"/user-dashboard/posts"}><StickyNoteIcon/>Posts</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followers" && "active"}`} href={"/user-dashboard/followers"}><Users/>Followers</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/followings" && "active"}`} href={"/user-dashboard/followings"}><User/>Followings</Link>
-    <Link className={`flex py-2 my-1 pl-3 items-center gap-3 text-lg font-bold ${path==="/user-dashboard/change-password" && "active"}`} href={"/user-dashboard/change-password"}><RectangleEllipsis/>Change Password</Link>
-    </>
-
-
-
-    return (
-        <ul className='w-full pt-10'>
-            {isuser?userlist:list}
-        </ul>
-    );
+  return (
+    <aside className="w-full pt-10 px-3 text-gray-300">
+      <ul className="flex flex-col gap-1">
+        {(isUser ? userLinks : adminLinks).map(({ href, label, icon }) => {
+          const isActive = path === href;
+          return (
+            <li key={href}>
+              <Link
+                href={href}
+                className={`flex items-center gap-3 py-2.5 pl-4 text-base font-medium rounded-xl transition-all duration-300 
+                  hover:bg-[#147d3b] hover:text-[white] hover:translate-x-1 
+                  ${isActive ? activeClass : "text-gray-400"}`}
+              >
+                <span className="text-xl">{icon}</span>
+                <span>{label}</span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
+  );
 };
 
 export default AdminAside;
