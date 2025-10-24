@@ -1,5 +1,14 @@
 "use client";
 
+import { useAppSelector } from "@/Redux/hoocks/Convaying";
+import Image from "next/image";
+import Link from "next/link";
+import friendsIcon from "../../../assets/home/icon/friends.png";
+import pageIcon from "../../../assets/home/icon/pages.png";
+import wishListIcon from "../../../assets/home/icon/wishlist.png";
+import HomepageTittles from "@/components/ui/HomepageTittles";
+import { useAUserAllFollowingPagesQuery } from "@/Redux/api/api";
+
 type Page = {
   _id: string;
   admin: string;
@@ -25,106 +34,82 @@ type tUserPage = {
   __v: number;
 };
 
-import { useAppSelector } from "@/Redux/hoocks/Convaying";
-import Image from "next/image";
-import Link from "next/link";
-import friendsIcon from "../../../assets/home/icon/friends.png";
-import pageIcon from "../../../assets/home/icon/pages.png";
-import wishListIcon from "../../../assets/home/icon/wishlist.png";
-import HomepageTittles from "@/components/ui/HomepageTittles";
-import { useAUserAllFollowingPagesQuery } from "@/Redux/api/api";
-
 const LeftAside = () => {
   const { loggedInUser } = useAppSelector((e) => e.authStore);
-
-  //all following pages.
-  const { data } = useAUserAllFollowingPagesQuery(loggedInUser?._id);
+  const { data, isLoading } = useAUserAllFollowingPagesQuery(loggedInUser?._id);
   const followingPages: tUserPage[] = data?.data;
 
+  const navItems = [
+    { name: "Profile", href: `/profile?id=${loggedInUser._id}`, icon: loggedInUser?.img },
+    { name: "Friends", href: "/friends", icon: friendsIcon },
+    { name: "Pages", href: "/pages", icon: pageIcon },
+    { name: "Wishlist", href: "/wishlist", icon: wishListIcon },
+  ];
+
+  const skeletonArray = Array.from({ length: 5 });
+
   return (
-    <>
-      <div className="w-[18%] mt-5 hidden pl-2 lg:block h-[40vh] sticky top-[92px]">
-        <div>
+    <div className="w-[18%] mt-5 hidden pl-2 lg:block h-[calc(100vh-100px)] sticky top-[92px] overflow-y-auto">
+      <div className="flex flex-col gap-2">
+        {navItems.map((item) => (
           <Link
-            className="text-lg px-2 py-2 duration-300 font-semibold rounded-md hover:bg-gray-300 flex items-center gap-3"
-            href={`/profile?id=${loggedInUser._id}`}
+            key={item.name}
+            href={item.href}
+            className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-200 hover:scale-105 transition-all duration-200"
           >
-            <div className="w-[40px] h-[40px] relative">
-              <Image
-                className="rounded-full w-full h-full"
-                src={loggedInUser?.img}
-                height={50}
-                width={50}
-                alt="user image"
-              />
+            <div className="w-10 h-10 relative flex-shrink-0">
+              {item.name === "Profile" && !item.icon ? (
+                <div className="w-full h-full rounded-full bg-gray-300 animate-pulse" />
+              ) : (
+                <Image
+                  src={item.icon}
+                  width={40}
+                  height={40}
+                  alt={item.name}
+                  className={`rounded-full object-cover ${item.name === "Profile" ? "shadow-md" : ""}`}
+                />
+              )}
             </div>
-            <h1 className="text-base">{loggedInUser?.name}</h1>
+            <span className="text-base font-medium text-gray-800">{item.name}</span>
           </Link>
-          <Link
-            className="text-lg px-2 py-2 duration-300 font-semibold rounded-md hover:bg-gray-300 flex items-center gap-3"
-            href={`/friends`}
-          >
-            <div className="w-[40px] h-[40px] relative">
-              <Image
-                className=" w-full h-full"
-                src={friendsIcon}
-                height={50}
-                width={50}
-                alt="user image"
-              />
-            </div>
-            <h1 className="text-base">Friends</h1>
-          </Link>
-          <Link
-            className="text-lg px-2 py-2 duration-300 font-semibold rounded-md hover:bg-gray-300 flex items-center gap-3"
-            href={`/pages`}
-          >
-            <div className="w-[40px] h-[40px] relative">
-              <Image
-                className=" w-full h-full"
-                src={pageIcon}
-                height={50}
-                width={50}
-                alt="user image"
-              />
-            </div>
-            <h1 className="text-base">Pages</h1>
-          </Link>
-          <Link
-            className="text-lg px-2 py-2 duration-300 font-semibold rounded-md hover:bg-gray-300 flex items-center gap-3"
-            href={`/wishlist`}
-          >
-            <div className="w-[40px] h-[40px] relative">
-              <Image
-                className=" w-full h-full"
-                src={wishListIcon}
-                height={50}
-                width={50}
-                alt="user image"
-              />
-            </div>
-            <h1 className="text-base">Wishlist</h1>
-          </Link>
-        </div>
+        ))}
+      </div>
 
-        <div className="mt-3">
-          <HomepageTittles text="Following Pages" />
-
-          {/* user following pages. */}
-
-          <div>
-            {followingPages?.map((item: tUserPage) => {
-              return (
-                <Link className="flex items-center gap-4 hover:bg-gray-300 py-2 pl-2 rounded-md" key={item._id} href={`/page?id=${item?.page?._id}`}>
-                  <Image className="rounded-md w-[40px] h-[40px] object-cover" src={item?.page?.logo} width={40} height={40} alt="page images."/>
-                  <h1>{item?.page?.name}</h1>
+      {/* Following Pages */}
+      <div className="mt-6">
+        <HomepageTittles text="Following Pages" />
+        <div className="flex flex-col gap-2 mt-2">
+          {isLoading
+            ? skeletonArray.map((_, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl animate-pulse"
+                >
+                  <div className="w-10 h-10 bg-gray-300 rounded-md" />
+                  <div className="h-4 w-24 bg-gray-300 rounded" />
+                </div>
+              ))
+            : followingPages?.length
+            ? followingPages.map((item) => (
+                <Link
+                  key={item._id}
+                  href={`/page?id=${item?.page?._id}`}
+                  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-gray-200 hover:scale-105 transition-all duration-200"
+                >
+                  <Image
+                    src={item?.page?.logo}
+                    width={40}
+                    height={40}
+                    alt={item?.page?.name}
+                    className="rounded-md object-cover shadow-sm"
+                  />
+                  <span className="text-gray-800 font-medium">{item?.page?.name}</span>
                 </Link>
-              );
-            })}
-          </div>
+              ))
+            : <p className="text-gray-400 px-3 py-2 text-sm">No pages followed yet.</p>}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
