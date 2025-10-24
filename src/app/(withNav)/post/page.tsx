@@ -8,8 +8,8 @@ import { useSearchParams } from "next/navigation";
 import parse from "html-react-parser";
 import Loading from "@/components/Component/Loading/Loading";
 import blueTick from "../../../assets/profile/blueTick.png";
-import { Download } from "lucide-react";
-import { useRef } from "react";
+import { Download, X } from "lucide-react";
+import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import dayjs from "dayjs";
@@ -22,6 +22,8 @@ const PostComponent = () => {
   const post = data?.data?.post;
 
   const printRef = useRef<HTMLDivElement>(null);
+
+  const [isImageFullScreen, setIsImageFullScreen] = useState(false);
 
   // Trigger PDF download
   const handlePdfDownLoad = async () => {
@@ -50,16 +52,38 @@ const PostComponent = () => {
 
   return (
     <Tocenter>
-      <div className="w-full max-w-4xl mx-auto p-4 lg:p-8 space-y-8">
+      <div className="w-full max-w-4xl mx-auto p-4 lg:p-8 space-y-8 relative">
         {/* PDF Download Button */}
         <button
           onClick={handlePdfDownLoad}
-          className="fixed bottom-6 right-6 flex items-center gap-2 font-semibold bg-[#25a82b] px-4 py-2 rounded-lg shadow-lg text-white hover:bg-[#1e8a24] transition"
+          className="fixed bottom-6 right-6 flex items-center gap-2 font-semibold bg-[#25a82b] px-5 py-2 rounded-full shadow-lg text-white hover:bg-[#1e8a24] transition-all duration-300 z-50"
         >
-          <Download size={18} /> Download as PDF
+          <Download size={18} /> Download PDF
         </button>
 
-        <div ref={printRef} className="bg-white rounded-xl shadow-md overflow-hidden">
+        {/* Fullscreen Image Overlay */}
+        {isImageFullScreen && post?.img && (
+          <div className="fixed inset-0 z-50 bg-black bg-opacity-90 flex justify-center items-center p-4">
+            <button
+              onClick={() => setIsImageFullScreen(false)}
+              className="absolute top-6 right-6 text-white bg-gray-800 p-2 rounded-full hover:bg-gray-700 transition"
+            >
+              <X size={24} />
+            </button>
+            <Image
+              src={post.img}
+              alt={post.title || "Post Image"}
+              width={1200}
+              height={800}
+              className="max-h-full max-w-full object-contain rounded-lg"
+            />
+          </div>
+        )}
+
+        <div
+          ref={printRef}
+          className="bg-white rounded-xl shadow-md overflow-hidden transition-all"
+        >
           {/* Header: Author + Category + Meta */}
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center p-6 gap-4 border-b">
             <div className="flex items-start gap-4">
@@ -83,7 +107,9 @@ const PostComponent = () => {
                     />
                   )}
                   {post?.isBlock && (
-                    <span className="text-red-500 font-semibold text-sm">Blocked</span>
+                    <span className="text-red-500 font-semibold text-sm">
+                      Blocked
+                    </span>
                   )}
                 </div>
                 <p className="text-gray-500 text-sm mt-1">
@@ -91,20 +117,19 @@ const PostComponent = () => {
                 </p>
               </div>
             </div>
-
-            <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
-              {post?.category}
-            </span>
           </div>
 
           {/* Featured Image */}
           {post?.img && (
-            <div className="w-full h-[400px] lg:h-[500px] relative">
+            <div
+              className="w-full h-[400px] lg:h-[500px] relative cursor-zoom-in"
+              onClick={() => setIsImageFullScreen(true)}
+            >
               <Image
                 src={post.img}
                 alt={post.title || "Post Image"}
                 fill
-                className="object-cover w-full h-full"
+                className="object-contain w-full h-full transition-transform duration-300 hover:scale-105 rounded-t-xl"
               />
             </div>
           )}
