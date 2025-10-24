@@ -4,45 +4,40 @@ import AuthenticationBg from "@/components/Helper/AuthenticationBg";
 import Button from "@/components/Component/Button/Button";
 import InputField from "@/components/Component/InputField/InputField";
 import { useSignupMutation } from "@/Redux/api/api";
-import  { imageUploadToDb } from "@/utils/imageUpload";
+import { imageUploadToDb } from "@/utils/imageUpload";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoCameraSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
+
 const Signup = () => {
-    
-  // profile image upload handle.
   const [profileImage, setProfileImage] = useState(null);
   const [isProfileImageUploading, setIsProfileImageUploading] = useState(false);
 
   const profileImageUploadHandle = async (e) => {
-    const files = e.target.files[0];
-   
+    const file = e.target.files[0];
     setIsProfileImageUploading(true);
-    try{
-      const url=await imageUploadToDb(files)
-    setProfileImage(url);
-    setIsProfileImageUploading(false);
-    }catch{
-        toast.error("Unsupported Profile image file formate!", {
-          position: "top-center",
-        });
-        setIsProfileImageUploading(false);
-      };
+    try {
+      const url = await imageUploadToDb(file);
+      setProfileImage(url);
+    } catch {
+      toast.error("Unsupported Profile image file format!", { position: "top-center" });
+    } finally {
+      setIsProfileImageUploading(false);
+    }
   };
 
-  // form submit handle.
-  const [signup,{error,data}]=useSignupMutation()
+  const [signup, { error, data }] = useSignupMutation();
+  const router = useRouter();
 
   const formSubmitHandle = (e) => {
     e.preventDefault();
-    if (!profileImage) return toast.error("You have to upload a profile image.", {
-        position: "top-center",
-      });
+    if (!profileImage) {
+      return toast.error("You have to upload a profile image.", { position: "top-center" });
+    }
     const form = e.target;
-
     const formData = {
       name: form.name.value,
       img: profileImage,
@@ -50,74 +45,63 @@ const Signup = () => {
       password: form.password.value,
       phone: form.phone.value,
     };
-
-    signup(formData).then(() =>{
-        setProfileImage(null)
-        form.reset()
+    signup(formData).then(() => {
+      setProfileImage(null);
+      form.reset();
     });
   };
 
+  useEffect(() => {
+    if (data) {
+      toast.success(data?.message, { position: "top-center" });
+      router.push("/login");
+    }
+  }, [data]);
 
-  const router=useRouter()
-
-    // show necessary message.
-    useEffect(() => {
-        if (data) {
-          toast.success(data?.message, {
-            position: "top-center",
-          });
-          router.push("/login")
-        }
-      }, [data]);
-
-    //   show error message.
-    useEffect(() => {
-        // error messages
-        if (error)
-          toast.error(error?.data?.message, {
-            position: "top-center",
-          });
-      }, [error]);
-
-     
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.data?.message, { position: "top-center" });
+    }
+  }, [error]);
 
   return (
-    <div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <AuthenticationBg>
-        <div className="lg:w-[500px] px-6 py-8  rounded-3xl bg-white">
-          <h1 className="text-5xl text-center font-semibold">Signup</h1>
-          <p className="font-semibold text-center mt-5 mb-4">
-            Have an account?{" "}
-            <Link className="underline text-green-900" href={"/login"}>
+        <div className="lg:w-[500px] w-full px-8 py-10 rounded-3xl bg-white shadow-2xl border border-gray-100 flex flex-col items-center animate-fadeIn">
+          {/* Header */}
+          <h1 className="text-4xl font-bold text-[#26a82c] text-center mb-2">Signup</h1>
+          <p className="text-gray-600 mb-6 text-center">
+            Already have an account?{" "}
+            <Link className="text-[#26a82c] font-semibold hover:underline" href="/login">
               Login
             </Link>
           </p>
 
-          <div className="flex justify-center items-center mt-5">
+          {/* Profile Upload */}
+          <div className="flex justify-center mb-8">
             <label
               htmlFor="profileImg"
-              className="flex justify-center items-center overflow-hidden flex-col cursor-pointer  bg-gray-500 text-white  h-[100px] rounded-full w-[100px]"
+              className="relative flex justify-center items-center flex-col cursor-pointer
+              bg-[#26a82c] text-white h-[120px] w-[120px] rounded-full border-4 border-white shadow-lg
+              hover:shadow-2xl transition-all"
             >
               {profileImage && !isProfileImageUploading ? (
                 <Image
-                  width={100}
-                  height={100}
-                  className="w-full h-full object-cover"
+                  width={120}
+                  height={120}
+                  className="w-full h-full object-cover rounded-full"
                   src={profileImage}
-                  alt="profileiamge"
+                  alt="profile image"
                 />
               ) : isProfileImageUploading ? (
-                <span className="loading loading-spinner text-white loading-md"></span>
+                <span className="loading loading-spinner text-white loading-lg"></span>
               ) : (
                 <>
-                  <IoCameraSharp className="text-3xl" />
-                  <span className="w-max text-xs font-semibold">
-                    Upload Profile
-                  </span>
+                  <IoCameraSharp className="text-4xl mb-1" />
+                  <span className="text-xs font-semibold">Upload Photo</span>
                 </>
               )}
             </label>
-
             <input
               onInput={profileImageUploadHandle}
               accept="image/*"
@@ -127,41 +111,60 @@ const Signup = () => {
             />
           </div>
 
-          <form
-            onSubmit={formSubmitHandle}
-            className="mt-12 flex flex-col gap-4"
-          >
-            <InputField borderBottom={true}
-              className="border-2"
-              placeholder="Full name"
+          {/* Form */}
+          <form onSubmit={formSubmitHandle} className="w-full flex flex-col gap-4">
+            <InputField
+              borderBottom
+              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
+              placeholder="Full Name"
               type="text"
               name="name"
             />
-
-            <InputField borderBottom={true}
-              className="border-2"
-              placeholder="E-mail"
+            <InputField
+              borderBottom
+              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
+              placeholder="Email Address"
               type="email"
               name="email"
             />
-            <InputField borderBottom={true}
-              className="border-2"
-              placeholder="Phone number"
+            <InputField
+              borderBottom
+              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
+              placeholder="Phone Number"
               type="number"
               name="phone"
             />
-
-            <InputField borderBottom={true}
-              className="border-2"
+            <InputField
+              borderBottom
+              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
               placeholder="Password"
               type="password"
               name="password"
             />
 
-            <Button className="w-full mt-5" text="Login" />
+            <Button
+              className="w-full mt-5 bg-[#26a82c] hover:bg-[#1e8a24] text-white font-semibold rounded-xl py-3 shadow-lg transition-all"
+              text="Signup"
+            />
           </form>
         </div>
       </AuthenticationBg>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
