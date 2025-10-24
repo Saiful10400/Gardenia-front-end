@@ -33,9 +33,9 @@ import ContentImage from "./ContentImage";
 
 const PostCard = ({ data }: { data: TpostCard }) => {
 
-  const route=usePathname()
- 
- 
+  const route = usePathname()
+
+
   const [collaps, setCollaps] = useState(data.post.content.length > 300);
   const { loggedInUser } = useAppSelector((e) => e.authStore);
 
@@ -108,19 +108,19 @@ const PostCard = ({ data }: { data: TpostCard }) => {
               className="font-semibold hover:text-blue-600"
             >
               {data.post.group?.name}
-              
+
             </Link>
             <div className="flex items-center gap-1">
-            <Link
-              href={`/profile?id=${data.post.creator?._id}`}
-              className="font-semibold text-gray-600 text-xs hover:text-blue-600"
-            >
-              {data.post.creator?.name}
-              {data.post.creator?.verifyed && (
-                <Image src={blueTick} width={16} height={16} alt="Verified" className="inline ml-1" />
-              )}
-            </Link>
-            <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span></div>
+              <Link
+                href={`/profile?id=${data.post.creator?._id}`}
+                className="font-semibold text-gray-600 text-xs hover:text-blue-600"
+              >
+                {data.post.creator?.name}
+                {data.post.creator?.verifyed && (
+                  <Image src={blueTick} width={16} height={16} alt="Verified" className="inline ml-1" />
+                )}
+              </Link>
+              <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span></div>
           </div>
         </div>
       </div>) : (<div className="flex items-center justify-between p-4">
@@ -166,7 +166,9 @@ const PostCard = ({ data }: { data: TpostCard }) => {
 
       {/* Post Image */}
       {data.post.img && (
-        <ContentImage link={data.post.img} />
+        <Link href={`/post?id=${data.post._id}`}>
+          <ContentImage link={data.post.img} />
+        </Link>
       )}
 
       {/* Reaction Bar */}
