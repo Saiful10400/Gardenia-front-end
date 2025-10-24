@@ -3,117 +3,117 @@
 import AuthenticationBg from "@/components/Helper/AuthenticationBg";
 import Button from "@/components/Component/Button/Button";
 import InputField from "@/components/Component/InputField/InputField";
-import {
-  // useChangePasswordMutation,
-  useCheckCredentialsMutation,
-} from "@/Redux/api/api";
+import { useCheckCredentialsMutation } from "@/Redux/api/api";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 const ForgetPassword = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authinticatedEmail,setAuthenticatedEmail]=useState(null)
+  const [authenticatedEmail, setAuthenticatedEmail] = useState(null);
 
-  // checking apis.(rtk)
-  const [checkCredentials, { isLoading:credentialsLoading }] = useCheckCredentialsMutation();
-  // const [updatePassword, { error: updateError, data: updateData }] =
-  //   useChangePasswordMutation();
-  // form submit handle.
-  const userNameandEmailHandle = (e) => {
+  const [checkCredentials, { isLoading: credentialsLoading }] = useCheckCredentialsMutation();
+  // const [updatePassword, { error: updateError, data: updateData }] = useChangePasswordMutation();
+  const router = useRouter();
+
+  const userNameAndEmailHandle = (e) => {
     e.preventDefault();
     const form = e.target;
     const payload = {
       email: form.email.value,
-      name: form.name.value,   
+      name: form.name.value,
     };
 
     checkCredentials(payload).then((res) => {
       if (res.data.data.credential) {
         setIsAuthenticated(true);
-        setAuthenticatedEmail(payload.email)
-        e.target.reset();
+        setAuthenticatedEmail(payload.email);
+        form.reset();
       } else {
-        toast.error("wrong credential!", {
-          position: "top-center",
-        });
+        toast.error("Wrong credentials!", { position: "top-center" });
       }
     });
   };
 
-  const route=useRouter()
-  // confirm passwrod handle
   const confirmPasswordHandle = (e) => {
     e.preventDefault();
-    
-    if(!authinticatedEmail) return
+    if (!authenticatedEmail) return;
     const form = e.target;
-    const password=form.newPassword.value
-    const re_password=form.Re_TypenewPassword.value
+    const password = form.newPassword.value;
+    const re_password = form.Re_TypenewPassword.value;
 
-    if(password===re_password){
-     updatePassword({email:authinticatedEmail,password}).then(res=>{
-      if(res.data.data.modifiedCount>0){
-        toast.success("Password Recovered Please Login.", {
-          position: "top-center",
-        });
-        route.push("/login")
-        form.reset()
-      }
-     })
-    }else{
-      toast.error("Password doesn't match!", {
-        position: "top-center",
+    if (password === re_password) {
+      updatePassword({ email: authenticatedEmail, password }).then((res) => {
+        if (res.data.data.modifiedCount > 0) {
+          toast.success("Password recovered. Please login.", { position: "top-center" });
+          router.push("/login");
+          form.reset();
+        }
       });
+    } else {
+      toast.error("Passwords do not match!", { position: "top-center" });
     }
-    
   };
 
   return (
-    <AuthenticationBg>
-      <div className="lg:w-[500px] px-6 py-8 h-[400px] rounded-3xl bg-white">
-        <h1 className="text-5xl font-semibold">Forget password</h1>
-        {isAuthenticated ? (
-          <form onSubmit={confirmPasswordHandle} className="mt-12">
-            <InputField
-              className="border-2"
-              name="newPassword"
-              placeholder="New password"
-              type="password"
-            />
-            <div className="mt-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <AuthenticationBg>
+        <div className="lg:w-[480px] w-full px-8 py-10 rounded-3xl bg-white shadow-2xl border border-gray-100 animate-fadeIn">
+          <h1 className="text-4xl font-bold text-[#26a82c] text-center">Forget Password</h1>
+
+          {isAuthenticated ? (
+            <form onSubmit={confirmPasswordHandle} className="mt-8 flex flex-col gap-4">
               <InputField
-                className="border-2"
-                name="Re_TypenewPassword"
-                placeholder="Re-type new password"
+                className="border-2 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#26a82c] transition"
+                name="newPassword"
+                placeholder="New Password"
                 type="password"
               />
-            </div>
-            <p className="text-right mt-4 font-semibold"></p>
-            <Button type={"submit"} className="w-full mt-5" text="Confirm" />
-          </form>
-        ) : (
-          <form onSubmit={userNameandEmailHandle} className="mt-12">
-            <InputField
-              className="border-2"
-              name="name"
-              placeholder="User name"
-              type="text"
-            />
-            <div className="mt-4">
               <InputField
-                className="border-2"
-                placeholder="E-mail"
-                type="email"
-                name="email"
+                className="border-2 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-[#26a82c] transition"
+                name="Re_TypenewPassword"
+                placeholder="Re-type New Password"
+                type="password"
               />
-            </div>
-            <p className="text-right mt-4 font-semibold"></p>
-            <Button loading={credentialsLoading} type={"submit"} className="w-full mt-5" text="Next" />
-          </form>
-        )}
-      </div>
-    </AuthenticationBg>
+              <Button type="submit" className="w-full mt-5 bg-[#26a82c] hover:bg-[#1e8a24] text-white font-semibold rounded-xl py-3 shadow-lg transition-all" text="Confirm" />
+            </form>
+          ) : (
+            <form onSubmit={userNameAndEmailHandle} className="mt-8 flex flex-col gap-4">
+              <InputField
+                borderBottom={true}
+
+                name="name"
+                placeholder="User Name"
+                type="text"
+              />
+              <InputField
+                borderBottom={true}
+
+                name="email"
+                placeholder="Email Address"
+                type="email"
+              />
+              <Button
+                loading={credentialsLoading}
+                type="submit"
+                className="w-full mt-5 bg-[#26a82c] hover:bg-[#1e8a24] text-white font-semibold rounded-xl py-3 shadow-lg transition-all"
+                text="Next"
+              />
+            </form>
+          )}
+        </div>
+      </AuthenticationBg>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.5s ease-out;
+        }
+      `}</style>
+    </div>
   );
 };
 
