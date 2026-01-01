@@ -43,14 +43,14 @@ The frontend of Gardenia is a Next.js-based blogging platform for farmers and fa
 ### Prerequisites
 
 - **Node.js** and **npm** installed.
-- Backend API set up and running (see [Backend Repository](https://github.com/Saiful10400/Apollow-Assignment-6-back-end)).
+- Backend API set up and running (see [Backend Repository](https://github.com/Saiful10400/Gardenia-front-end)).
 
 ## How to Run the Project Locally
 
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Saiful10400/Apollow-Assignment-6-front-end
+    git clone https://github.com/Saiful10400/Gardenia-front-end
     ```
 
 2. Navigate to the project directory:
