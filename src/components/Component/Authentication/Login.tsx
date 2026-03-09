@@ -1,8 +1,5 @@
 "use client";
 
-import AuthenticationBg from "@/components/Helper/AuthenticationBg";
-import Button from "@/components/Component/Button/Button";
-import InputField from "@/components/Component/InputField/InputField";
 import { useLoginMutation } from "@/Redux/api/api";
 import { setUser } from "@/Redux/featcher/AuthSlice";
 import { useAppDispatch } from "@/Redux/hoocks/Convaying";
@@ -23,14 +20,22 @@ const Login = () => {
     password: "",
   });
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginCredentials({
+      ...loginCredentials,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const formSubmitHandle = (e) => {
+  const formSubmitHandle = (e: React.FormEvent) => {
     e.preventDefault();
+
     const { email, password } = loginCredentials;
 
     login({ email, password })
-      .then((res) => {
+      .then((res: any) => {
         if (res?.error) return;
+
         dispatch(setUser(null));
         localStorage.setItem("token", res.data.token);
 
@@ -42,13 +47,12 @@ const Login = () => {
             dispatch(setUser(res.data.data));
             router.push("/");
           });
-
       })
-      .catch((err) => console.log(err, "error."));
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    if (error) toast.error(error?.data?.message, { position: "top-center" });
+    if (error) toast.error((error as any)?.data?.message, { position: "top-center" });
   }, [error]);
 
   useEffect(() => {
@@ -56,73 +60,224 @@ const Login = () => {
   }, [data]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <AuthenticationBg>
-        <div className="lg:w-[480px] w-full px-8 py-10 rounded-3xl bg-white shadow-2xl border border-gray-100 animate-fadeIn">
-          <h1 className="text-4xl font-bold text-[#26a82c] text-center">Login</h1>
-          <p className="text-gray-600 mt-3 mb-6 text-center">
-            {"Don't have an account? "}
-            <Link className="text-[#26a82c] font-semibold hover:underline" href="/signup">
-              Sign Up
-            </Link>
-          </p>
+    <div className="flex min-h-screen bg-[#f6f8f6] dark:bg-[#122014] font-sans text-slate-900 dark:text-slate-100">
 
-          <form onSubmit={formSubmitHandle} className="flex flex-col gap-4">
-            <InputField
-              borderBottom={true} dValue={loginCredentials.email} name="email" className="border-2" placeholder="E-mail" type="email"
+      {/* LEFT SIDE LOGIN FORM */}
 
-            />
-            <InputField
-              borderBottom={true} dValue={loginCredentials.password} className="border-2" placeholder="Password" type="password" name="password"
-            />
-            <p className="text-right mt-1">
-              <Link className="text-[#26a82c] font-semibold underline" href="/forget-password">
-                Forgot Password?
-              </Link>
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 py-12">
+
+        <div className="max-w-md w-full mx-auto">
+
+          {/* LOGO */}
+
+          <div className="flex items-center gap-3 mb-12">
+            <div className="bg-[#26a82c] p-2 rounded-lg text-white">
+              <span className="material-symbols-outlined text-3xl">hub</span>
+            </div>
+            <h2 className="text-2xl font-extrabold tracking-tight">
+              SocialConnect
+            </h2>
+          </div>
+
+          {/* HEADING */}
+
+          <div className="mb-10">
+            <h1 className="text-4xl font-black mb-3">
+              Welcome Back
+            </h1>
+            <p className="text-slate-500">
+              Connect with your community and see what's happening.
             </p>
+          </div>
 
-            <Button
-              loading={isLoading}
-              disable={isLoading}
-              className="w-full mt-5 bg-[#26a82c] hover:bg-[#1e8a24] text-white font-semibold rounded-xl py-3 shadow-lg transition-all text-lg"
-              text="Login"
-            />
+          {/* FORM */}
+
+          <form onSubmit={formSubmitHandle} className="space-y-6">
+
+            {/* EMAIL */}
+
+            <div>
+              <label className="block text-sm font-semibold mb-2">
+                Username or Email
+              </label>
+
+              <div className="relative">
+
+             
+
+                <input
+                  name="email"
+                  value={loginCredentials.email}
+                  onChange={handleChange}
+                  type="email"
+                  placeholder="name@example.com"
+                  className="w-full min-w-0 pl-14 pr-4 py-4 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#26a82c] outline-none transition-all"
+                />
+
+              </div>
+            </div>
+
+            {/* PASSWORD */}
+
+            <div>
+
+              <div className="flex justify-between items-center mb-2">
+                <label className="text-sm font-semibold">
+                  Password
+                </label>
+
+                <Link
+                  href="/forget-password"
+                  className="text-xs font-bold text-[#26a82c] hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+
+              <div className="relative">
+
+                 
+
+                <input
+                  name="password"
+                  value={loginCredentials.password}
+                  onChange={handleChange}
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full min-w-0 pl-14 pr-4 py-4 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-[#26a82c] outline-none transition-all"
+                />
+
+              </div>
+
+            </div>
+
+            {/* REMEMBER */}
+
+            <div className="flex items-center">
+
+              <input
+                type="checkbox"
+                className="rounded border-slate-300 text-[#26a82c] focus:ring-[#26a82c] h-4 w-4"
+              />
+
+              <label className="ml-2 text-sm text-slate-500">
+                Remember me for 30 days
+              </label>
+
+            </div>
+
+            {/* LOGIN BUTTON */}
+
+            <button
+              disabled={isLoading}
+              className="w-full bg-[#26a82c] hover:bg-[#1e8a24] text-white font-bold py-4 rounded-xl shadow-lg transition-all active:scale-[0.98]"
+            >
+              {isLoading ? "Logging in..." : "Log In"}
+            </button>
+
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 py-4 border-t border-gray-200">
-            <h2 className="text-base font-medium mb-2">Demo Credentials</h2>
-            <div className="flex items-center gap-3">
+          {/* DEMO CREDENTIALS */}
+
+          <div className="mt-6 pt-6 border-t border-slate-200">
+
+            <p className="text-sm text-slate-500 mb-3">
+              Demo Credentials
+            </p>
+
+            <div className="flex gap-3">
+
               <button
+                type="button"
                 onClick={() =>
-                  setLoginCredentials({ email: "admin@g.com", password: "admin admin" })
+                  setLoginCredentials({
+                    email: "admin@g.com",
+                    password: "admin admin",
+                  })
                 }
-                className="text-white bg-[#26a82c] hover:bg-[#1e8a24] font-semibold px-4 py-1 rounded-md transition"
+                className="px-4 py-2 bg-[#26a82c] hover:bg-[#1e8a24] text-white text-sm font-semibold rounded-lg transition"
               >
                 Admin
               </button>
+
               <button
+                type="button"
                 onClick={() =>
-                  setLoginCredentials({ email: "user@g.com", password: "user user" })
+                  setLoginCredentials({
+                    email: "user@g.com",
+                    password: "user user",
+                  })
                 }
-                className="text-white bg-[#26a82c] hover:bg-[#1e8a24] font-semibold px-4 py-1 rounded-md transition"
+                className="px-4 py-2 bg-[#26a82c] hover:bg-[#1e8a24] text-white text-sm font-semibold rounded-lg transition"
               >
                 User
               </button>
+
+            </div>
+
+          </div>
+
+          {/* SIGNUP */}
+
+          <div className="mt-8 text-center">
+
+            <p className="text-slate-500">
+              Don't have an account?
+
+              <Link
+                href="/signup"
+                className="text-[#26a82c] font-bold hover:underline ml-1"
+              >
+                Sign Up for free
+              </Link>
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* RIGHT SIDE DEMO POST */}
+
+      <div className="hidden lg:flex w-1/2 bg-[#26a82c]/10 items-center justify-center p-12 relative overflow-hidden">
+
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#26a82c]/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#26a82c]/10 rounded-full blur-2xl"></div>
+
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl border p-6 z-10">
+
+          <div className="flex items-center gap-3 mb-4">
+            <img
+              src="https://i.pravatar.cc/150?img=32"
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <p className="font-bold">Alex Rivers</p>
+              <p className="text-xs text-gray-400">2 hours ago</p>
             </div>
           </div>
-        </div>
-      </AuthenticationBg>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(15px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out;
-        }
-      `}</style>
+          <p className="text-gray-600 mb-4">
+            Just finished designing the new interface for our green energy project 🌿
+          </p>
+
+          <img
+            src="https://images.unsplash.com/photo-1518770660439-4636190af475"
+            className="rounded-xl mb-4"
+          />
+
+          <div className="flex gap-6 text-gray-500">
+            <span>❤️ 1.2k</span>
+            <span>💬 84</span>
+            <span>🔁 12</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   );
 };

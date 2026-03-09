@@ -1,8 +1,5 @@
 "use client";
 
-import AuthenticationBg from "@/components/Helper/AuthenticationBg";
-import Button from "@/components/Component/Button/Button";
-import InputField from "@/components/Component/InputField/InputField";
 import { useSignupMutation } from "@/Redux/api/api";
 import { imageUploadToDb } from "@/utils/imageUpload";
 import Image from "next/image";
@@ -13,12 +10,15 @@ import { IoCameraSharp } from "react-icons/io5";
 import { toast } from "react-toastify";
 
 const Signup = () => {
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isProfileImageUploading, setIsProfileImageUploading] = useState(false);
 
-  const profileImageUploadHandle = async (e) => {
+  const profileImageUploadHandle = async (e: any) => {
     const file = e.target.files[0];
+    if (!file) return;
+
     setIsProfileImageUploading(true);
+
     try {
       const url = await imageUploadToDb(file);
       setProfileImage(url);
@@ -29,15 +29,18 @@ const Signup = () => {
     }
   };
 
-  const [signup, { error, data }] = useSignupMutation();
+  const [signup, { error, data, isLoading }] = useSignupMutation();
   const router = useRouter();
 
-  const formSubmitHandle = (e) => {
+  const formSubmitHandle = (e: any) => {
     e.preventDefault();
+
     if (!profileImage) {
       return toast.error("You have to upload a profile image.", { position: "top-center" });
     }
+
     const form = e.target;
+
     const formData = {
       name: form.name.value,
       img: profileImage,
@@ -45,6 +48,7 @@ const Signup = () => {
       password: form.password.value,
       phone: form.phone.value,
     };
+
     signup(formData).then(() => {
       setProfileImage(null);
       form.reset();
@@ -60,111 +64,187 @@ const Signup = () => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error?.data?.message, { position: "top-center" });
+      toast.error((error as any)?.data?.message, { position: "top-center" });
     }
   }, [error]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <AuthenticationBg>
-        <div className="lg:w-[500px] w-full px-8 py-10 rounded-3xl bg-white shadow-2xl border border-gray-100 flex flex-col items-center animate-fadeIn">
-          {/* Header */}
-          <h1 className="text-4xl font-bold text-[#26a82c] text-center mb-2">Signup</h1>
-          <p className="text-gray-600 mb-6 text-center">
-            Already have an account?{" "}
-            <Link className="text-[#26a82c] font-semibold hover:underline" href="/login">
-              Login
-            </Link>
-          </p>
+    <div className="flex min-h-screen bg-[#f6f8f6] dark:bg-[#122014] font-sans text-slate-900 dark:text-slate-100">
 
-          {/* Profile Upload */}
+      {/* LEFT SIDE FORM */}
+
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 py-12">
+
+        <div className="max-w-md w-full mx-auto">
+
+          {/* LOGO */}
+
+          <div className="flex items-center gap-3 mb-12">
+            <div className="bg-[#26a82c] p-2 rounded-lg text-white">
+              <span className="material-symbols-outlined text-3xl">hub</span>
+            </div>
+
+            <h2 className="text-2xl font-extrabold tracking-tight">
+              SocialConnect
+            </h2>
+          </div>
+
+          {/* HEADING */}
+
+          <div className="mb-10">
+            <h1 className="text-4xl font-black mb-3">
+              Create Account
+            </h1>
+
+            <p className="text-slate-500">
+              Join our community and start sharing your ideas.
+            </p>
+          </div>
+
+          {/* PROFILE IMAGE */}
+
           <div className="flex justify-center mb-8">
+
             <label
               htmlFor="profileImg"
-              className="relative flex justify-center items-center flex-col cursor-pointer
-              bg-[#26a82c] text-white h-[120px] w-[120px] rounded-full border-4 border-white shadow-lg
-              hover:shadow-2xl transition-all"
+              className="relative flex flex-col items-center justify-center cursor-pointer
+              bg-[#26a82c] text-white h-[120px] w-[120px] rounded-full border-4 border-white shadow-lg hover:shadow-2xl transition-all"
             >
               {profileImage && !isProfileImageUploading ? (
                 <Image
                   width={120}
                   height={120}
-                  className="w-full h-full object-cover rounded-full"
                   src={profileImage}
                   alt="profile image"
+                  className="w-full h-full object-cover rounded-full"
                 />
               ) : isProfileImageUploading ? (
                 <span className="loading loading-spinner text-white loading-lg"></span>
               ) : (
                 <>
                   <IoCameraSharp className="text-4xl mb-1" />
-                  <span className="text-xs font-semibold">Upload Photo</span>
+                  <span className="text-xs font-semibold">
+                    Upload Photo
+                  </span>
                 </>
               )}
             </label>
+
             <input
-              onInput={profileImageUploadHandle}
-              accept="image/*"
               type="file"
+              accept="image/*"
               id="profileImg"
+              onChange={profileImageUploadHandle}
               className="hidden"
             />
+
           </div>
 
-          {/* Form */}
-          <form onSubmit={formSubmitHandle} className="w-full flex flex-col gap-4">
-            <InputField
-              borderBottom
-              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
-              placeholder="Full Name"
+          {/* FORM */}
+
+          <form onSubmit={formSubmitHandle} className="space-y-5">
+
+            <input
               type="text"
               name="name"
+              placeholder="Full Name"
+              className="w-full py-4 px-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#26a82c] outline-none"
             />
-            <InputField
-              borderBottom
-              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
-              placeholder="Email Address"
+
+            <input
               type="email"
               name="email"
+              placeholder="Email Address"
+              className="w-full py-4 px-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#26a82c] outline-none"
             />
-            <InputField
-              borderBottom
-              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
-              placeholder="Phone Number"
+
+            <input
               type="number"
               name="phone"
+              placeholder="Phone Number"
+              className="w-full py-4 px-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#26a82c] outline-none"
             />
-            <InputField
-              borderBottom
-              className="border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#26a82c] p-3 transition"
-              placeholder="Password"
+
+            <input
               type="password"
               name="password"
+              placeholder="Password"
+              className="w-full py-4 px-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-[#26a82c] outline-none"
             />
 
-            <Button
-              className="w-full mt-5 bg-[#26a82c] hover:bg-[#1e8a24] text-white font-semibold rounded-xl py-3 shadow-lg transition-all"
-              text="Signup"
-            />
+            <button
+              disabled={isLoading}
+              className="w-full bg-[#26a82c] hover:bg-[#1e8a24] text-white font-bold py-4 rounded-xl shadow-lg transition-all"
+            >
+              {isLoading ? "Creating..." : "Signup"}
+            </button>
+
           </form>
-        </div>
-      </AuthenticationBg>
 
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(15px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out;
-        }
-      `}</style>
+          {/* LOGIN LINK */}
+
+          <div className="mt-8 text-center">
+
+            <p className="text-slate-500">
+              Already have an account?
+
+              <Link
+                href="/login"
+                className="text-[#26a82c] font-bold hover:underline ml-1"
+              >
+                Login
+              </Link>
+
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* RIGHT SIDE DEMO POST */}
+
+      <div className="hidden lg:flex w-1/2 bg-[#26a82c]/10 items-center justify-center p-12 relative overflow-hidden">
+
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#26a82c]/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#26a82c]/10 rounded-full blur-2xl"></div>
+
+        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl border p-6 z-10">
+
+          <div className="flex items-center gap-3 mb-4">
+            <img
+              src="https://i.pravatar.cc/150?img=12"
+              className="w-12 h-12 rounded-full"
+            />
+
+            <div>
+              <p className="font-bold">Emma Stone</p>
+              <p className="text-xs text-gray-400">
+                1 hour ago
+              </p>
+            </div>
+          </div>
+
+          <p className="text-gray-600 mb-4">
+            Excited to join this amazing developer community. Let's build something great together 🚀
+          </p>
+
+          <img
+            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
+            className="rounded-xl mb-4"
+          />
+
+          <div className="flex gap-6 text-gray-500">
+            <span>❤️ 980</span>
+            <span>💬 65</span>
+            <span>🔁 9</span>
+          </div>
+
+        </div>
+
+      </div>
+
     </div>
   );
 };

@@ -7,7 +7,6 @@ import {
   CircleArrowDown,
   CircleArrowUp,
   MessageCircle,
-
 } from "lucide-react";
 import { PiShareFat } from "react-icons/pi";
 import { FaHeart } from "react-icons/fa";
@@ -27,14 +26,8 @@ import CommentModal from "./CommentModal";
 import { usePathname } from "next/navigation";
 import ContentImage from "./ContentImage";
 
-
-
-
-
 const PostCard = ({ data }: { data: TpostCard }) => {
-
-  const route = usePathname()
-
+  const route = usePathname();
 
   const [collaps, setCollaps] = useState(data.post.content.length > 300);
   const { loggedInUser } = useAppSelector((e) => e.authStore);
@@ -48,23 +41,44 @@ const PostCard = ({ data }: { data: TpostCard }) => {
     : null;
 
   const handleReaction = (type: string) => {
-    if (!loggedInUser) return toast.error("Login first!", { position: "top-center" });
-    setReaction({ post: data.post._id, reactor: loggedInUser._id, reactionType: type });
+    if (!loggedInUser)
+      return toast.error("Login first!", { position: "top-center" });
+
+    setReaction({
+      post: data.post._id,
+      reactor: loggedInUser._id,
+      reactionType: type,
+    });
   };
 
   const toggleFavourite = () => {
-    if (!loggedInUser) return toast.error("Login first!", { position: "top-center" });
+    if (!loggedInUser)
+      return toast.error("Login first!", { position: "top-center" });
+
     toggleFav({ postId: data.post._id, userId: loggedInUser._id });
   };
 
   const commentHandle = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!loggedInUser) return toast.error("Login first!", { position: "top-center" });
-    const comment = e.currentTarget.comment.value;
-    createComment({ post: data.post._id, comment, commentor: loggedInUser._id }).then(() => {
+
+    if (!loggedInUser)
+      return toast.error("Login first!", { position: "top-center" });
+
+    const comment = (e.currentTarget as any).comment.value;
+
+    createComment({
+      post: data.post._id,
+      comment,
+      commentor: loggedInUser._id,
+    }).then(() => {
       toast.success("Commented!");
-      e.currentTarget?.reset();
+      e.currentTarget.reset();
     });
+  };
+
+  const openCommentModal = () => {
+    const modal = document.getElementById(data?.post?._id) as HTMLDialogElement;
+    modal?.showModal();
   };
 
   const isThisFavourite = loggedInUser
@@ -72,141 +86,184 @@ const PostCard = ({ data }: { data: TpostCard }) => {
     : false;
 
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 mb-6">
+    <div className="bg-white dark:bg-[#1b311e] rounded-xl border border-slate-200 dark:border-[#26a82c]/20 overflow-hidden shadow-sm">
 
+      {/* HEADER */}
 
-
-
-      {/* Header */}
-      {data.post.isGroupPost && !route.includes("/page") ? (<div className="flex items-center justify-between p-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 object-cover relative">
-            <Link className="w-full h-full" href={`/profile?id=${data.post.creator?._id}`}>
-              <Image
-                src={data.post.group?.logo || "/default-avatar.png"}
-                alt="Profile"
-                width={48}
-                height={48}
-                className="w-full h-full rounded-full "
-              />
-            </Link>
-
-            <Link className="absolute -bottom-2 -right-1 z-10" href={`/profile?id=${data.post.creator?._id}`}>
-              <Image
-                src={data.post.creator?.img || "/default-avatar.png"}
-                alt="Profile"
-                width={48}
-                height={48}
-                className="w-8 h-8 rounded-full object-cover"
-              />
-            </Link>
-          </div>
-
-          <div className="flex flex-col">
-            <Link
-              href={`/page?id=${data.post.group?._id}`}
-              className="font-semibold hover:text-blue-600"
-            >
-              {data.post.group?.name}
-
-            </Link>
-            <div className="flex items-center gap-1">
-              <Link
-                href={`/profile?id=${data.post.creator?._id}`}
-                className="font-semibold text-gray-600 text-xs hover:text-blue-600"
-              >
-                {data.post.creator?.name}
-                {data.post.creator?.verifyed && (
-                  <Image src={blueTick} width={16} height={16} alt="Verified" className="inline ml-1" />
-                )}
-              </Link>
-              <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span></div>
-          </div>
-        </div>
-      </div>) : (<div className="flex items-center justify-between p-4">
+      <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
 
           <Link href={`/profile?id=${data.post.creator?._id}`}>
             <Image
               src={data.post.creator?.img || "/default-avatar.png"}
-              alt="Profile"
-              width={48}
-              height={48}
-              className="w-12 h-12 rounded-full object-cover"
+              width={40}
+              height={40}
+              alt="profile"
+              className="w-10 h-10 rounded-full object-cover"
             />
           </Link>
+
           <div className="flex flex-col">
             <Link
               href={`/profile?id=${data.post.creator?._id}`}
-              className="font-semibold hover:text-blue-600"
+              className="text-sm font-bold flex items-center gap-1"
             >
               {data.post.creator?.name}
+
               {data.post.creator?.verifyed && (
-                <Image src={blueTick} width={16} height={16} alt="Verified" className="inline ml-1" />
+                <Image
+                  src={blueTick}
+                  width={14}
+                  height={14}
+                  alt="verified"
+                />
               )}
             </Link>
-            <span className="text-xs text-gray-500">{dateFormatter(data?.post?.createdAt)}</span>
+
+            <span className="text-xs text-gray-500">
+              {dateFormatter(data?.post?.createdAt)}
+            </span>
           </div>
         </div>
-      </div>)}
+      </div>
 
+      {/* CONTENT */}
 
-      {/* Content */}
-      <div className="px-4 pb-4 text-gray-700 break-words">
+      <div className="px-4 pb-3 text-sm text-slate-700 dark:text-slate-200 leading-relaxed break-words">
         {parse(collaps ? data.post.content.slice(0, 300) : data.post.content)}
+
         {data.post.content.length > 300 && (
           <button
             onClick={() => setCollaps((prev) => !prev)}
-            className="ml-1 text-[#61d89c] font-semibold"
+            className="ml-1 text-[#26a82c] font-semibold"
           >
             {collaps ? "... See more" : " See less"}
           </button>
         )}
       </div>
 
-      {/* Post Image */}
+      {/* IMAGE */}
+
       {data.post.img && (
-        <Link href={`/post?id=${data.post._id}`}>
-          <ContentImage link={data.post.img} />
-        </Link>
+        <div className="px-4 pb-3">
+          <Link href={`/post?id=${data.post._id}`}>
+            <ContentImage link={data.post.img} />
+          </Link>
+        </div>
       )}
 
-      {/* Reaction Bar */}
-      <div className="flex justify-between items-center border-t border-gray-200 px-4 py-3">
-        <div className="flex items-center gap-4">
-          <button onClick={() => handleReaction("up")}>
-            <CircleArrowUp
-              size={28}
-              className={reacted?.reactionType === "up" ? "text-green-500" : "text-gray-400"}
-            />
+      {/* ACTION BAR */}
+
+      <div className="p-4 flex items-center justify-between">
+
+        <div className="flex items-center gap-3">
+
+          {/* VOTES */}
+
+          <div className="flex items-center bg-gray-100 dark:bg-[#122014] rounded-full px-1 py-1">
+
+            <button
+              onClick={() => handleReaction("up")}
+              className="p-2 rounded-full hover:bg-green-100"
+            >
+              <CircleArrowUp
+                size={22}
+                className={
+                  reacted?.reactionType === "up"
+                    ? "text-green-500"
+                    : "text-gray-400"
+                }
+              />
+            </button>
+
+            <span className="px-2 text-xs font-bold">
+              {data.post.vote}
+            </span>
+
+            <button
+              onClick={() => handleReaction("down")}
+              className="p-2 rounded-full hover:bg-red-100"
+            >
+              <CircleArrowDown
+                size={22}
+                className={
+                  reacted?.reactionType === "down"
+                    ? "text-red-500"
+                    : "text-gray-400"
+                }
+              />
+            </button>
+
+          </div>
+
+          {/* COMMENTS */}
+
+          <button
+            onClick={openCommentModal}
+            className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-500 hover:bg-[#26a82c]/10 hover:text-[#26a82c]"
+          >
+            <MessageCircle size={20} />
+            <span className="text-xs font-bold">
+              {data.comments?.length || 0}
+            </span>
           </button>
-          <span className="font-medium">{data.post.vote}</span>
-          <button onClick={() => handleReaction("down")}>
-            <CircleArrowDown
-              size={28}
-              className={reacted?.reactionType === "down" ? "text-red-500" : "text-gray-400"}
-            />
+
+          {/* SHARE */}
+
+          <button className="flex items-center gap-2 px-3 py-2 rounded-full text-gray-500 hover:bg-[#26a82c]/10 hover:text-[#26a82c]">
+            <PiShareFat size={20} />
+            <span className="text-xs font-bold">Share</span>
           </button>
+
         </div>
 
-        <div className="flex items-center gap-4">
-          <button onClick={toggleFavourite}>
-            <FaHeart className={`text-2xl ${isThisFavourite ? "text-red-500" : "text-gray-400"}`} />
-          </button>
-          <span className="font-medium">{data.favourite?.length || 0}</span>
+        {/* FAVOURITE */}
 
-          <button onClick={() => document.getElementById(data?.post?._id)?.showModal()}>
-            <MessageCircle className="text-gray-400" size={28} />
-          </button>
-          <span className="font-medium">{data.comments?.length || 0}</span>
+        <button
+          onClick={toggleFavourite}
+          className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-red-50"
+        >
+          <FaHeart
+            className={`text-xl ${
+              isThisFavourite ? "text-red-500" : "text-gray-400"
+            }`}
+          />
+        </button>
 
-          <button>
-            <PiShareFat className="text-gray-400 text-2xl" />
-          </button>
-        </div>
       </div>
 
-      <CommentModal commentHandle={commentHandle} handleReaction={handleReaction} reacted={reacted} reactionLoading={reactionLoading} data={data} />
+      {/* COMMENT INPUT TRIGGER */}
+
+      {loggedInUser && (
+        <div className="px-4 pb-4 border-t border-gray-100 pt-4">
+          <div className="flex items-center gap-3">
+
+            <Image
+              src={loggedInUser.img || "/default-avatar.png"}
+              width={32}
+              height={32}
+              alt="user"
+              className="w-8 h-8 rounded-full object-cover"
+            />
+
+            <input
+              readOnly
+              onClick={openCommentModal}
+              placeholder="Add a comment..."
+              className="flex-1 bg-gray-100 dark:bg-[#122014] rounded-lg px-4 py-2 text-sm outline-none cursor-pointer"
+            />
+
+          </div>
+        </div>
+      )}
+
+      <CommentModal
+        commentHandle={commentHandle}
+        handleReaction={handleReaction}
+        reacted={reacted}
+        reactionLoading={reactionLoading}
+        data={data}
+      />
     </div>
   );
 };
